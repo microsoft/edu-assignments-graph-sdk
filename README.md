@@ -1,14 +1,73 @@
-# Project
+# Microsoft Graph SDK code samples
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+This repo is a set of C# class libraries that guide you to easily and quickly integrate the [Microsoft Graph SDK](/graph/sdks/sdks-overview) into your applications.
 
-As the maintainer of this project, please make a few updates:
+These samples also demostrates more of the functionality provided by the Microsoft Graph SDK, such as work with classes, users, assignments, submissions, resources and work with any of the EDU APIs.
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+## Prerequisites
+
+* An EDU tenant for Azure Active Directoy authentication. Follow [these instructions](/graph/msgraph-onboarding-overview) to get set up. You will need some info from the tenant created when filling the `appsettings.json` file in the samples.
+* [Visual Studio 2022](https://visualstudio.microsoft.com/downloads)
+
+## Usage
+
+1. Open __microsoft-graph-sdk.sln__ in Visual Studio.
+
+1. Locate the file `appsettings.json` under __microsoft-graph-samples__ project in Solution Explorer. Replace the contents of that file supplying your values as appropriate:
+
+    ```json
+    {
+        "tenantId": "YOUR_TENANT_ID",
+        "appId": "YOUR_APPLICATION_ID",
+        "secret": "YOUR_SECRET",
+        "teacherAccount": "YOUR_TEACHER_ACCOUNT",
+        "studentAccount": "YOUR_STUDENT_ACCOUNT",
+        "password": "YOUR_PASSWORD",
+        "classId": "YOUR_CLASS_ID",
+        "assignmentId": "YOUR_ASSIGNMENT_ID",
+        "submissionId": "YOUR_SUBMISSION_ID"
+    }
+    ```
+
+> [!IMPORTANT]
+> __Be sure not to commit any references that contain secrets into source control, as secrets should not be made public__.
+
+1. Right-click on the solution in the Solution Explorer and choose __Restore Nuget Packages__.
+
+1. Run __Debug > Start Debugging__ or just press __F5__.
+
+## Project structure
+
+### microsoft-graph-sdk
+
+It is a set of C# class libraries, those classes contain the actual calls to the Microsoft Graph SDK (v1.0) and each class contains only methos related to an specific entity; for instance User, GraphClient, Assignment, Submission and so on.
+
+All the methods added in those classes can be used into your application.
+
+### microsoft-graph-samples
+
+This project provides some samples on how to use the methods from the class library. All the samples are developed in a __Workflow__ structure to easily guide you and show you how to catch the responses and use the results.
+
+Use the `Program.cs` file to test any of the current workflows.
+
+1. Add one of the using statements according to the version you want to work with.
+
+```csharp
+    using microsoft_graph_samples.workflows; // For v1.0
+    using microsoft_graph_samples_beta.workflows; // For beta
+```
+
+1. Create an instance of the flow to test.
+
+```csharp
+    submission_reassign reassign = new submission_reassign(config);
+```
+
+1. Call its __workflow__ method.
+
+```csharp
+    reassign.workflow();
+```
 
 ## Contributing
 
