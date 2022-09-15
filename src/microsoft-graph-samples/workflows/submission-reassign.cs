@@ -39,7 +39,7 @@ namespace microsoft_graph_samples.workflows
 
             // Find the student submission within the assignment
             var submissions = microsoft_graph_sdk.Submission.GetSubmissions(graphClient, _config["classId"], _config["assignmentId"]);
-            foreach (var sub in submissions.Result)
+            foreach (var sub in submissions.Result) // use submissions.Result.Value for beta
             {
                 // Break the loop when student submission is found
                 if (student.Result.Id == sub.SubmittedBy.User.Id) {
@@ -75,7 +75,7 @@ namespace microsoft_graph_samples.workflows
                 Thread.Sleep(2000); // Wait two seconds between calls
             }
 
-            Console.WriteLine($"Final submission state is ${submission.Result.Status}");
+            Console.WriteLine($"Final submission state is {submission.Result.Status}");
         }
     }
 }

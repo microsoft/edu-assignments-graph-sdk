@@ -44,18 +44,33 @@ It is a set of C# class libraries, those classes contain the actual calls to the
 
 All the methods added in those classes can be used into your application.
 
+This project works with these nuget packages:
+
+* Azure.Identity
+* Microsoft.Graph (latest stable)
+
+### microsoft-graph-sdk-beta
+
+The same set of C# class libraries, but the calls are done to the Microsoft Graph SDK (beta). It is a separate project due to packages used are different and involve code changes.
+
+This project works with these nuget packages:
+
+* Azure.Identity
+* Microsoft.Graph.Beta
+* Microsoft.Identity.Web.MicrosoftGraphBeta
+
 ### microsoft-graph-samples
 
 This project provides some samples on how to use the methods from the class library. All the samples are developed in a __Workflow__ structure to easily guide you and show you how to catch the responses and use the results.
 
 Use the `Program.cs` file to test any of the current workflows.
 
-1. Add one of the using statements according to the version you want to work with.
+1. Add a project reference according to the wanted version.
 
-```csharp
-    using microsoft_graph_samples.workflows; // For v1.0
-    using microsoft_graph_samples_beta.workflows; // For beta
-```
+    * Right click on the __microsoft-graph-samples__ project.
+    * Add / Project Reference ...
+    * Check the version required and make sure the other is unchecked.
+    ![Project references](../edu-assignments-graph-sdk/images/project-references.png)
 
 1. Create an instance of the flow to test.
 
