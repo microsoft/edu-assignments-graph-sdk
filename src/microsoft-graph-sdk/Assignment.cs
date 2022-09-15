@@ -16,16 +16,18 @@ namespace microsoft_graph_sdk
                 .GetAsync();
         }
 
-        public static async Task<EducationAssignment> GetAssignment_WithHeaders(
+        public static async Task<EducationAssignment> GetAssignment_WithHeader(
             GraphServiceClient client,
             string classId,
-            string assignmentId)
+            string assignmentId,
+            string headerName,
+            string headerValue)
         {
             return await client.Education
                 .Classes[classId]
                 .Assignments[assignmentId]
                 .Request()
-                .Header("Prefer", "include-unknown-enum-members")
+                .Header(headerName, headerValue)
                 .GetAsync();
         }
 

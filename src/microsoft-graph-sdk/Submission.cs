@@ -31,17 +31,18 @@ namespace microsoft_graph_sdk
                 .GetAsync();
         }
 
-        public static async Task<IEducationAssignmentSubmissionsCollectionPage> GetSubmissions_ExpandSubmittedResources(
+        public static async Task<IEducationAssignmentSubmissionsCollectionPage> GetSubmissions_Expand(
             GraphServiceClient client,
             string classId,
-            string assignmentId)
+            string assignmentId,
+            string expand)
         {
             return await client.Education
                 .Classes[classId]
                 .Assignments[assignmentId]
                 .Submissions
                 .Request()
-                .Expand("submittedResources")
+                .Expand(expand)
                 .GetAsync();
         }
 
