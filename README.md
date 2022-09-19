@@ -1,13 +1,13 @@
-# Microsoft Graph SDK code samples
+# Assignments Code Samples using Microsoft Graph SDK
 
-This repo is a set of C# class libraries that guide you to easily and quickly integrate the [Microsoft Graph SDK](/graph/sdks/sdks-overview) into your applications.
+This repo is a set of code samples that guide you to easily and quickly integrate the [Microsoft Graph SDK](/graph/sdks/sdks-overview) into your applications. In order to start building third party solutions for Microsoft EDU assignments service.
 
-These samples also demostrates more of the functionality provided by the Microsoft Graph SDK, such as work with classes, users, assignments, submissions, resources and work with any of the EDU APIs.
+These samples also demostrate assignments service functionality exposed through the Microsoft Graph SDK, such as work with classes, users, [assignments, submissions](/graph/assignments-submissions-states-transition), resources and work with any of the EDU APIs. Using Microsoft Graph SDK we can perform any operation supported by graph SDK, not just limited to assignments.
 
 ## Prerequisites
 
 * An EDU tenant for Azure Active Directoy authentication. Follow [these instructions](/graph/msgraph-onboarding-overview) to get set up. You will need some info from the tenant created when filling the `appsettings.json` file in the samples.
-* [Visual Studio 2022](https://visualstudio.microsoft.com/downloads)
+* [Visual Studio 2022](https://visualstudio.microsoft.com/downloads) or [Visual Studio Code](https://code.visualstudio.com/download).
 
 ## Usage
 
@@ -17,15 +17,13 @@ These samples also demostrates more of the functionality provided by the Microso
 
     ```json
     {
-        "tenantId": "YOUR_TENANT_ID",
-        "appId": "YOUR_APPLICATION_ID",
-        "secret": "YOUR_SECRET",
-        "teacherAccount": "YOUR_TEACHER_ACCOUNT",
-        "studentAccount": "YOUR_STUDENT_ACCOUNT",
-        "password": "YOUR_PASSWORD",
-        "classId": "YOUR_CLASS_ID",
-        "assignmentId": "YOUR_ASSIGNMENT_ID",
-        "submissionId": "YOUR_SUBMISSION_ID"
+        "tenantId": "YOUR_TENANT_ID",               // Look for it in Azure portal; https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-how-to-find-tenant
+        "appId": "YOUR_APPLICATION_ID",             // Create a new app or take any existing in your Azure portal; https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app
+        "secret": "YOUR_SECRET",                    // Look for it in your app registration in Azure portal.
+        "classId": "YOUR_CLASS_ID",                 // Create a new class team or take it from an existing one; https://support.microsoft.com/en-us/topic/get-started-in-your-class-team-6b5fd708-35b9-4caf-b66e-d8f2468e4fd5
+        "teacherAccount": "YOUR_TEACHER_ACCOUNT",   // Any class owner account
+        "studentAccount": "YOUR_STUDENT_ACCOUNT",   // Any member from the class.
+        "password": "YOUR_PASSWORD"                 // Your account's password.
     }
     ```
 
@@ -46,8 +44,8 @@ All the methods added in those classes can be used into your application.
 
 This project works with these nuget packages:
 
-* Azure.Identity
-* Microsoft.Graph (latest stable)
+* Azure.Identity (1.6.1)
+* Microsoft.Graph (latest 4.XX.X)
 
 ### microsoft-graph-sdk-beta
 
@@ -55,13 +53,13 @@ The same set of C# class libraries, but the calls are done to the Microsoft Grap
 
 This project works with these nuget packages:
 
-* Azure.Identity
-* Microsoft.Graph.Beta
-* Microsoft.Identity.Web.MicrosoftGraphBeta
+* Azure.Identity (1.6.1)
+* Microsoft.Graph.Beta (latest 5.XX.X-preview)
+* Microsoft.Identity.Web.MicrosoftGraphBeta (latest 1.XX.X)
 
 ### microsoft-graph-samples
 
-This project provides some samples on how to use the methods from the class library. All the samples are developed in a __Workflow__ structure to easily guide you and show you how to catch the responses and use the results.
+This project provides Microsoft EDU code samples on how to use the methods from the class library. All the samples are developed in a __Workflow__ structure to easily guide you and show you how to catch the responses and use the results.
 
 Use the `Program.cs` file to test any of the current workflows.
 
