@@ -57,7 +57,7 @@ This project works with these nuget packages:
 * Microsoft.Graph.Beta (latest 5.XX.X-preview)
 * Microsoft.Identity.Web.MicrosoftGraphBeta (latest 1.XX.X)
 
-### microsoft-graph-samples
+### MicrosoftEduGraphSamples
 
 This project provides Microsoft EDU code samples on how to use the methods from the class library. All the samples are developed in a __Workflow__ structure to easily guide you and show you how to catch the responses and use the results.
 
@@ -65,21 +65,21 @@ Use the `Program.cs` file to test any of the current workflows.
 
 1. Add a project reference according to the wanted version.
 
-    * Right click on the __microsoft-graph-samples__ project.
+    * Right click on the __MicrosoftEduGraphSamples__ project.
     * Add / Project Reference ...
     * Check the version required and make sure the other is unchecked.
     ![Project references](../edu-assignments-graph-sdk/images/project-references.png)
 
-1. Create an instance of the flow to test.
+1. Create an instance of the class you want to test.
 
 ```csharp
-    submission_reassign reassign = new submission_reassign(config);
+    Submission submission = new Submission(config);
 ```
 
-1. Call its __workflow__ method.
+1. Call the desired workflow method.
 
 ```csharp
-    reassign.workflow();
+    submission.ReassignWorkflow();
 ```
 
 ## Contributing
