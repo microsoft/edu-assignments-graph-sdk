@@ -1,9 +1,19 @@
-﻿using Microsoft.Graph;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using Microsoft.Graph;
 
 namespace microsoft_graph_sdk
 {
     public class Assignment
     {
+        /// <summary>
+        /// Get the properties and relationships of an assignment
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="classId"></param>
+        /// <param name="assignmentId"></param>
+        /// <returns>EducationAssignment</returns>
         public static async Task<EducationAssignment> GetAssignment(
             GraphServiceClient client,
             string classId,
@@ -16,6 +26,15 @@ namespace microsoft_graph_sdk
                 .GetAsync();
         }
 
+        /// <summary>
+        /// Get the properties and relationships of an assignment and pass a header value
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="classId"></param>
+        /// <param name="assignmentId"></param>
+        /// <param name="headerName"></param>
+        /// <param name="headerValue"></param>
+        /// <returns>EducationAssignment</returns>
         public static async Task<EducationAssignment> GetAssignment_WithHeader(
             GraphServiceClient client,
             string classId,
@@ -31,6 +50,12 @@ namespace microsoft_graph_sdk
                 .GetAsync();
         }
 
+        /// <summary>
+        /// Retrieve a list of assignment objects within a class
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="classId"></param>
+        /// <returns>IEducationClassAssignmentsCollectionPage</returns>
         public static async Task<IEducationClassAssignmentsCollectionPage> GetAssignments(
             GraphServiceClient client,
             string classId)
@@ -42,6 +67,11 @@ namespace microsoft_graph_sdk
                 .GetAsync();
         }
 
+        /// <summary>
+        /// Retrieve a list of assignment objects from current user
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns>IEducationUserAssignmentsCollectionPage</returns>
         public static async Task<IEducationUserAssignmentsCollectionPage> GetMeAssignments(
             GraphServiceClient client)
         {
@@ -52,6 +82,12 @@ namespace microsoft_graph_sdk
                 .GetAsync();
         }
 
+        /// <summary>
+        /// Retrieve a list of assignment objects from current user
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="userId"></param>
+        /// <returns>IEducationUserAssignmentsCollectionPage</returns>
         public static async Task<IEducationUserAssignmentsCollectionPage> GetUserAssignments(
             GraphServiceClient client,
             string userId)
@@ -63,6 +99,12 @@ namespace microsoft_graph_sdk
                 .GetAsync();
         }
 
+        /// <summary>
+        /// Creates a new assignmen
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="classId"></param>
+        /// <returns>EducationAssignment</returns>
         public static async Task<EducationAssignment> Create(
             GraphServiceClient client,
             string classId)
@@ -96,6 +138,13 @@ namespace microsoft_graph_sdk
                 .AddAsync(assignment);
         }
 
+        /// <summary>
+        /// Publishes an assignment, changes the state of an educationAssignment from its original draft status to the published status
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="classId"></param>
+        /// <param name="assignmentId"></param>
+        /// <returns>EducationAssignment</returns>
         public static async Task<EducationAssignment> Publish(
             GraphServiceClient client,
             string classId,
@@ -109,6 +158,13 @@ namespace microsoft_graph_sdk
                 .PostAsync();
         }
 
+        /// <summary>
+        /// Deletes an existing assignment
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="classId"></param>
+        /// <param name="assignmentId"></param>
+        /// <returns></returns>
         public static async Task Delete(
             GraphServiceClient client,
             string classId,
