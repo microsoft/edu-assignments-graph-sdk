@@ -5,6 +5,9 @@ using Microsoft.Graph.Beta;
 
 namespace MicrosoftGraphSDK
 {
+    /// <summary>
+    /// Graph SDK endpoints for logged user
+    /// </summary>
     public class User
     {
         /// <summary>

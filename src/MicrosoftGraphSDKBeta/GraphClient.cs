@@ -6,6 +6,9 @@ using Microsoft.Graph.Beta;
 
 namespace MicrosoftGraphSDK
 {
+    /// <summary>
+    /// Graph SDK endpoints for creating graph client object
+    /// </summary>
     public class GraphClient
     {
         /// <summary>

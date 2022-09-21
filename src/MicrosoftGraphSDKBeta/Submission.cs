@@ -7,6 +7,9 @@ using Microsoft.Net.Http.Headers;
 
 namespace MicrosoftGraphSDK
 {
+    /// <summary>
+    /// Graph SDK endpoints for submissions
+    /// </summary>
     public class Submission
     {
         /// <summary>

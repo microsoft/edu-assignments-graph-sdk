@@ -5,6 +5,9 @@ using Microsoft.Graph;
 
 namespace MicrosoftGraphSDK
 {
+    /// <summary>
+    /// Graph SDK endpoints for assignments
+    /// </summary>
     public class Assignment
     {
         /// <summary>
