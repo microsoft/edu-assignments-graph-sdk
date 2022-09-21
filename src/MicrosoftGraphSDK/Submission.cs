@@ -5,6 +5,9 @@ using Microsoft.Graph;
 
 namespace MicrosoftGraphSDK
 {
+    /// <summary>
+    /// Graph SDK endpoints for submissions
+    /// </summary>
     public class Submission
     {
         /// <summary>
