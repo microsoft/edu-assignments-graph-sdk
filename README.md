@@ -17,15 +17,23 @@ These samples also demostrate assignments service functionality exposed through 
 
     ```json
     {
-        "tenantId": "YOUR_TENANT_ID",               // Look for it in Azure portal; https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-how-to-find-tenant
-        "appId": "YOUR_APPLICATION_ID",             // Create a new app or take any existing in your Azure portal; https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app
-        "secret": "YOUR_SECRET",                    // Look for it in your app registration in Azure portal.
-        "classId": "YOUR_CLASS_ID",                 // Create a new class team or take it from an existing one; https://support.microsoft.com/en-us/topic/get-started-in-your-class-team-6b5fd708-35b9-4caf-b66e-d8f2468e4fd5
-        "teacherAccount": "YOUR_TEACHER_ACCOUNT",   // Any class owner account
-        "studentAccount": "YOUR_STUDENT_ACCOUNT",   // Any member from the class.
-        "password": "YOUR_PASSWORD"                 // Your account's password.
+        "tenantId": "YOUR_TENANT_ID",
+        "appId": "YOUR_APPLICATION_ID",
+        "secret": "YOUR_SECRET",
+        "classId": "YOUR_CLASS_ID",
+        "teacherAccount": "YOUR_TEACHER_ACCOUNT",
+        "studentAccount": "YOUR_STUDENT_ACCOUNT",
+        "password": "YOUR_PASSWORD"
     }
     ```
+
+    * __tenantId__: Look for it in [Azure portal](https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-how-to-find-tenant).
+    * __appId__: [Create a new app or take any existing](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure portal.
+    * __secret__: Look for it in your app registration in Azure portal.
+    * __classId__: Create a new class team or [take it from an existing one](https://support.microsoft.com/en-us/topic/get-started-in-your-class-team-6b5fd708-35b9-4caf-b66e-d8f2468e4fd5).
+    * __teacherAccount__: Any class owner account
+    * __studentAccount__: Any member from the class.
+    * __password__: Your account's password.
 
 > [!IMPORTANT]
 > __Be sure not to commit any references that contain secrets into source control, as secrets should not be made public__.
