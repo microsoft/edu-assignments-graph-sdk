@@ -93,7 +93,7 @@ Use the `Program.cs` file to test any of the current workflows.
 ## [Code samples](https://docs.microsoft.com/microsoftteams/platform/tabs/what-are-tabs)
 |    | Sample Name        | Description                                                                      | C#    |
 |:--:|:-------------------|:----------------------------------------------------------------------------------------------|:--------|
-|1| Reassign submission   | Sample showing how the teacher creates an assignment and then publish it; the student submit his work and then teacher reassign it with feedback.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/src/microsoft-graph-samples/workflows/Submission.cs)|
+|1| Reassign submission   | Sample showing how the teacher creates an assignment and then publish it; the student submit his work and then teacher reassign it with feedback.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/microsoftedugraphsamples/workflows/Submission.cs)|
 
 
 ## Need help?
