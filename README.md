@@ -13,7 +13,7 @@ These samples also demostrate assignments service functionality exposed through 
 
 1. Open __microsoft-graph-sdk.sln__ in Visual Studio.
 
-1. Locate the file `appsettings.json` under __microsoft-graph-samples__ project in Solution Explorer. Replace the contents of that file supplying your values as appropriate:
+1. Locate the file `appsettings.json` under __MicrosoftEduGraphSamples__ project in Solution Explorer. Replace the contents of that file supplying your values as appropriate:
 
     ```json
     {
@@ -36,7 +36,7 @@ These samples also demostrate assignments service functionality exposed through 
 
 ## Project structure
 
-### microsoft-graph-sdk
+### MicrosoftGraphSDK
 
 It is a set of C# class libraries, those classes contain the actual calls to the Microsoft Graph SDK (v1.0) and each class contains only methos related to an specific entity; for instance User, GraphClient, Assignment, Submission and so on.
 
@@ -47,7 +47,7 @@ This project works with these nuget packages:
 * Azure.Identity (1.6.1)
 * Microsoft.Graph (latest 4.XX.X)
 
-### microsoft-graph-sdk-beta
+### MicrosoftGraphSDKBeta
 
 The same set of C# class libraries, but the calls are done to the Microsoft Graph SDK (beta). It is a separate project due to packages used are different and involve code changes.
 
@@ -81,6 +81,18 @@ Use the `Program.cs` file to test any of the current workflows.
 ```csharp
     submission.ReassignWorkflow();
 ```
+
+## [Code samples](https://docs.microsoft.com/microsoftteams/platform/tabs/what-are-tabs)
+|    | Sample Name        | Description                                                                      | C#    |
+|:--:|:-------------------|:----------------------------------------------------------------------------------------------|:--------|
+|1| Reassign submission   | Sample showing how the teacher creates an assignment and then publish it; the student submit his work and then teacher reassign it with feedback.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/src/microsoft-graph-samples/workflows/Submission.cs)|
+
+
+## Need help?
+
+* For reference documentation visit the [Microsoft Graph SDK reference](/graph/sdks/sdks-overview).
+* For other documentation, go to [Working with education APIs in Microsoft Graph](/graph/api/resources/education-overview).
+* File an issue via [Github Issues](https://github.com/microsoft/edu-assignments-graph-sdk/issues/new).
 
 ## Contributing
 

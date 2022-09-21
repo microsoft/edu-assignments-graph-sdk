@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 
 using Microsoft.Graph;
+using System;
 
-namespace microsoft_graph_sdk
+namespace MicrosoftGraphSDK
 {
     public class User
     {
@@ -15,9 +16,16 @@ namespace microsoft_graph_sdk
         public static async Task<Microsoft.Graph.User> getUserInfo(
             GraphServiceClient client)
         {
-            return await client.Me
-                .Request()
-                .GetAsync();
+            try
+            {
+                return await client.Me
+                    .Request()
+                    .GetAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"getUserInfo call: {ex.Message}");
+            }
         }
     }
 }

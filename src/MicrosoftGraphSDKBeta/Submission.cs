@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.Graph;
+using Microsoft.Graph.Beta;
+using Microsoft.Graph.Beta.Models;
+using Microsoft.Net.Http.Headers;
 
-namespace microsoft_graph_sdk
+namespace MicrosoftGraphSDK
 {
     public class Submission
     {
@@ -21,12 +23,18 @@ namespace microsoft_graph_sdk
             string assignmentId,
             string submissionId)
         {
-            return await client.Education
-                .Classes[classId]
-                .Assignments[assignmentId]
-                .Submissions[submissionId]
-                .Request()
-                .GetAsync();
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .Submissions[submissionId]
+                    .GetAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetSubmission call: {ex.Message}", classId, assignmentId, submissionId);
+            }
         }
 
         /// <summary>
@@ -35,18 +43,24 @@ namespace microsoft_graph_sdk
         /// <param name="client"></param>
         /// <param name="classId"></param>
         /// <param name="assignmentId"></param>
-        /// <returns>IEducationAssignmentSubmissionsCollectionPage</returns>
-        public static async Task<IEducationAssignmentSubmissionsCollectionPage> GetSubmissions(
+        /// <returns>EducationSubmissionCollectionResponse</returns>
+        public static async Task<EducationSubmissionCollectionResponse> GetSubmissions(
             GraphServiceClient client,
             string classId,
             string assignmentId)
         {
-            return await client.Education
-                .Classes[classId]
-                .Assignments[assignmentId]
-                .Submissions
-                .Request()
-                .GetAsync();
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .Submissions
+                    .GetAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetSubmissions call: {ex.Message}", classId, assignmentId);
+            }
         }
 
         /// <summary>
@@ -56,20 +70,26 @@ namespace microsoft_graph_sdk
         /// <param name="classId"></param>
         /// <param name="assignmentId"></param>
         /// <param name="expand"></param>
-        /// <returns>IEducationAssignmentSubmissionsCollectionPage</returns>
-        public static async Task<IEducationAssignmentSubmissionsCollectionPage> GetSubmissions_Expand(
+        /// <returns>EducationSubmissionCollectionResponse</returns>
+        public static async Task<EducationSubmissionCollectionResponse> GetSubmissions_Expand(
             GraphServiceClient client,
             string classId,
             string assignmentId,
             string expand)
         {
-            return await client.Education
-                .Classes[classId]
-                .Assignments[assignmentId]
-                .Submissions
-                .Request()
-                .Expand(expand)
-                .GetAsync();
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .Submissions
+                    .GetAsync(requestConfiguration =>
+                        requestConfiguration.QueryParameters.Expand = new string[] { expand });
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetSubmissions_Expand call: {ex.Message}", classId, assignmentId, expand);
+            }
         }
 
         /// <summary>
@@ -90,13 +110,19 @@ namespace microsoft_graph_sdk
             string headerName,
             string headerValue)
         {
-            return await client.Education
-                .Classes[classId]
-                .Assignments[assignmentId]
-                .Submissions[submissionId]
-                .Request()
-                .Header(headerName, headerValue)
-                .GetAsync();
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .Submissions[submissionId]
+                    .GetAsync(requestConfiguration =>
+                        requestConfiguration.Headers.Add(headerName, headerValue));
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetSubmission_WithHeader call: {ex.Message}", classId, assignmentId, submissionId, headerName, headerValue);
+            }
         }
 
         /// <summary>
@@ -113,13 +139,19 @@ namespace microsoft_graph_sdk
             string assignmentId,
             string submissionId)
         {
-            return await client.Education
-                .Classes[classId]
-                .Assignments[assignmentId]
-                .Submissions[submissionId]
-                .Submit()
-                .Request()
-                .PostAsync();
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .Submissions[submissionId]
+                    .Submit
+                    .PostAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"Submit call: {ex.Message}", classId, assignmentId, submissionId);
+            }
         }
 
         /// <summary>
@@ -136,13 +168,19 @@ namespace microsoft_graph_sdk
             string assignmentId,
             string submissionId)
         {
-            return await client.Education
-                .Classes[classId]
-                .Assignments[assignmentId]
-                .Submissions[submissionId]
-                .Reassign()
-                .Request()
-                .PostAsync();
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .Submissions[submissionId]
+                    .Reassign
+                    .PostAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"Reassign call: {ex.Message}", classId, assignmentId, submissionId);
+            }
         }
     }
 }

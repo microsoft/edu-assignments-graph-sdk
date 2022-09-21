@@ -3,7 +3,7 @@
 
 using Microsoft.Graph.Beta;
 
-namespace microsoft_graph_sdk
+namespace MicrosoftGraphSDK
 {
     public class User
     {
@@ -15,8 +15,15 @@ namespace microsoft_graph_sdk
         public static async Task<Microsoft.Graph.Beta.Models.User> getUserInfo(
             GraphServiceClient client)
         {
-            return await client.Me
-                .GetAsync();
+            try
+            {
+                return await client.Me
+                    .GetAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"getUserInfo call: {ex.Message}");
+            }
         }
     }
 }

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "microsoft-graph-sdk", "microsoft-graph-sdk\microsoft-graph-sdk.csproj", "{69B612F8-6469-4DEE-AA11-8C3CA9AE4CA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicrosoftGraphSDK", "MicrosoftGraphSDK\MicrosoftGraphSDK.csproj", "{69B612F8-6469-4DEE-AA11-8C3CA9AE4CA8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicrosoftEduGraphSamples", "microsoft-graph-samples\MicrosoftEduGraphSamples.csproj", "{A90E956C-44B0-4297-84ED-C43B46C5EDAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicrosoftEduGraphSamples", "MicrosoftEduGraphSamples\MicrosoftEduGraphSamples.csproj", "{A90E956C-44B0-4297-84ED-C43B46C5EDAC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "microsoft-graph-sdk-beta", "microsoft-graph-sdk-beta\microsoft-graph-sdk-beta.csproj", "{30A0A853-4F66-4EC0-BB92-032FAE5D6DD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicrosoftGraphSDKBeta", "MicrosoftGraphSDKBeta\MicrosoftGraphSDKBeta.csproj", "{30A0A853-4F66-4EC0-BB92-032FAE5D6DD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
