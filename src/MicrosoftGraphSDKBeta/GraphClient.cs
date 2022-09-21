@@ -50,7 +50,8 @@ namespace MicrosoftGraphSDK
         {
             try
             {
-                var scopes = new[] { "https://graph.microsoft.com/.default" };
+                const string scope = "https://graph.microsoft.com/.default";
+                var scopes = new[] { scope };
 
                 var options = new TokenCredentialOptions
                 {
