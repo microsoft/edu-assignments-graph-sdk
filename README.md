@@ -1,6 +1,6 @@
 # Assignments Code Samples using Microsoft Graph SDK
 
-This repo is a set of code samples that guide you to easily and quickly integrate the [Microsoft Graph SDK](/graph/sdks/sdks-overview) into your applications. In order to start building third party solutions for Microsoft EDU assignments service.
+This repo is a set of code samples that will guide you to easily and quickly integrate the [Microsoft Graph SDK](/graph/sdks/sdks-overview) into your applications in order to start building third party solutions for Microsoft EDU assignments service.
 
 These samples also demostrate assignments service functionality exposed through the Microsoft Graph SDK, such as work with classes, users, [assignments, submissions](/graph/assignments-submissions-states-transition), resources and work with any of the EDU APIs. Using Microsoft Graph SDK we can perform any operation supported by graph SDK, not just limited to assignments.
 
@@ -46,7 +46,7 @@ These samples also demostrate assignments service functionality exposed through 
 
 ### MicrosoftGraphSDK
 
-It is a set of C# class libraries, those classes contain the actual calls to the Microsoft Graph SDK (v1.0) and each class contains only methos related to an specific entity; for instance User, GraphClient, Assignment, Submission and so on.
+It is a set of C# class libraries, those classes contain the actual calls to the Microsoft Graph SDK (v1.0) and each class contains only methods related to an specific entity; for instance User, GraphClient, Assignment, Submission and so on.
 
 All the methods added in those classes can be used into your application.
 
