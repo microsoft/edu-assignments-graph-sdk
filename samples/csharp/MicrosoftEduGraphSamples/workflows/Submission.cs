@@ -33,16 +33,16 @@ namespace MicrosoftEduGraphSamples.workflows
                 var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Teacher creates a new assignment
-                var assig = MicrosoftGraphSDK.Assignment.Create(graphClient, _config["classId"]);
-                assignmentId = assig.Result.Id;
+                var assignment = MicrosoftGraphSDK.Assignment.Create(graphClient, _config["classId"]);
+                assignmentId = assignment.Result.Id;
 
                 // Teacher publishes the assignment to make it appears in the student's list
-                assig = MicrosoftGraphSDK.Assignment.Publish(graphClient, _config["classId"], assignmentId);
+                assignment = MicrosoftGraphSDK.Assignment.Publish(graphClient, _config["classId"], assignmentId);
 
                 // Verify assignment state, publish is completed until state equals "Assigned"
-                while (assig.Result.Status.ToString() != "Assigned" && retries <= MAX_RETRIES)
+                while (assignment.Result.Status.ToString() != "Assigned" && retries <= MAX_RETRIES)
                 {
-                    assig = MicrosoftGraphSDK.Assignment.GetAssignment(graphClient, _config["classId"], assignmentId);
+                    assignment = MicrosoftGraphSDK.Assignment.GetAssignment(graphClient, _config["classId"], assignmentId);
 
                     Thread.Sleep(2000); // If you are calling this code pattern in Backend agent of your service, then you want to retry the work after some time. The sleep here is just an example to emulate the delay.
                     retries++;
@@ -54,16 +54,15 @@ namespace MicrosoftEduGraphSamples.workflows
                 // Get student id
                 var student = MicrosoftGraphSDK.User.getUserInfo(graphClient);
 
-                // Find the student submission within the assignment
+                // Get the student submission
                 var submissions = MicrosoftGraphSDK.Submission.GetSubmissions(graphClient, _config["classId"], assignmentId);
-                foreach (var sub in submissions.Result) // use submissions.Result.Value for beta
+                if (submissions.Result.Count > 0)
+                { // use submissions.Result.Value for beta
+                    submissionId = submissions.Result[0].Id;
+                }
+                else
                 {
-                    // Break the loop when student submission is found
-                    if (student.Result.Id == sub.SubmittedBy.User.Id)
-                    {
-                        submissionId = sub.Id;
-                        break;
-                    }
+                    throw new Exception($"Student {_config["studentAccount"]} does not belong to the class {_config["classId"]}");
                 }
 
                 // Student submits his submission

@@ -138,7 +138,7 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// Creates a new assignmen
+        /// Creates a new assignment
         /// </summary>
         /// <param name="client"></param>
         /// <param name="classId"></param>
