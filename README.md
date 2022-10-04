@@ -36,7 +36,7 @@ These samples also demostrate assignments service functionality exposed through 
     * __password__: Your account's password.
 
 > [!IMPORTANT]
-> __Be sure not to commit any references that contain secrets into source control, as secrets should not be made public__.
+> __Do not commit any references that contain secrets into source control, as secrets should not be made public__.
 
 1. Right-click on the solution in the Solution Explorer and choose __Restore Nuget Packages__.
 
