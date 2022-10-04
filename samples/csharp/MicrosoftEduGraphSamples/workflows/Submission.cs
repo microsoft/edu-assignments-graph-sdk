@@ -51,9 +51,6 @@ namespace MicrosoftEduGraphSamples.workflows
                 // Change to student account
                 graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["password"]);
 
-                // Get student id
-                var student = MicrosoftGraphSDK.User.getUserInfo(graphClient);
-
                 // Get the student submission
                 var submissions = MicrosoftGraphSDK.Submission.GetSubmissions(graphClient, _config["classId"], assignmentId);
                 if (submissions.Result.Count > 0)
