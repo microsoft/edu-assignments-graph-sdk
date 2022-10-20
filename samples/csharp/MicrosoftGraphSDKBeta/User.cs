@@ -15,7 +15,7 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client"></param>
         /// <returns>Microsoft.Graph.Beta.Models.User</returns>
-        public static async Task<Microsoft.Graph.Beta.Models.User> getUserInfo(
+        public static async Task<Microsoft.Graph.Beta.Models.User> GetUserInfo(
             GraphServiceClient client)
         {
             try
@@ -25,7 +25,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"getUserInfo call: {ex.Message}");
+                throw new GraphException($"GetUserInfo call: {ex.Message}");
             }
         }
     }

@@ -16,7 +16,7 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client"></param>
         /// <returns>Microsoft.Graph.User</returns>
-        public static async Task<Microsoft.Graph.User> getUserInfo(
+        public static async Task<Microsoft.Graph.User> GetUserInfo(
             GraphServiceClient client)
         {
             try
@@ -27,7 +27,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"getUserInfo call: {ex.Message}");
+                throw new GraphException($"GetUserInfo call: {ex.Message}");
             }
         }
     }

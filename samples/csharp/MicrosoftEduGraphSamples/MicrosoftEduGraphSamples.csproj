@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>microsoft_graph_samples</RootNamespace>
+    <RootNamespace>MicrosoftEduGraphSamples</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MicrosoftGraphSDK\MicrosoftGraphSDK.csproj" />
+    <Reference Include="MicrosoftGraphSDK">
+      <HintPath>..\MicrosoftGraphSDK\bin\Debug\net6.0\MicrosoftGraphSDK.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

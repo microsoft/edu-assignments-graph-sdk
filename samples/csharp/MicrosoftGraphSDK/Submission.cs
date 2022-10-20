@@ -67,36 +67,6 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// List all the submissions associated with an assignment, can specify expand options
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="classId"></param>
-        /// <param name="assignmentId"></param>
-        /// <param name="expand"></param>
-        /// <returns>IEducationAssignmentSubmissionsCollectionPage</returns>
-        public static async Task<IEducationAssignmentSubmissionsCollectionPage> GetSubmissions_Expand(
-            GraphServiceClient client,
-            string classId,
-            string assignmentId,
-            string expand)
-        {
-            try
-            {
-                return await client.Education
-                    .Classes[classId]
-                    .Assignments[assignmentId]
-                    .Submissions
-                    .Request()
-                    .Expand(expand)
-                    .GetAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new GraphException($"GetSubmissions_Expand call: {ex.Message}", classId, assignmentId, expand);
-            }
-        }
-
-        /// <summary>
         /// Retrieves a particular submission, can specify a header value
         /// </summary>
         /// <param name="client"></param>

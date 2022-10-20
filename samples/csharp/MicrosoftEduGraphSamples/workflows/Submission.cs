@@ -3,7 +3,7 @@
 
 using Microsoft.Extensions.Configuration;
 
-namespace MicrosoftEduGraphSamples.workflows
+namespace MicrosoftEduGraphSamples.Workflows
 {
     /// <summary>
     /// Contains all the workflows related to Submissions

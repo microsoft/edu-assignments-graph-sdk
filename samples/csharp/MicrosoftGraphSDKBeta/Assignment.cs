@@ -37,103 +37,6 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// Get the properties and relationships of an assignment and pass a header value
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="classId"></param>
-        /// <param name="assignmentId"></param>
-        /// <param name="headerName"></param>
-        /// <param name="headerValue"></param>
-        /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment> GetAssignment_WithHeader(
-            GraphServiceClient client,
-            string classId,
-            string assignmentId,
-            string headerName,
-            string headerValue)
-        {
-            try
-            {
-                return await client.Education
-                    .Classes[classId]
-                    .Assignments[assignmentId]
-                    .GetAsync(requestConfiguration =>
-                        requestConfiguration.Headers.Add(headerName, headerValue));
-            }
-            catch (Exception ex)
-            {
-                throw new GraphException($"GetAssignment_WithHeader call: {ex.Message}", classId, assignmentId, headerName, headerValue);
-            }
-        }
-
-        /// <summary>
-        /// Retrieve a list of assignment objects within a class
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="classId"></param>
-        /// <returns>EducationAssignmentCollectionResponse</returns>
-        public static async Task<EducationAssignmentCollectionResponse> GetAssignments(
-            GraphServiceClient client,
-            string classId)
-        {
-            try
-            {
-                return await client.Education
-                    .Classes[classId]
-                    .Assignments
-                    .GetAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new GraphException($"GetAssignments call: {ex.Message}", classId);
-            }
-        }
-
-        /// <summary>
-        /// Retrieve a list of assignment objects from current user
-        /// </summary>
-        /// <param name="client"></param>
-        /// <returns>EducationAssignmentCollectionResponse</returns>
-        public static async Task<EducationAssignmentCollectionResponse> GetMeAssignments(
-            GraphServiceClient client)
-        {
-            try
-            {
-                return await client.Education
-                    .Me
-                    .Assignments
-                    .GetAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new GraphException($"GetMeAssignments call: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Retrieve a list of assignment objects from current user
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="userId"></param>
-        /// <returns>EducationAssignmentCollectionResponse</returns>
-        public static async Task<EducationAssignmentCollectionResponse> GetUserAssignments(
-            GraphServiceClient client,
-            string userId)
-        {
-            try
-            {
-                return await client.Education
-                    .Users[userId]
-                    .Assignments
-                    .GetAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new GraphException($"GetUserAssignments call: {ex.Message}", userId);
-            }
-        }
-
-        /// <summary>
         /// Creates a new assignment
         /// </summary>
         /// <param name="client"></param>
@@ -203,31 +106,6 @@ namespace MicrosoftGraphSDK
             catch (Exception ex)
             {
                 throw new GraphException($"Publish call: {ex.Message}", classId, assignmentId);
-            }
-        }
-
-        /// <summary>
-        /// Deletes an existing assignment
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="classId"></param>
-        /// <param name="assignmentId"></param>
-        /// <returns></returns>
-        public static async Task Delete(
-            GraphServiceClient client,
-            string classId,
-            string assignmentId)
-        {
-            try
-            {
-                await client.Education
-                    .Classes[classId]
-                    .Assignments[assignmentId]
-                    .DeleteAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new GraphException($"Delete call: {ex.Message}", classId, assignmentId);
             }
         }
     }

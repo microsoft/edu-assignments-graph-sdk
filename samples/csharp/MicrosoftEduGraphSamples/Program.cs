@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.Extensions.Configuration;
-using MicrosoftEduGraphSamples.workflows;
+using MicrosoftEduGraphSamples.Workflows;
 
 // See https://aka.ms/new-console-template for more information
 
