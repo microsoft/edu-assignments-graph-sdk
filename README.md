@@ -1,14 +1,106 @@
-# Project
+# Assignments Code Samples using Microsoft Graph SDK
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+This repo is a set of code samples that will guide you to easily and quickly integrate the [Microsoft Graph SDK](/graph/sdks/sdks-overview) into your applications in order to start building third party solutions for Microsoft EDU assignments service.
 
-As the maintainer of this project, please make a few updates:
+These samples also demostrate assignments service functionality exposed through the Microsoft Graph SDK, such as work with classes, users, [assignments, submissions](/graph/assignments-submissions-states-transition), resources and work with any of the EDU APIs. Using Microsoft Graph SDK we can perform any operation supported by graph SDK, not just limited to assignments.
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+## Prerequisites
+
+* An EDU tenant for Azure Active Directoy authentication. Follow [these instructions](/graph/msgraph-onboarding-overview) to get set up. You will need some info from the tenant created when filling the `appsettings.json` file in the samples.
+* [Visual Studio 2022](https://visualstudio.microsoft.com/downloads) or [Visual Studio Code](https://code.visualstudio.com/download).
+
+## Usage
+
+1. Open __microsoft-graph-sdk.sln__ in Visual Studio.
+
+1. Locate the file `appsettings.json` under __MicrosoftEduGraphSamples__ project in Solution Explorer. Replace the contents of that file supplying your values as appropriate:
+
+    ```json
+    {
+        "tenantId": "YOUR_TENANT_ID",
+        "appId": "YOUR_APPLICATION_ID",
+        "secret": "YOUR_SECRET",
+        "classId": "YOUR_CLASS_ID",
+        "teacherAccount": "YOUR_TEACHER_ACCOUNT",
+        "studentAccount": "YOUR_STUDENT_ACCOUNT",
+        "password": "YOUR_PASSWORD"
+    }
+    ```
+
+    * __tenantId__: Look for it in [Azure portal](https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-how-to-find-tenant).
+    * __appId__: [Create a new app or take any existing](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in your Azure portal.
+    * __secret__: Look for it in your app registration in Azure portal.
+    * __classId__: Create a new class team or [take it from an existing one](https://support.microsoft.com/en-us/topic/get-started-in-your-class-team-6b5fd708-35b9-4caf-b66e-d8f2468e4fd5).
+    * __teacherAccount__: Any class owner account
+    * __studentAccount__: Any member from the class.
+    * __password__: Your account's password.
+
+> [!IMPORTANT]
+> __Do not commit any references that contain secrets into source control, as secrets should not be made public__.
+
+1. Right-click on the solution in the Solution Explorer and choose __Restore Nuget Packages__.
+
+1. Run __Debug > Start Debugging__ or just press __F5__.
+
+## Project structure
+
+### MicrosoftGraphSDK
+
+It is a set of C# class libraries, those classes contain the actual calls to the Microsoft Graph SDK (v1.0) and each class contains only methods related to an specific entity; for instance User, GraphClient, Assignment, Submission and so on.
+
+All the methods added in those classes can be used into your application.
+
+This project works with these nuget packages:
+
+* Azure.Identity (1.6.1)
+* Microsoft.Graph (latest 4.XX.X)
+
+### MicrosoftGraphSDKBeta
+
+The same set of C# class libraries, but the calls are done to the Microsoft Graph SDK (beta). It is a separate project due to packages used are different and involve code changes.
+
+This project works with these nuget packages:
+
+* Azure.Identity (1.6.1)
+* Microsoft.Graph.Beta (latest 5.XX.X-preview)
+* Microsoft.Identity.Web.MicrosoftGraphBeta (latest 1.XX.X)
+
+### MicrosoftEduGraphSamples
+
+This project provides Microsoft EDU code samples on how to use the methods from the class library. All the samples are developed in a __Workflow__ structure to easily guide you and show you how to catch the responses and use the results.
+
+Use the `Program.cs` file to test any of the current workflows.
+
+1. Add a project reference according to the wanted version.
+
+    * Right click on the __MicrosoftEduGraphSamples__ project.
+    * Add / Project Reference ...
+    * Check the version required and make sure the other is unchecked.
+    ![Project references](../edu-assignments-graph-sdk/images/project-references.png)
+
+1. Create an instance of the class you want to test.
+
+```csharp
+    Submission submission = new Submission(config);
+```
+
+1. Call the desired workflow method.
+
+```csharp
+    submission.ReassignWorkflow();
+```
+
+## [Code samples](https://docs.microsoft.com/microsoftteams/platform/tabs/what-are-tabs)
+|    | Sample Name        | Description                                                                      | C#    |
+|:--:|:-------------------|:----------------------------------------------------------------------------------------------|:--------|
+|1| Reassign submission   | Sample showing how the teacher creates an assignment and then publish it; the student submit his work and then teacher reassign it with feedback.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/microsoftedugraphsamples/workflows/Submission.cs)|
+
+
+## Need help?
+
+* For reference documentation visit the [Microsoft Graph SDK reference](/graph/sdks/sdks-overview).
+* For other documentation, go to [Working with education APIs in Microsoft Graph](/graph/api/resources/education-overview).
+* File an issue via [Github Issues](https://github.com/microsoft/edu-assignments-graph-sdk/issues/new).
 
 ## Contributing
 
