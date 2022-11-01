@@ -15,9 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="MicrosoftGraphSDK">
-      <HintPath>..\MicrosoftGraphSDK\bin\Debug\net6.0\MicrosoftGraphSDK.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\MicrosoftGraphSDK\MicrosoftGraphSDK.csproj" />
   </ItemGroup>
 
   <ItemGroup>
