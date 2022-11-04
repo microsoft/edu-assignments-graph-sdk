@@ -37,6 +37,30 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
+        /// Get all the assignments from the class
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="classId"></param>
+        /// <returns>EducationAssignmentCollectionResponse</returns>
+        public static async Task<EducationAssignmentCollectionResponse> GetAssignments(
+            GraphServiceClient client,
+            string classId
+            )
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments
+                    .GetAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetAssignments call: {ex.Message}", classId);
+            }
+        }
+
+        /// <summary>
         /// Creates a new assignment
         /// </summary>
         /// <param name="client"></param>

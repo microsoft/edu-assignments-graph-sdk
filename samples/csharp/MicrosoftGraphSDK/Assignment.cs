@@ -41,7 +41,7 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client"></param>
         /// <param name="classId"></param>
-        /// <returns>EducationAssignment</returns>
+        /// <returns>IEducationClassAssignmentsCollectionPage</returns>
         public static async Task<IEducationClassAssignmentsCollectionPage> GetAssignments(
             GraphServiceClient client,
             string classId

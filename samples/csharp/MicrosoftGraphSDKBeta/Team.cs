@@ -2,26 +2,19 @@
 // Licensed under the MIT License.
 
 using Microsoft.Graph;
+using Microsoft.Graph.Beta;
+using Microsoft.Graph.Beta.Models;
 
 namespace MicrosoftGraphSDK
 {
-    /// <summary>
-    /// Graph SDK endpoints for teams
-    /// </summary>
-    public static class Team
+        public static class Team
     {
-        /// <summary>
-        /// Returns teams information
-        /// </summary>
-        /// <param name="client"></param>
-        /// <returns>IUserJoinedTeamsCollectionPage</returns>
-        public static async Task<IUserJoinedTeamsCollectionPage> GetJoinedTeams(
+        public static async Task<TeamCollectionResponse> GetJoinedTeams(
             this GraphServiceClient client)
         {
             try
             {
                 return await client.Me.JoinedTeams
-                 .Request()
                  .GetAsync();
             }
             catch (Exception ex)

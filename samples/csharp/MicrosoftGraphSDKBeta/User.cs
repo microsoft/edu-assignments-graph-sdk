@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 using Microsoft.Graph.Beta;
+using Microsoft.Graph.Beta.Models;
+using MicrosoftGraphSDK;
 
 namespace MicrosoftGraphSDK
 {
@@ -26,6 +28,23 @@ namespace MicrosoftGraphSDK
             catch (Exception ex)
             {
                 throw new GraphException($"GetUserInfo call: {ex.Message}");
+            }
+        }
+
+        // <summary>
+        /// Lists assignments for the user
+        /// </summary>
+        public static async Task<EducationAssignmentCollectionResponse> GetMeAssignments(
+            GraphServiceClient client)
+        {
+            try
+            {
+                return await client.Education.Me.Assignments
+                    .GetAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetMeAssignments call: {ex.Message}");
             }
         }
     }

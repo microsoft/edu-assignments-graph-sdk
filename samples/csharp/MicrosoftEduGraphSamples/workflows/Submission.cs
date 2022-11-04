@@ -12,7 +12,6 @@ namespace MicrosoftEduGraphSamples.Workflows
     {
         private const int MAX_RETRIES = 10;
         private readonly IConfiguration _config;
-
         public Submission(IConfiguration configuration)
         {
             this._config = configuration;

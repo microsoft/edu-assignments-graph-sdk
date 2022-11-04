@@ -3,6 +3,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
+using MicrosoftGraphSDK;
 
 namespace MicrosoftEduGraphSamples.Workflows
 {
@@ -11,7 +12,6 @@ namespace MicrosoftEduGraphSamples.Workflows
     /// </summary>
     internal class Assignment
     {
-
         private readonly IConfiguration _config;
 
         public Assignment(IConfiguration configuration)
@@ -31,39 +31,45 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 //Call to get user classes
-                var JoinedTeams = MicrosoftGraphSDK.Team.GetJoinedTeams(graphClient);
+                var joinedTeams = graphClient.GetJoinedTeams();
 
                 //Check to iterate over all classes
-                foreach(var team in JoinedTeams.Result) 
+                foreach(var team in joinedTeams.Result) 
                 {
                     // Verify if isArchived property = false
-                    if (team.IsArchived==false) 
-
+                    if (team.IsArchived == false)
                     {
-
+                        // Print the current class ID and name for the assignments
                         Console.WriteLine($"Class {team.Id} Display name: {team.DisplayName}");
 
                         // Call to Get Assignments using the current classId
-                        var Assignments = MicrosoftGraphSDK.Assignment.GetAssignments(graphClient, team.Id);
-
+                        var assignments = MicrosoftGraphSDK.Assignment.GetAssignments(graphClient, team.Id);
 
                        // Iterate over all the assignments from that class
-                        foreach (var assignment in Assignments.Result)
+                        foreach (var assignment in assignments.Result)
                         {
-                            // Call to add the remaining not archived assignments into a collection 
+                            // Call to add the remaining not archived assignments into a collection
                             assignmentsFromNonArchivedClasses.Add(assignment);
 
                             // Print all the assignments from no archived classes.
                             Console.WriteLine($"Assignment {assignment.Id} added to collection. Status: {assignment.Status} Display name: {assignment.DisplayName}");
-
-                            
                         }
+                        Console.WriteLine($"Getting assignments from MeAssignments Endpoint");
 
+                        //Call to Me assignments endpoint
+                        var meAssignments = MicrosoftGraphSDK.User.GetMeAssignments(graphClient);
+                        
+                        //Iterate over all the assignments
+                        foreach (var assignment in meAssignments.Result)
+                        {
+                            //Add assignment to the list
+                            assignmentsFromNonArchivedClasses.Add(assignment);
+
+                            // Print all the assignments from meAssignments.
+                            Console.WriteLine($"Assignment {assignment.Id} added to collection. Status: {assignment.Status} Display name: {assignment.DisplayName}");
+                        }
                     }
-
-                    
                 }
-
             }
             catch(Exception ex)
             {

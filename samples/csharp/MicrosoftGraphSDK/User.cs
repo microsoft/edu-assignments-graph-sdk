@@ -30,5 +30,23 @@ namespace MicrosoftGraphSDK
                 throw new GraphException($"GetUserInfo call: {ex.Message}");
             }
         }
+
+        // <summary>
+        /// Lists assignments for the user
+        /// </summary>
+        public static async Task<IEducationUserAssignmentsCollectionPage> GetMeAssignments(
+            GraphServiceClient client)
+        {
+            try
+            {
+                return await client.Education.Me.Assignments
+                    .Request()
+                    .GetAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetMeAssignments call: {ex.Message}");
+            }
+        }
     }
 }
