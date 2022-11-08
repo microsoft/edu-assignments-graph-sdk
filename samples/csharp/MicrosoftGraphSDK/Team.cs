@@ -13,9 +13,9 @@ namespace MicrosoftGraphSDK
         /// <summary>
         /// Returns teams information
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="client">Microsoft Graph service client</param>
         /// <returns>IUserJoinedTeamsCollectionPage</returns>
-        public static async Task<IUserJoinedTeamsCollectionPage> GetJoinedTeams(
+        public static async Task<IUserJoinedTeamsCollectionPage> GetJoinedTeamsAsync(
             this GraphServiceClient client)
         {
             try
@@ -26,7 +26,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetJoinedTeams call: {ex.Message}");
+                throw new GraphException($"GetJoinedTeamsAsync call: {ex.Message}");
             }
         }
     }

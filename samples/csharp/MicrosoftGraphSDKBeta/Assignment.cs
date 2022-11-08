@@ -14,11 +14,11 @@ namespace MicrosoftGraphSDK
         /// <summary>
         /// Get the properties and relationships of an assignment
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId"></param>
         /// <param name="assignmentId"></param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment> GetAssignment(
+        public static async Task<EducationAssignment> GetAssignmentAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId)
@@ -32,17 +32,17 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetAssignment call: {ex.Message}", classId, assignmentId);
+                throw new GraphException($"GetAssignmentAsync call: {ex.Message}", classId, assignmentId);
             }
         }
 
         /// <summary>
         /// Get all the assignments from the class
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId"></param>
         /// <returns>EducationAssignmentCollectionResponse</returns>
-        public static async Task<EducationAssignmentCollectionResponse> GetAssignments(
+        public static async Task<EducationAssignmentCollectionResponse> GetAssignmentsAsync(
             GraphServiceClient client,
             string classId
             )
@@ -56,17 +56,17 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetAssignments call: {ex.Message}", classId);
+                throw new GraphException($"GetAssignmentsAsync call: {ex.Message}", classId);
             }
         }
 
         /// <summary>
         /// Creates a new assignment
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId"></param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment> Create(
+        public static async Task<EducationAssignment> CreateAsync(
             GraphServiceClient client,
             string classId)
         {
@@ -102,7 +102,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"Create call: {ex.Message}", classId);
+                throw new GraphException($"CreateAsync call: {ex.Message}", classId);
             }
 
         }
@@ -110,11 +110,11 @@ namespace MicrosoftGraphSDK
         /// <summary>
         /// Publishes an assignment, changes the state of an educationAssignment from its original draft status to the published status
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId"></param>
         /// <param name="assignmentId"></param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment> Publish(
+        public static async Task<EducationAssignment> PublishAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId)
@@ -129,7 +129,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"Publish call: {ex.Message}", classId, assignmentId);
+                throw new GraphException($"PublishAsync call: {ex.Message}", classId, assignmentId);
             }
         }
     }

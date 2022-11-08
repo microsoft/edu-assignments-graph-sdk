@@ -14,9 +14,9 @@ namespace MicrosoftGraphSDK
         /// <summary>
         /// Returns current user information
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="client">Microsoft Graph service client</param>
         /// <returns>Microsoft.Graph.User</returns>
-        public static async Task<Microsoft.Graph.User> GetUserInfo(
+        public static async Task<Microsoft.Graph.User> GetUserInfoAsync(
             GraphServiceClient client)
         {
             try
@@ -27,14 +27,15 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetUserInfo call: {ex.Message}");
+                throw new GraphException($"GetUserInfoAsync call: {ex.Message}");
             }
         }
 
         // <summary>
         /// Lists assignments for the user
         /// </summary>
-        public static async Task<IEducationUserAssignmentsCollectionPage> GetMeAssignments(
+        /// <param name="client">Microsoft Graph service client</param>
+        public static async Task<IEducationUserAssignmentsCollectionPage> GetMeAssignmentsAsync(
             GraphServiceClient client)
         {
             try
@@ -45,7 +46,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetMeAssignments call: {ex.Message}");
+                throw new GraphException($"GetMeAssignmentsAsync call: {ex.Message}");
             }
         }
     }

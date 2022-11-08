@@ -3,7 +3,6 @@
 
 using Microsoft.Graph.Beta;
 using Microsoft.Graph.Beta.Models;
-using MicrosoftGraphSDK;
 
 namespace MicrosoftGraphSDK
 {
@@ -15,9 +14,9 @@ namespace MicrosoftGraphSDK
         /// <summary>
         /// Returns current user information
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="client">Microsoft Graph service client</param>
         /// <returns>Microsoft.Graph.Beta.Models.User</returns>
-        public static async Task<Microsoft.Graph.Beta.Models.User> GetUserInfo(
+        public static async Task<Microsoft.Graph.Beta.Models.User> GetUserInfoAsync(
             GraphServiceClient client)
         {
             try
@@ -27,14 +26,16 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetUserInfo call: {ex.Message}");
+                throw new GraphException($"GetUserInfoAsync call: {ex.Message}");
             }
         }
 
         // <summary>
         /// Lists assignments for the user
         /// </summary>
-        public static async Task<EducationAssignmentCollectionResponse> GetMeAssignments(
+        /// <param name="client">Microsoft Graph service client</param>
+        /// /// <returns>EducationAssignmentCollectionResponse</returns>
+        public static async Task<EducationAssignmentCollectionResponse> GetMeAssignmentsAsync(
             GraphServiceClient client)
         {
             try
@@ -44,7 +45,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetMeAssignments call: {ex.Message}");
+                throw new GraphException($"GetMeAssignmentsAsync call: {ex.Message}");
             }
         }
     }

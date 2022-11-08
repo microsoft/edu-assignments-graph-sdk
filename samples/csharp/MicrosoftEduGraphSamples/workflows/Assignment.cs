@@ -8,13 +8,13 @@ using MicrosoftGraphSDK;
 namespace MicrosoftEduGraphSamples.Workflows
 {
     /// <summary>
-    /// Contains all the workflows related to Assignment
+    /// Contains all the workflows related to Assignments
     /// </summary>
-    internal class Assignment
+    internal class AssignmentWorkflow
     {
         private readonly IConfiguration _config;
 
-        public Assignment(IConfiguration configuration)
+        public AssignmentWorkflow(IConfiguration configuration)
         {
             this._config = configuration;
         }
@@ -31,7 +31,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 //Call to get user classes
-                var joinedTeams = graphClient.GetJoinedTeams();
+                var joinedTeams = graphClient.GetJoinedTeamsAsync();
 
                 //Check to iterate over all classes
                 foreach(var team in joinedTeams.Result) 
@@ -43,7 +43,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                         Console.WriteLine($"Class {team.Id} Display name: {team.DisplayName}");
 
                         // Call to Get Assignments using the current classId
-                        var assignments = MicrosoftGraphSDK.Assignment.GetAssignments(graphClient, team.Id);
+                        var assignments = MicrosoftGraphSDK.Assignment.GetAssignmentsAsync(graphClient, team.Id);
 
                        // Iterate over all the assignments from that class
                         foreach (var assignment in assignments.Result)
@@ -57,7 +57,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                         Console.WriteLine($"Getting assignments from MeAssignments Endpoint");
 
                         //Call to Me assignments endpoint
-                        var meAssignments = MicrosoftGraphSDK.User.GetMeAssignments(graphClient);
+                        var meAssignments = MicrosoftGraphSDK.User.GetMeAssignmentsAsync(graphClient);
                         
                         //Iterate over all the assignments
                         foreach (var assignment in meAssignments.Result)

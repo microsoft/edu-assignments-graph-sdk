@@ -7,9 +7,17 @@ using Microsoft.Graph.Beta.Models;
 
 namespace MicrosoftGraphSDK
 {
-        public static class Team
+    /// <summary>
+    /// Graph SDK endpoints for teams
+    /// </summary>
+    public static class Team
     {
-        public static async Task<TeamCollectionResponse> GetJoinedTeams(
+        /// <summary>
+        /// Returns teams information
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <returns>TeamCollectionResponse</returns>
+        public static async Task<TeamCollectionResponse> GetJoinedTeamsAsync(
             this GraphServiceClient client)
         {
             try
@@ -19,7 +27,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetJoinedTeams call: {ex.Message}");
+                throw new GraphException($"GetJoinedTeamsAsync call: {ex.Message}");
             }
         }
     }
