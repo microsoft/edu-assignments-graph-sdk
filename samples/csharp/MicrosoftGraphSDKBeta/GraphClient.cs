@@ -14,10 +14,10 @@ namespace MicrosoftGraphSDK
         /// <summary>
         /// Creates a Graph Service Client using Delegated permissions
         /// </summary>
-        /// <param name="tenantId"></param>
-        /// <param name="applicationId"></param>
-        /// <param name="userName"></param>
-        /// <param name="password"></param>
+        /// <param name="tenantId">The Azure Directory tenant identifier</param>
+        /// <param name="applicationId">Identifier for the application</param>
+        /// <param name="userName">Name for the user</param>
+        /// <param name="password">Password for the user</param>
         /// <returns>GraphServiceClient</returns>
         public static GraphServiceClient GetDelegateClient(string tenantId, string applicationId, string userName, string password)
         {
@@ -45,9 +45,9 @@ namespace MicrosoftGraphSDK
         /// <summary>
         /// Creates a Graph Service Client using Application permissions
         /// </summary>
-        /// <param name="tenantId"></param>
-        /// <param name="applicationId"></param>
-        /// <param name="secret"></param>
+        /// <param name="tenantId">The Azure Directory tenant identifier</param>
+        /// <param name="applicationId">Identifier for the application</param>
+        /// <param name="secret">Application secret</param>
         /// <returns>GraphServiceClient</returns>
         public static GraphServiceClient GetApplicationClient(string tenantId, string applicationId, string secret)
         {

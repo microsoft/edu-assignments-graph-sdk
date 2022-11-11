@@ -8,11 +8,11 @@ namespace MicrosoftEduGraphSamples.Workflows
     /// <summary>
     /// Contains all the workflows related to Submissions
     /// </summary>
-    internal class Submission
+    internal class SubmissionWorkflow
     {
         private const int MAX_RETRIES = 10;
         private readonly IConfiguration _config;
-        public Submission(IConfiguration configuration)
+        public SubmissionWorkflow(IConfiguration configuration)
         {
             this._config = configuration;
         }

@@ -14,8 +14,8 @@ namespace MicrosoftGraphSDK
         /// Get the properties and relationships of an assignment
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
-        /// <param name="classId"></param>
-        /// <param name="assignmentId"></param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment in the class</param>
         /// <returns>EducationAssignment</returns>
         public static async Task<EducationAssignment> GetAssignmentAsync(
             GraphServiceClient client,
@@ -40,7 +40,7 @@ namespace MicrosoftGraphSDK
         /// Get all the assignments from the class
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
-        /// <param name="classId"></param>
+        /// <param name="classId">User class id</param>
         /// <returns>IEducationClassAssignmentsCollectionPage</returns>
         public static async Task<IEducationClassAssignmentsCollectionPage> GetAssignmentsAsync(
             GraphServiceClient client,
@@ -65,7 +65,7 @@ namespace MicrosoftGraphSDK
         /// Creates a new assignment
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
-        /// <param name="classId"></param>
+        /// <param name="classId">User class id</param>
         /// <returns>EducationAssignment</returns>
         public static async Task<EducationAssignment> CreateAsync(
             GraphServiceClient client,
@@ -111,8 +111,8 @@ namespace MicrosoftGraphSDK
         /// Publishes an assignment, changes the state of an educationAssignment from its original draft status to the published status
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
-        /// <param name="classId"></param>
-        /// <param name="assignmentId"></param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment in the class</param>
         /// <returns>EducationAssignment</returns>
         public static async Task<EducationAssignment> PublishAsync(
             GraphServiceClient client,
