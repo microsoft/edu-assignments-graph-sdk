@@ -44,8 +44,7 @@ namespace MicrosoftGraphSDK
         /// <returns>EducationAssignmentCollectionResponse</returns>
         public static async Task<EducationAssignmentCollectionResponse> GetAssignmentsAsync(
             GraphServiceClient client,
-            string classId
-            )
+            string classId)
         {
             try
             {

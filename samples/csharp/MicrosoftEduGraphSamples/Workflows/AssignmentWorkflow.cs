@@ -18,10 +18,11 @@ namespace MicrosoftEduGraphSamples.Workflows
         {
             this._config = configuration;
         }
+
         /// <summary>
         /// Workflow to get assignments from all the classes which are not archived
         /// </summary>
-        public void AssignmentsFromNotArchivedClasses ()
+        public void GetNotArchivedClassesAssignments()
         {
             try
             {

@@ -35,6 +35,7 @@ namespace MicrosoftGraphSDK
         /// Lists assignments for the user
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
+        /// <returns>IEducationUserAssignmentsCollectionPage</returns>
         public static async Task<IEducationUserAssignmentsCollectionPage> GetMeAssignmentsAsync(
             GraphServiceClient client)
         {
