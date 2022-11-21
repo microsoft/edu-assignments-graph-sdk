@@ -21,8 +21,8 @@ namespace MicrosoftGraphSDK
             try
             {
                 return await client.Me.JoinedTeams
-                 .Request()
-                 .GetAsync();
+                    .Request()
+                    .GetAsync();
             }
             catch (Exception ex)
             {
