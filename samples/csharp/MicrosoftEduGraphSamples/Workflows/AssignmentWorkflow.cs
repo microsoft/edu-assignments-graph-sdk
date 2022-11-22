@@ -22,7 +22,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         /// <summary>
         /// Workflow to get assignments from all the classes which are not archived
         /// </summary>
-        public void GetNotArchivedClassesAssignments()
+        public async void GetNotArchivedClassesAssignments()
         {
             try
             {
@@ -32,19 +32,19 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 //Call to get user classes
-                var joinedTeams = graphClient.GetJoinedTeamsAsync();
+                var joinedTeams = await graphClient.GetJoinedTeamsAsync();
 
                 //Check to iterate over all classes
-                foreach(var team in joinedTeams.Result.Where(t => t.IsArchived == false )) 
+                foreach(var team in joinedTeams.Where(t => t.IsArchived == false )) 
                 {  
                     // Print the current class ID and name for the assignments
                     Console.WriteLine($"Class {team.Id} Display name: {team.DisplayName}");
 
                     // Call to Get Assignments using the current classId
-                    var assignments = MicrosoftGraphSDK.Assignment.GetAssignmentsAsync(graphClient, team.Id);
+                    var assignments = await MicrosoftGraphSDK.Assignment.GetAssignmentsAsync(graphClient, team.Id);
 
                     // Iterate over all the assignments from that class
-                    foreach (var assignment in assignments.Result)
+                    foreach (var assignment in assignments)
                     {
                         // Call to add the remaining not archived assignments into a collection
                         assignmentsFromNonArchivedClasses.Add(assignment);                     
@@ -52,10 +52,10 @@ namespace MicrosoftEduGraphSamples.Workflows
                 }
 
                 Console.WriteLine($"Getting assignments from MeAssignments Endpoint");
-                var meAssignments = MicrosoftGraphSDK.User.GetMeAssignmentsAsync(graphClient);
+                var meAssignments = await MicrosoftGraphSDK.User.GetMeAssignmentsAsync(graphClient);
 
                 //Join meAssignments with assignmentsFromNonArchivedClasses excluding repeated assignments
-                var finalList = assignmentsFromNonArchivedClasses.Union(meAssignments.Result);
+                var finalList = assignmentsFromNonArchivedClasses.Union(meAssignments);
 
                 //Iterate over all the assignments
                 foreach (var assignment in finalList)

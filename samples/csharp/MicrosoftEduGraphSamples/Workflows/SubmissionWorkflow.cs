@@ -21,7 +21,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         /// <summary>
         /// Workflow to show process since assignment is created until reassign the submission to the student with feedback for review
         /// </summary>
-        public void ReassignWorkflow()
+        public async void ReassignWorkflow()
         {
             try
             {
@@ -33,36 +33,36 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Teacher creates a new assignment
-                var assignment = MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
-                assignmentId = assignment.Result.Id;
-                Console.WriteLine($"Assignment created successfully {assignment.Result.Id} in state {assignment.Result.Status}");
+                var assignment = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
+                assignmentId = assignment.Id;
+                Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
 
                 // Teacher publishes the assignment to make it appears in the student's list
-                assignment = MicrosoftGraphSDK.Assignment.PublishAsync(graphClient, _config["classId"], assignmentId);
-                Console.WriteLine($"Assignment {assignment.Result.Id} publish in process");
+                assignment = await MicrosoftGraphSDK.Assignment.PublishAsync(graphClient, _config["classId"], assignmentId);
+                Console.WriteLine($"Assignment {assignment.Id} publish in process");
 
                 // Verify assignment state, publish is completed until state equals "Assigned"
-                while (assignment.Result.Status.ToString() != "Assigned" && retries <= MAX_RETRIES)
+                while (assignment.Status.ToString() != "Assigned" && retries <= MAX_RETRIES)
                 {
                     // Print . in the log to show that the call is being retried.
                     Console.WriteLine(".");
 
-                    assignment = MicrosoftGraphSDK.Assignment.GetAssignmentAsync(graphClient, _config["classId"], assignmentId);
+                    assignment = await MicrosoftGraphSDK.Assignment.GetAssignmentAsync(graphClient, _config["classId"], assignmentId);
 
                     // If you are calling this code pattern in Backend agent of your service, then you want to retry the work after some time. The sleep here is just an example to emulate the delay.
                     Thread.Sleep(2000);
                     retries++;
                 }
-                Console.WriteLine($"Assignment {assignment.Result.Id} publish is completed. Status: {assignment.Result.Status}");
+                Console.WriteLine($"Assignment {assignment.Id} publish is completed. Status: {assignment.Status}");
 
                 // Change to student account
                 graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["password"]);
 
                 // Get the student submission
-                var submissions = MicrosoftGraphSDK.Submission.GetSubmissionsAsync(graphClient, _config["classId"], assignmentId);
-                if (submissions.Result.Count > 0) // submissions.Result.Value.Count (for Beta)
+                var submissions = await MicrosoftGraphSDK.Submission.GetSubmissionsAsync(graphClient, _config["classId"], assignmentId);
+                if (submissions.Count > 0) // submissions.Result.Value.Count (for Beta)
                 {
-                    submissionId = submissions.Result[0].Id;
+                    submissionId = submissions[0].Id;
                     Console.WriteLine($"Submission {submissionId} found for {_config["studentAccount"]}");
                 }
                 else
@@ -71,14 +71,14 @@ namespace MicrosoftEduGraphSamples.Workflows
                 }
 
                 // Student submits his submission
-                var submission = MicrosoftGraphSDK.Submission.SubmitAsync(graphClient, _config["classId"], assignmentId, submissionId);
-                Console.WriteLine($"Submission {submission.Result.Id} in state {submission.Result.Status}");
+                var submission = await MicrosoftGraphSDK.Submission.SubmitAsync(graphClient, _config["classId"], assignmentId, submissionId);
+                Console.WriteLine($"Submission {submission.Id} in state {submission.Status}");
 
                 // Check submit is completed, must reach the "Submitted" state.
                 retries = 0;
-                while (submission.Result.Status.ToString() != "Submitted" && retries <= MAX_RETRIES)
+                while (submission.Status.ToString() != "Submitted" && retries <= MAX_RETRIES)
                 {
-                    submission = MicrosoftGraphSDK.Submission.GetSubmissionAsync(graphClient, _config["classId"], assignmentId, submissionId);
+                    submission = await MicrosoftGraphSDK.Submission.GetSubmissionAsync(graphClient, _config["classId"], assignmentId, submissionId);
 
                     Thread.Sleep(2000); // Wait two seconds between calls
                     retries++;
@@ -88,21 +88,21 @@ namespace MicrosoftEduGraphSamples.Workflows
                 graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Teacher reassigns the submission back to the student
-                submission = MicrosoftGraphSDK.Submission.ReassignAsync(graphClient, _config["classId"], assignmentId, submissionId);
-                Console.WriteLine($"Submission {submission.Result.Id} in state {submission.Result.Status}");
+                submission = await MicrosoftGraphSDK.Submission.ReassignAsync(graphClient, _config["classId"], assignmentId, submissionId);
+                Console.WriteLine($"Submission {submission.Id} in state {submission.Status}");
 
                 // Check reassign is completed, must reach the "Reassigned" state.
                 retries = 0;
-                while (submission.Result.Status.ToString() != "Reassigned" && retries <= MAX_RETRIES)
+                while (submission.Status.ToString() != "Reassigned" && retries <= MAX_RETRIES)
                 {
-                    submission = MicrosoftGraphSDK.Submission
+                    submission = await MicrosoftGraphSDK.Submission
                         .GetSubmission_WithHeaderAsync(graphClient, _config["classId"], assignmentId, submissionId, "Prefer", "include-unknown-enum-members");
 
                     Thread.Sleep(2000); // Wait two seconds between calls
                     retries++;
                 }
 
-                Console.WriteLine($"Submission {submissionId} reached {submission.Result.Status} state");
+                Console.WriteLine($"Submission {submissionId} reached {submission.Status} state");
             }
             catch (Exception ex) {
                 Console.WriteLine($"ReassignWorkflow: {ex.ToString()}");
