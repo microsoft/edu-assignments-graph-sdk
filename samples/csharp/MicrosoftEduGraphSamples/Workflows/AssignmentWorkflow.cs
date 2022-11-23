@@ -35,7 +35,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var joinedTeams = await graphClient.GetJoinedTeamsAsync();
 
                 //Check to iterate over all classes
-                foreach(var team in joinedTeams.Where(t => t.IsArchived == false ))
+                foreach(var team in joinedTeams.Where(t => t.IsArchived == false))
                 {
                     // Print the current class ID and name for the assignments
                     Console.WriteLine($"Class {team.Id} Display name: {team.DisplayName}");
