@@ -22,7 +22,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         /// <summary>
         /// Workflow to get assignments from all the classes which are not archived
         /// </summary>
-        public async void GetNotArchivedClassesAssignments()
+        public async Task GetNotArchivedClassesAssignments()
         {
             try
             {
@@ -35,8 +35,8 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var joinedTeams = await graphClient.GetJoinedTeamsAsync();
 
                 //Check to iterate over all classes
-                foreach(var team in joinedTeams.Where(t => t.IsArchived == false )) 
-                {  
+                foreach(var team in joinedTeams.Where(t => t.IsArchived == false ))
+                {
                     // Print the current class ID and name for the assignments
                     Console.WriteLine($"Class {team.Id} Display name: {team.DisplayName}");
 
@@ -47,8 +47,8 @@ namespace MicrosoftEduGraphSamples.Workflows
                     foreach (var assignment in assignments)
                     {
                         // Call to add the remaining not archived assignments into a collection
-                        assignmentsFromNonArchivedClasses.Add(assignment);                     
-                    }                                   
+                        assignmentsFromNonArchivedClasses.Add(assignment);
+                    }
                 }
 
                 Console.WriteLine($"Getting assignments from MeAssignments Endpoint");
