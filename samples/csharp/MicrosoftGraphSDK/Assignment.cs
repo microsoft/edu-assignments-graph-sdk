@@ -32,7 +32,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetAssignmentAsync call: {ex.Message}", classId, assignmentId);
+                throw new GraphException($"GetAssignmentAsync call: {ex.Message}", ex, classId, assignmentId);
             }
         }
 
@@ -56,7 +56,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetAssignmentsAsync call: {ex.Message}", classId);
+                throw new GraphException($"GetAssignmentsAsync call: {ex.Message}", ex, classId);
             }
         }
 
@@ -102,7 +102,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"CreateAsync call: {ex.Message}", classId);
+                throw new GraphException($"CreateAsync call: {ex.Message}", ex, classId);
             }
         }
 
@@ -129,7 +129,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"PublishAsync call: {ex.Message}", classId, assignmentId);
+                throw new GraphException($"PublishAsync call: {ex.Message}", ex, classId, assignmentId);
             }
         }
     }

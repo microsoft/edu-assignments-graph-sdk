@@ -12,12 +12,15 @@ namespace MicrosoftGraphSDK
     internal class GraphException : Exception
     {
         public object[]? Params { get; }
+        public Exception innerException { get; }
 
         public GraphException() : base() { }
 
         public GraphException(string message) : base(message) { }
 
-        public GraphException(string message, Exception inner) : base(message, inner) { }
+        public GraphException(string message, Exception inner) : base(message, inner) {
+            innerException = inner;
+        }
 
         public GraphException(string message, params object[] CallParams) : base(message)
         {
@@ -26,6 +29,7 @@ namespace MicrosoftGraphSDK
 
         public GraphException(string message, Exception inner, params object[] CallParams) : base(message, inner)
         {
+            innerException= inner;
             Params = CallParams;
         }
 
@@ -34,7 +38,7 @@ namespace MicrosoftGraphSDK
         public override string ToString()
         {
             string parameters = Params == null ? string.Empty : $", Params: {string.Join(", ", Params)}";
-            return $"{Message} {parameters}";
+            return $"{Message} {parameters} Exception: {innerException}";
         }
     }
 }

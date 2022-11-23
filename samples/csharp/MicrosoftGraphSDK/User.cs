@@ -27,7 +27,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetUserInfoAsync call: {ex.Message}");
+                throw new GraphException($"GetUserInfoAsync call: {ex.Message}", ex);
             }
         }
 
@@ -47,7 +47,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetMeAssignmentsAsync call: {ex.Message}");
+                throw new GraphException($"GetMeAssignmentsAsync call: {ex.Message}", ex);
             }
         }
     }
