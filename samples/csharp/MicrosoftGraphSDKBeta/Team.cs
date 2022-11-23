@@ -27,7 +27,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetJoinedTeamsAsync call: {ex.Message}");
+                throw new GraphException($"GetJoinedTeamsAsync call: {ex.Message}", ex);
             }
         }
     }

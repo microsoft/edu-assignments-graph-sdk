@@ -38,7 +38,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetDelegateClient call: {ex.Message}", tenantId, applicationId, userName);
+                throw new GraphException($"GetDelegateClient call: {ex.Message}", ex, tenantId, applicationId, userName);
             }
         }
 
@@ -67,7 +67,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetApplicationClient call: {ex.Message}", tenantId, applicationId);
+                throw new GraphException($"GetApplicationClient call: {ex.Message}", ex, tenantId, applicationId);
             }
         }
     }

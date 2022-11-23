@@ -36,7 +36,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetSubmissionAsync call: {ex.Message}", classId, assignmentId, submissionId);
+                throw new GraphException($"GetSubmissionAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
             }
         }
 
@@ -62,7 +62,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetSubmissionsAsync call: {ex.Message}", classId, assignmentId);
+                throw new GraphException($"GetSubmissionsAsync call: {ex.Message}", ex, classId, assignmentId);
             }
         }
 
@@ -95,7 +95,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetSubmission_WithHeaderAsync call: {ex.Message}", classId, assignmentId, submissionId, headerName, headerValue);
+                throw new GraphException($"GetSubmission_WithHeaderAsync call: {ex.Message}", ex, classId, assignmentId, submissionId, headerName, headerValue);
             }
         }
 
@@ -124,7 +124,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"SubmitAsync call: {ex.Message}", classId, assignmentId, submissionId);
+                throw new GraphException($"SubmitAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
             }
         }
 
@@ -153,7 +153,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"ReassignAsync call: {ex.Message}", classId, assignmentId, submissionId);
+                throw new GraphException($"ReassignAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
             }
         }
     }
