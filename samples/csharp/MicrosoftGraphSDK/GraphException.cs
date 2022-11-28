@@ -9,7 +9,7 @@ namespace MicrosoftGraphSDK
     /// Derived exception class to handle graph calls errors
     /// </summary>
     [Serializable]
-    internal class GraphException : Exception
+    public sealed class GraphException : Exception
     {
         public object[]? Params { get; }
         public Exception innerException { get; }

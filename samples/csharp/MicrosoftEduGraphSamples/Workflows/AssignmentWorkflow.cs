@@ -22,7 +22,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         /// <summary>
         /// Workflow to get assignments from all the classes which are not archived
         /// </summary>
-        public async Task GetNotArchivedClassesAssignments()
+        public async Task PrintNotArchivedClassesAssignmentsAsync()
         {
             try
             {
