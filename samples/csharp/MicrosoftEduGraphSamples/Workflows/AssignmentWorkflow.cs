@@ -22,7 +22,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         /// <summary>
         /// Workflow to get assignments from all the classes which are not archived
         /// </summary>
-        public async Task PrintNotArchivedClassesAssignmentsAsync()
+        public async Task <IEnumerable<Microsoft.Graph.EducationAssignment>> GetNotArchivedClassesAssignments()
         {
             try
             {
@@ -63,10 +63,12 @@ namespace MicrosoftEduGraphSamples.Workflows
                     // Print all the assignments from meAssignments.
                     Console.WriteLine($"Assignment {assignment.Id} added to collection. Status: {assignment.Status} Display name: {assignment.DisplayName}");
                 }
+                return finalList;
             }
             catch(Exception ex)
             {
                 Console.WriteLine($"AssignmentsFromNotArchivedClasses: {ex.ToString()}");
+                return null;
             }
         }
     }
