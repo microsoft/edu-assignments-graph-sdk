@@ -14,7 +14,7 @@ namespace MicrosoftGraphSDK
         /// Returns teams information
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
-        /// <returns>IUserJoinedTeamsCollectionPage</returns>
+        /// <returns>V1.0: IUserJoinedTeamsCollectionPage | BETA: IUserJoinedTeamsCollectionWithReferencesPage</returns>
         public static async Task<IUserJoinedTeamsCollectionPage> GetJoinedTeamsAsync(
              this GraphServiceClient client)
         {

@@ -21,7 +21,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         /// <summary>
         /// Workflow to show process since assignment is created until reassign the submission to the student with feedback for review
         /// </summary>
-        public async void ReassignWorkflow()
+        public async Task ReassignWorkflow()
         {
             try
             {
