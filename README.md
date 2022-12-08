@@ -52,11 +52,27 @@ All the methods added in those classes can be used into your application.
 
 This project works with these nuget packages:
 
-* Azure.Identity (1.6.1)
-* Microsoft.Graph.Beta (latest 4.XX.X) for Beta.
-* Microsoft.Graph (latest 4.XX.X) for V1.0.
+* [Azure.Identity (1.6.1)](https://www.nuget.org/packages/Azure.Identity).
+* [Microsoft.Graph.Beta (latest 4.XX.X) for Beta](https://www.nuget.org/packages/Microsoft.Graph.Beta/4.67.0-preview).
+* [Microsoft.Graph (latest 4.XX.X) for V1.0](https://www.nuget.org/packages/Microsoft.Graph/4.48.0).
 
 > __NOTE__: make sure you install only the package needed according to the desired version, the project is using `Microsoft.Graph` package for `v1.0` by default. Both packages (`Microsoft.Graph` and `Microsoft.Graph.Beta`) __cannot__ be installed at the same time.
+
+### Scripts to switch between versions in Visual Studio 2022
+
+1. Switch to V1.0
+
+    * Uninstall-Package Microsoft.Graph.Beta -Project MicrosoftEduGraphSamples
+    *Uninstall-Package Microsoft.Graph.Beta -Project MicrosoftGraphSDK
+    *Install-Package Microsoft.Graph -Version 4.48.0 -Project MicrosoftEduGraphSamples
+    *Install-Package Microsoft.Graph -Version 4.48.0 -Project MicrosoftGraphSDK
+
+2. Switch to BETA
+
+    *Uninstall-Package Microsoft.Graph -Project MicrosoftEduGraphSamples
+    *Uninstall-Package Microsoft.Graph -Project MicrosoftGraphSDK
+    *Install-Package Microsoft.Graph.Beta -Version 4.67.0-preview -Project MicrosoftEduGraphSamples
+    *Install-Package Microsoft.Graph.Beta -Version 4.67.0-preview -Project MicrosoftGraphSDK
 
 ### MicrosoftEduGraphSamples
 
