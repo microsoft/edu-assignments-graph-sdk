@@ -11,7 +11,7 @@ namespace MicrosoftGraphSDK
     public static class Team
     {
         /// <summary>
-        /// Returns teams information
+        /// Returns teams information joined by the user
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <returns>V1.0: IUserJoinedTeamsCollectionPage | BETA: IUserJoinedTeamsCollectionWithReferencesPage</returns>

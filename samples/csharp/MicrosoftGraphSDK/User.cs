@@ -32,7 +32,7 @@ namespace MicrosoftGraphSDK
         }
 
         // <summary>
-        /// Lists assignments for the user
+        /// Lists assignments for the given user
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <returns>IEducationUserAssignmentsCollectionPage</returns>
