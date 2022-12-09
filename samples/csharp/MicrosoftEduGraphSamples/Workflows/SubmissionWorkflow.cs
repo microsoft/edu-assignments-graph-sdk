@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Graph;
 
 namespace MicrosoftEduGraphSamples.Workflows
 {
@@ -42,7 +43,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"Assignment {assignment.Id} publish in process");
 
                 // Verify assignment state, publish is completed until state equals "Assigned"
-                while (assignment.Status.ToString() != "Assigned" && retries <= MAX_RETRIES)
+                while (assignment.Status != EducationAssignmentStatus.Assigned && retries <= MAX_RETRIES)
                 {
                     // Print . in the log to show that the call is being retried.
                     Console.WriteLine(".");
@@ -76,7 +77,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                 // Check submit is completed, must reach the "Submitted" state.
                 retries = 0;
-                while (submission.Status.ToString() != "Submitted" && retries <= MAX_RETRIES)
+                while (submission.Status != EducationSubmissionStatus.Submitted && retries <= MAX_RETRIES)
                 {
                     submission = await MicrosoftGraphSDK.Submission.GetSubmissionAsync(graphClient, _config["classId"], assignmentId, submissionId);
 
@@ -93,7 +94,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                 // Check reassign is completed, must reach the "Reassigned" state.
                 retries = 0;
-                while (submission.Status.ToString() != "Reassigned" && retries <= MAX_RETRIES)
+                while (submission.Status != EducationSubmissionStatus.Reassigned && retries <= MAX_RETRIES)
                 {
                     submission = await MicrosoftGraphSDK.Submission
                         .GetSubmission_WithHeaderAsync(graphClient, _config["classId"], assignmentId, submissionId, "Prefer", "include-unknown-enum-members");
