@@ -17,6 +17,29 @@ namespace MicrosoftEduGraphSamples.Workflows
         public SubmissionWorkflow(IConfiguration configuration)
         {
             this._config = configuration;
+            try { 
+                if (string.IsNullOrEmpty(_config["classId"]))
+                {
+                    throw new Exception("Missing classId please check appconfig.json file.");
+                }
+                else if(string.IsNullOrEmpty(_config["assi"])) {
+                    throw new Exception("Missing classId please check appconfig.json  file.");
+                }
+                else if(string.IsNullOrEmpty(_config["tenantId"]))
+                {
+                    throw new Exception("Missing classId please check appconfig.json  file.");
+                }
+                else if (string.IsNullOrEmpty(_config["tenantId"])) { }
+
+                if (string.IsNullOrEmpty(_config["appId"]))
+                {
+                    throw new Exception("Missing classId please check appconfig.json  file.");
+                }
+                else if (string.IsNullOrEmpty(_config["appId"])) { }
+                
+            catch (Exception ex) {
+                throw;
+            }
         }
 
         /// <summary>
@@ -97,7 +120,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 while (submission.Status != EducationSubmissionStatus.Reassigned && retries <= MAX_RETRIES)
                 {
                     submission = await MicrosoftGraphSDK.Submission
-                        .GetSubmission_WithHeaderAsync(graphClient, _config["classId"], assignmentId, submissionId, "Prefer", "include-unknown-enum-members");
+                        .GetSubmissionWithHeaderAsync(graphClient, _config["classId"], assignmentId, submissionId, "Prefer", "include-unknown-enum-members");
 
                     Thread.Sleep(2000); // Wait two seconds between calls
                     retries++;

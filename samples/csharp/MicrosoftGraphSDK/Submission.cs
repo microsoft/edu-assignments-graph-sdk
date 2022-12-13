@@ -15,7 +15,7 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
-        /// <param name="assignmentId">Assignment in the class</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="submissionId">Student submission id</param>
         /// <returns>EducationSubmission</returns>
         public static async Task<EducationSubmission> GetSubmissionAsync(
@@ -44,7 +44,7 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
-        /// <param name="assignmentId">Assignment in the class</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
         /// <returns>IEducationAssignmentSubmissionsCollectionPage</returns>
         public static async Task<IEducationAssignmentSubmissionsCollectionPage> GetSubmissionsAsync(
             GraphServiceClient client,
@@ -71,12 +71,12 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
-        /// <param name="assignmentId">Assignment in the class</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="submissionId">Student submission id</param>
         /// <param name="headerName">Header parameter name</param>
         /// <param name="headerValue">Value for the header parameter</param>
         /// <returns>EducationSubmission</returns>
-        public static async Task<EducationSubmission> GetSubmission_WithHeaderAsync(
+        public static async Task<EducationSubmission> GetSubmissionWithHeaderAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId,
@@ -96,7 +96,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetSubmission_WithHeaderAsync call: {ex.Message}", ex, classId, assignmentId, submissionId, headerName, headerValue);
+                throw new GraphException($"GetSubmissionWithHeaderAsync call: {ex.Message}", ex, classId, assignmentId, submissionId, headerName, headerValue);
             }
         }
 
@@ -105,7 +105,7 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
-        /// <param name="assignmentId">Assignment in the class</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="submissionId">Student submission id</param>
         /// <returns>EducationSubmission</returns>
         public static async Task<EducationSubmission> SubmitAsync(
@@ -135,7 +135,7 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
-        /// <param name="assignmentId">Assignment in the class</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="submissionId">Student submission id</param>
         /// <returns>EducationSubmission</returns>
         public static async Task<EducationSubmission> ReassignAsync(
