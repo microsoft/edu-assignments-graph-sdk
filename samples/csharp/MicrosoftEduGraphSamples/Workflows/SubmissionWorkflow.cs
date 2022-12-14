@@ -17,27 +17,41 @@ namespace MicrosoftEduGraphSamples.Workflows
         public SubmissionWorkflow(IConfiguration configuration)
         {
             this._config = configuration;
-            try { 
+
+            // Verify and throw exception for input values if null or empty
+            try
+            {
                 if (string.IsNullOrEmpty(_config["classId"]))
                 {
                     throw new Exception("Missing classId please check appconfig.json file.");
                 }
-                else if(string.IsNullOrEmpty(_config["assi"])) {
-                    throw new Exception("Missing classId please check appconfig.json  file.");
-                }
-                else if(string.IsNullOrEmpty(_config["tenantId"]))
+                else if (string.IsNullOrEmpty(_config["tenantId"]))
                 {
-                    throw new Exception("Missing classId please check appconfig.json  file.");
+                    throw new Exception("Missing tenantId please check appconfig.json file.");
                 }
-                else if (string.IsNullOrEmpty(_config["tenantId"])) { }
-
-                if (string.IsNullOrEmpty(_config["appId"]))
+                else if (string.IsNullOrEmpty(_config["secret"]))
                 {
-                    throw new Exception("Missing classId please check appconfig.json  file.");
+                    throw new Exception("Missing secret please check appconfig.json file.");
                 }
-                else if (string.IsNullOrEmpty(_config["appId"])) { }
-                
-            catch (Exception ex) {
+                else if (string.IsNullOrEmpty(_config["appId"]))
+                {
+                    throw new Exception("Missing appId please check appconfig.json file.");
+                }
+                else if (string.IsNullOrEmpty(_config["teacherAccount"]))
+                {
+                    throw new Exception("Missing teacherAccount please check appconfig.json file.");
+                }
+                else if (string.IsNullOrEmpty(_config["studentAccount"]))
+                {
+                    throw new Exception("Missing studentAccount please check appconfig.json file.");
+                }
+                else if (string.IsNullOrEmpty(_config["password"]))
+                {
+                    throw new Exception("Missing password please check appconfig.json file.");
+                }
+            }
+            catch (Exception ex)
+            {
                 throw;
             }
         }
