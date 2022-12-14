@@ -111,7 +111,7 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
-        /// <param name="assignmentId">Assignment in the class</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
         /// <returns>EducationAssignment</returns>
         public static async Task<EducationAssignment> PublishAsync(
             GraphServiceClient client,
