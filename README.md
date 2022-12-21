@@ -46,24 +46,33 @@ These samples also demostrate assignments service functionality exposed through 
 
 ### MicrosoftGraphSDK
 
-It is a set of C# class libraries, those classes contain the actual calls to the Microsoft Graph SDK (v1.0) and each class contains only methods related to an specific entity; for instance User, GraphClient, Assignment, Submission and so on.
+It is a set of C# class libraries, those classes contain the actual calls to the Microsoft Graph SDK and each class contains only methods related to an specific entity; for instance User, GraphClient, Assignment, Submission and so on.
 
 All the methods added in those classes can be used into your application.
 
 This project works with these nuget packages:
 
-* Azure.Identity (1.6.1)
-* Microsoft.Graph (latest 4.XX.X)
+* [Azure.Identity (1.6.1)](https://www.nuget.org/packages/Azure.Identity).
+* [Microsoft.Graph.Beta (latest 4.XX.X) for Beta](https://www.nuget.org/packages/Microsoft.Graph.Beta/4.67.0-preview).
+* [Microsoft.Graph (latest 4.XX.X) for V1.0](https://www.nuget.org/packages/Microsoft.Graph/4.48.0).
 
-### MicrosoftGraphSDKBeta
+> __NOTE__: make sure you install only the package needed according to the desired version, the project is using `Microsoft.Graph` package for `v1.0` by default. Both packages (`Microsoft.Graph` and `Microsoft.Graph.Beta`) __cannot__ be installed at the same time.
 
-The same set of C# class libraries, but the calls are done to the Microsoft Graph SDK (beta). It is a separate project due to packages used are different and involve code changes.
+### Scripts to switch between versions in Visual Studio 2022
 
-This project works with these nuget packages:
+1. Switch to V1.0
 
-* Azure.Identity (1.6.1)
-* Microsoft.Graph.Beta (latest 5.XX.X-preview)
-* Microsoft.Identity.Web.MicrosoftGraphBeta (latest 1.XX.X)
+    * Uninstall-Package Microsoft.Graph.Beta -Project MicrosoftEduGraphSamples
+    *Uninstall-Package Microsoft.Graph.Beta -Project MicrosoftGraphSDK
+    *Install-Package Microsoft.Graph -Version 4.48.0 -Project MicrosoftEduGraphSamples
+    *Install-Package Microsoft.Graph -Version 4.48.0 -Project MicrosoftGraphSDK
+
+2. Switch to BETA
+
+    *Uninstall-Package Microsoft.Graph -Project MicrosoftEduGraphSamples
+    *Uninstall-Package Microsoft.Graph -Project MicrosoftGraphSDK
+    *Install-Package Microsoft.Graph.Beta -Version 4.67.0-preview -Project MicrosoftEduGraphSamples
+    *Install-Package Microsoft.Graph.Beta -Version 4.67.0-preview -Project MicrosoftGraphSDK
 
 ### MicrosoftEduGraphSamples
 
@@ -71,23 +80,28 @@ This project provides Microsoft EDU code samples on how to use the methods from 
 
 Use the `Program.cs` file to test any of the current workflows.
 
-1. Add a project reference according to the wanted version.
+1. Add a project reference.
 
     * Right click on the __MicrosoftEduGraphSamples__ project.
     * Add / Project Reference ...
-    * Check the version required and make sure the other is unchecked.
+    * Check the MicrosoftGraphSDK project.
     ![Project references](/images/project-references.png)
 
-1. Create an instance of the class you want to test.
+2. Install/uninstall nuget packages as needed.
+
+    * Microsoft.Graph.Beta (latest 4.XX.X) for Beta.
+    * Microsoft.Graph (latest 4.XX.X) for V1.0. *Installed by default*.
+
+3. Create an instance of the class you want to test.
 
 ```csharp
     Submission submission = new Submission(config);
 ```
 
-1. Call the desired workflow method.
+4. Call the desired workflow method.
 
 ```csharp
-    submission.ReassignWorkflow();
+    await submission.ReassignWorkflow();
 ```
 
 ## [Code samples](/samples/csharp/MicrosoftEduGraphSamples/workflows)
