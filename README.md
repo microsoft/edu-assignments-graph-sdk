@@ -62,17 +62,21 @@ This project works with these nuget packages:
 
 1. Switch to V1.0
 
-    * Uninstall-Package Microsoft.Graph.Beta -Project MicrosoftEduGraphSamples
-    *Uninstall-Package Microsoft.Graph.Beta -Project MicrosoftGraphSDK
-    *Install-Package Microsoft.Graph -Version 4.48.0 -Project MicrosoftEduGraphSamples
-    *Install-Package Microsoft.Graph -Version 4.48.0 -Project MicrosoftGraphSDK
+```
+    Uninstall-Package Microsoft.Graph.Beta -Project MicrosoftEduGraphSamples
+    Uninstall-Package Microsoft.Graph.Beta -Project MicrosoftGraphSDK
+    Install-Package Microsoft.Graph -Version 4.48.0 -Project MicrosoftEduGraphSamples
+    Install-Package Microsoft.Graph -Version 4.48.0 -Project MicrosoftGraphSDK
+```
 
-2. Switch to BETA
+2. Switch to Beta
 
-    *Uninstall-Package Microsoft.Graph -Project MicrosoftEduGraphSamples
-    *Uninstall-Package Microsoft.Graph -Project MicrosoftGraphSDK
-    *Install-Package Microsoft.Graph.Beta -Version 4.67.0-preview -Project MicrosoftEduGraphSamples
-    *Install-Package Microsoft.Graph.Beta -Version 4.67.0-preview -Project MicrosoftGraphSDK
+```
+    Uninstall-Package Microsoft.Graph -Project MicrosoftEduGraphSamples
+    Uninstall-Package Microsoft.Graph -Project MicrosoftGraphSDK
+    Install-Package Microsoft.Graph.Beta -Version 4.67.0-preview -Project MicrosoftEduGraphSamples
+    Install-Package Microsoft.Graph.Beta -Version 4.67.0-preview -Project MicrosoftGraphSDK
+ ```   
 
 ### MicrosoftEduGraphSamples
 
@@ -108,7 +112,7 @@ Use the `Program.cs` file to test any of the current workflows.
 |    | Sample Name        | Description                                                                      | C#    |
 |:--:|:-------------------|:----------------------------------------------------------------------------------------------|:--------|
 |1| Reassign submission   | Sample showing how the teacher creates an assignment and then publish it; the student submit his work and then teacher reassign it with feedback.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/b895615c3a5cfcbf7f1030a148dbbe4d68446913/samples/csharp/MicrosoftEduGraphSamples/workflows/Submission.cs#L24)|
-
+|2| Filter archived classes from assignments   | Get me Assignments from non archived classes endpoint                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/4b92f784855c63c30ec6dc9fb400eb1bb791019e/samples/csharp/MicrosoftEduGraphSamples/Workflows/AssignmentWorkflow.cs#L62)|
 
 ## Need help?
 
