@@ -60,7 +60,9 @@ This project works with these nuget packages:
 
 ### Scripts to switch between versions in Visual Studio 2022
 
-1. Switch to V1.0
+Go to menu View / Other Windows / Package Manager Console, and copy and run the script below according to the version you want to switch to.
+
+* Switch to V1.0
 
 ```
     Uninstall-Package Microsoft.Graph.Beta -Project MicrosoftEduGraphSamples
@@ -69,14 +71,14 @@ This project works with these nuget packages:
     Install-Package Microsoft.Graph -Version 4.48.0 -Project MicrosoftGraphSDK
 ```
 
-2. Switch to Beta
+* Switch to Beta
 
 ```
     Uninstall-Package Microsoft.Graph -Project MicrosoftEduGraphSamples
     Uninstall-Package Microsoft.Graph -Project MicrosoftGraphSDK
     Install-Package Microsoft.Graph.Beta -Version 4.67.0-preview -Project MicrosoftEduGraphSamples
     Install-Package Microsoft.Graph.Beta -Version 4.67.0-preview -Project MicrosoftGraphSDK
- ```   
+ ```
 
 ### MicrosoftEduGraphSamples
 
