@@ -60,7 +60,9 @@ This project works with these nuget packages:
 
 ### Scripts to switch between versions in Visual Studio 2022
 
-1. Switch to V1.0
+Go to menu **View / Other Windows / Package Manager Console**, and copy and run the script below according to the version you want to switch to.
+
+* Switch to V1.0
 
 ```
     Uninstall-Package Microsoft.Graph.Beta -Project MicrosoftEduGraphSamples
@@ -69,14 +71,14 @@ This project works with these nuget packages:
     Install-Package Microsoft.Graph -Version 4.48.0 -Project MicrosoftGraphSDK
 ```
 
-2. Switch to Beta
+* Switch to Beta
 
 ```
     Uninstall-Package Microsoft.Graph -Project MicrosoftEduGraphSamples
     Uninstall-Package Microsoft.Graph -Project MicrosoftGraphSDK
     Install-Package Microsoft.Graph.Beta -Version 4.67.0-preview -Project MicrosoftEduGraphSamples
     Install-Package Microsoft.Graph.Beta -Version 4.67.0-preview -Project MicrosoftGraphSDK
- ```   
+ ```
 
 ### MicrosoftEduGraphSamples
 
@@ -111,8 +113,9 @@ Use the `Program.cs` file to test any of the current workflows.
 ## [Code samples](/samples/csharp/MicrosoftEduGraphSamples/workflows)
 |    | Sample Name        | Description                                                                      | C#    |
 |:--:|:-------------------|:----------------------------------------------------------------------------------------------|:--------|
-|1| Reassign submission   | Sample showing how the teacher creates an assignment and then publish it; the student submit his work and then teacher reassign it with feedback.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/b895615c3a5cfcbf7f1030a148dbbe4d68446913/samples/csharp/MicrosoftEduGraphSamples/workflows/Submission.cs#L24)|
-|2| Filter archived classes from assignments   | Get me assignments from non-archived classes.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/4b92f784855c63c30ec6dc9fb400eb1bb791019e/samples/csharp/MicrosoftEduGraphSamples/Workflows/AssignmentWorkflow.cs#L62)|
+|1| Reassign submission   | Sample showing how the teacher creates an assignment and then publish it; the student submit his work and then teacher reassign it with feedback.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/SubmissionWorkflow.cs#L62)|
+|2| Filter archived classes from assignments   | Get me assignments from non-archived classes.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/AssignmentWorkflow.cs#L62)|
+|3| Get assignment submissions using batch request   | Since as a teacher you can't expand submissions, you will have to request every assignment for submissions on it. This SDK sample is to illustrate on how you can do this in a single batch request.|[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/SubmissionWorkflow.cs#L153)|
 
 ## Need help?
 

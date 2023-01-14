@@ -146,5 +146,67 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"ReassignWorkflow: {ex.ToString()}");
             }
         }
+
+        /// <summary>
+        /// Workflow to create a batch request and get the responses
+        /// </summary>
+        public async Task BatchRequestWorkflow() {
+            try
+            {
+                // Get a Graph client using delegated permissions
+                var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+
+                Console.WriteLine($"Getting top 20 assignments from MeAssignments Endpoint");
+
+                // Batch is limited to 20 requests
+                var meAssignments = await MicrosoftGraphSDK.User.GetMeAssignmentsWithTopAsync(graphClient, 20);
+                
+                // Build the batch
+                var batchRequestContent = new BatchRequestContent();
+
+                Console.WriteLine($"Iterating over me assignments");
+                foreach (var assignment in meAssignments)
+                {
+                    // Adds each request to the batch
+                    batchRequestContent.AddBatchRequestStep(
+                            new BatchRequestStep(
+                                // Use the current assignment as id for this step
+                                assignment.Id,
+                                // The step takes the HttpRequestMessage from the request
+                                graphClient.Education
+                                    .Classes[assignment.ClassId]
+                                    .Assignments[assignment.Id]
+                                    .Submissions
+                                    .Request()
+                                    .GetHttpRequestMessage())
+                        );
+                }
+
+                // Build a return response object for our batch
+                var returnedResponse = await graphClient.Batch.Request().PostAsync(batchRequestContent);
+                
+                foreach (var assignment in meAssignments)
+                {
+                    Console.WriteLine($"Getting assignment {assignment.Id} submissions");
+
+                    // De-serialize the response based on return type
+                    var submissionsResponse = await returnedResponse.GetResponseByIdAsync<EducationAssignmentSubmissionsCollectionResponse>(assignment.Id);
+
+                    // Get and print submissions (if any)
+                    if (submissionsResponse == null) continue;
+
+                    // "Value" contains the request response
+                    var submissions = submissionsResponse.Value;
+                    foreach (var submission in submissions)
+                    {
+                        Console.WriteLine($"Assignment {assignment.Id}, submission: {submission.Id}, status: {submission.Status}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"BatchRequestWorkflow: {ex.ToString()}");
+            }
+        }
     }
 }
