@@ -73,11 +73,11 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var meAssignments = await MicrosoftGraphSDK.User.GetMeAssignmentsAsync(graphClient);
 
                 // Exclude assignments from archived and deleted classes
-                var finalList = meAssignments.Join(
-                    joinedTeams.Where(t => (bool)!t.IsArchived),
-                    assignment => assignment.ClassId,
-                    team => team.Id,
-                    (assignment, team) => assignment);
+                var finalList = meAssignments.Join(                 // First source
+                    joinedTeams.Where(t => (bool)!t.IsArchived),    // Second source with filter applied to discard archived classes
+                    assignment => assignment.ClassId,               // Key selector for me assignments
+                    team => team.Id,                                // Key selector for joined teams
+                    (assignment, team) => assignment);              // Expression to formulate the result
 
                 // Iterate over all the assignments
                 foreach (var assignment in finalList)
