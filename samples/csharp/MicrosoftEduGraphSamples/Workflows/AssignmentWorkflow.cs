@@ -63,29 +63,21 @@ namespace MicrosoftEduGraphSamples.Workflows
         {
             try
             {
-                var archivedTeams = new List<string>();
-
                 // Get a Graph client using delegated permissions
                 var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Call to get user classes
                 var joinedTeams = await graphClient.GetJoinedTeamsAsync();
 
-                // Check to iterate over all classes
-                foreach (var team in joinedTeams.Where(t => t.IsArchived == true))
-                {
-                    // Print the current class ID and name for the assignments
-                    Console.WriteLine($"Class {team.Id} Display name: {team.DisplayName}");
-
-                    // Keep archived classes ids
-                    archivedTeams.Add(team.Id);
-                }
-
                 Console.WriteLine($"Getting assignments from MeAssignments Endpoint");
                 var meAssignments = await MicrosoftGraphSDK.User.GetMeAssignmentsAsync(graphClient);
 
-                // Exclude assignments from archived classes
-                var finalList = meAssignments.ExceptBy(archivedTeams, x => x.ClassId );
+                // Exclude assignments from archived and deleted classes
+                var finalList = meAssignments.Join(
+                    joinedTeams.Where(t => (bool)!t.IsArchived),
+                    assignment => assignment.ClassId,
+                    team => team.Id,
+                    (assignment, team) => assignment);
 
                 // Iterate over all the assignments
                 foreach (var assignment in finalList)
