@@ -74,7 +74,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                 // Exclude assignments from archived and deleted classes
                 var finalList = meAssignments.Join(                 // First source
-                    joinedTeams.Where(t => (bool)!t.IsArchived),    // Second source with filter applied to discard archived classes
+                    joinedTeams.Where(t => t.IsArchived == false),  // Second source with filter applied to discard archived classes
                     assignment => assignment.ClassId,               // Key selector for me assignments
                     team => team.Id,                                // Key selector for joined teams
                     (assignment, team) => assignment);              // Expression to formulate the result
