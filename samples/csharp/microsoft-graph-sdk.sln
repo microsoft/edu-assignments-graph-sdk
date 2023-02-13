@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicrosoftGraphSDK", "Micros
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicrosoftEduGraphSamples", "MicrosoftEduGraphSamples\MicrosoftEduGraphSamples.csproj", "{A90E956C-44B0-4297-84ED-C43B46C5EDAC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicrosoftEduImportFromGoogle", "MicrosoftEduImportFromGoogle\MicrosoftEduImportFromGoogle.csproj", "{554FF228-EC4E-4BEA-B992-66A5BD015786}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A90E956C-44B0-4297-84ED-C43B46C5EDAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A90E956C-44B0-4297-84ED-C43B46C5EDAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A90E956C-44B0-4297-84ED-C43B46C5EDAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{554FF228-EC4E-4BEA-B992-66A5BD015786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{554FF228-EC4E-4BEA-B992-66A5BD015786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{554FF228-EC4E-4BEA-B992-66A5BD015786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{554FF228-EC4E-4BEA-B992-66A5BD015786}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
