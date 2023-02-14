@@ -8,9 +8,14 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\MicrosoftGraphSDK\MicrosoftGraphSDK.csproj" />
-    <ProjectReference Include="..\MicrosoftEduGraphSamples\MicrosoftEduGraphSamples.csproj" />
+	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
+	<ItemGroup>
+		<None Update="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 </Project>
