@@ -34,7 +34,7 @@ namespace MicrosoftEduImportFromGoogle
             http.Start();
 
             // Creates the OAuth 2.0 authorization request.
-            string authorizationRequest = string.Format("{0}?response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fclassroom.courses.readonly%20profile&redirect_uri={1}&client_id={2}&state={3}&code_challenge={4}&code_challenge_method={5}",
+            string authorizationRequest = string.Format("{0}?response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fclassroom.courses.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fclassroom.coursework.students.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fclassroom.courseworkmaterials.readonly&redirect_uri={1}&client_id={2}&state={3}&code_challenge={4}&code_challenge_method={5}",
                 authorizationEndpoint,
                 System.Uri.EscapeDataString(redirectURI),
                 clientID,
@@ -43,10 +43,6 @@ namespace MicrosoftEduImportFromGoogle
                 code_challenge_method);
 
             // Opens request in the browser.
-            // System.Diagnostics.Process.StartIn(authorizationRequest);
-            ///var psi = new ProcessStartInfo("msedge.exe");
-            //psi.Arguments = authorizationRequest;
-            //Process.Start(psi);
             OpenBrowser(authorizationRequest);
 
 

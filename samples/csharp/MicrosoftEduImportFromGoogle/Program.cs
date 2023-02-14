@@ -9,5 +9,10 @@ IConfiguration config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", true, true)
     .Build();
 
-Courses courses = new Courses(config);
-await courses.Get();
+Import import = new Import(config);
+await import.AuthorizeApp();
+List<string> courseIds = await import.GetCourses();
+Console.WriteLine("Select Course to get Started...");
+int index = Convert.ToInt32(Console.ReadLine());
+await import.GetCourseWork(courseIds[index-1]);
+await import.GetCourseWorkMaterials(courseIds[index - 1]);
