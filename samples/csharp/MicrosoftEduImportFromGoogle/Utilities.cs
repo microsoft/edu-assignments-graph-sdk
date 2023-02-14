@@ -15,10 +15,6 @@ namespace MicrosoftEduImportFromGoogle
 {
     internal class Utilities
     {
-        //const string clientID = "39536657049-0516o0qd345da2u7t9d8c0te44qp1ebk.apps.googleusercontent.com";
-        //const string clientSecret = "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";
-        //const string authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
-
         public static async Task<string> AuthorizeAppAndGetToken(string clientID, string clientSecret, string authorizationEndpoint)
         {
             // Generates state and PKCE values.
