@@ -1,79 +1,75 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Azure.Core;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Graph;
 using MicrosoftEduImportFromGoogle.Models;
-using System.Text.Json;
+using MicrosoftGraphSDK;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MicrosoftEduImportFromGoogle
 {
     internal class Import
     {
         private readonly IConfiguration _config;
-        public string accessToken;
+        public GraphServiceClient graphServiceClient;
         public Import(IConfiguration configuration)
         {
             this._config = configuration;
         }
         public async Task AuthorizeApp()
         {
-            this.accessToken = await Utilities.AuthorizeAppAndGetToken(_config["googleClientId"], _config["googleClientSecret"], _config["googleAuthEndpoint"]);
+            this.graphServiceClient = await MicrosoftAuthenticator.InitializeMicrosoftGraphClient(_config["microsoftClientId"]);
+            
         }
 
-        // client configuration
-
-        public async Task<List<string>> GetCourses()
+        public List<EducationClass> GetMeClasses()
         {
-            List<string> courseIds= new List<string>();
-            string content = await Utilities.MakeHttpGetRequest(accessToken, "https://classroom.googleapis.com/v1/courses");
-            var options = new JsonSerializerOptions
+            return graphServiceClient.Education.Me.Classes
+                    .Request()
+                    .GetAsync()
+                    .Result.ToList();
+                    
+        }
+
+        public async Task<List<string>> MapAndCreateAssignments(CourseWork[] courseWorks, string classId)
+        {
+            List<string> assignmentsCreated = new List<string>();
+            foreach(var courseWork in courseWorks)
             {
-                PropertyNameCaseInsensitive = true
-            };
-            Dictionary<string, Course[]> courseDictionary = JsonSerializer.Deserialize<Dictionary<string, Course[]>>(content, options);
-            if(courseDictionary != null )
-            {
-                int i = 0;
-                foreach (var course in courseDictionary["courses"])
-                {
-                    i++;
-                    Console.WriteLine($"{i}) Course Id - {course.Id}, Course Name: {course.Name}, Description: {course.Description}");
-                    courseIds.Add(course.Id);
-                }
+                var createdAssignment = await CreateAssignmentAsync(classId,
+                    new EducationAssignment
+                    {
+                        DisplayName = courseWork.Title,
+                        Instructions = new EducationItemBody { Content = courseWork.Description },
+                        DueDateTime = DateTime.Now.AddDays(7),//revisit
+                    }
+                );
+                assignmentsCreated.Add(createdAssignment.DisplayName);
             }
-            return courseIds;
+            return assignmentsCreated;
         }
+        
 
-        public async Task GetCourseWork(string courseId)
+        public async Task<EducationAssignment> CreateAssignmentAsync(
+            string classId,
+            EducationAssignment educationAssignment)
         {
-            Console.WriteLine("Course Work");
-            Console.WriteLine("________________________________________");
-            string url = $"https://classroom.googleapis.com/v1/courses/{courseId}/courseWork";
-            string content = await Utilities.MakeHttpGetRequest(accessToken, url);
-            var options = new JsonSerializerOptions
+            try
             {
-                PropertyNameCaseInsensitive = true
-            };
-            Dictionary<string, CourseWork[]> courseDictionary = JsonSerializer.Deserialize<Dictionary<string, CourseWork[]>>(content, options);
-            foreach (var work in courseDictionary["courseWork"])
-            {
-                Console.WriteLine($"Id: {work.Id},Title: {work.Title}, Description: {work.Description}");
+                return await graphServiceClient.Education
+                    .Classes[classId]
+                    .Assignments
+                    .Request()
+                    .Header("Prefer", "include-unknown-enum-members")
+                    .AddAsync(educationAssignment);
             }
-        }
-        public async Task GetCourseWorkMaterials(string courseId)
-        {
-            Console.WriteLine("Course Materials");
-            Console.WriteLine("________________________________________");
-            string url = $"https://classroom.googleapis.com/v1/courses/{courseId}/courseWorkMaterials";
-            string content = await Utilities.MakeHttpGetRequest(accessToken, url);
-            var options = new JsonSerializerOptions
+            catch (Exception ex)
             {
-                PropertyNameCaseInsensitive = true
-            };
-            Dictionary<string, CourseWorkMaterials[]> courseDictionary = JsonSerializer.Deserialize<Dictionary<string, CourseWorkMaterials[]>>(content, options);
-            foreach(var material in courseDictionary["courseWorkMaterial"])
-            {
-                Console.WriteLine($"Id: {material.Id},Title: {material.Title}, Link: {material.AlternateLink}");
+                throw new GraphException($"CreateAsync call: {ex.Message}", ex, classId);
             }
         }
-
-
     }
 }
