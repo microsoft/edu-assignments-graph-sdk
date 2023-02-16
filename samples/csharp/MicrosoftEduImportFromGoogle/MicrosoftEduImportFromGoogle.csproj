@@ -8,6 +8,10 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\MicrosoftGraphSDK\MicrosoftGraphSDK.csproj" />
+    <PackageReference Include="Google.Apis" Version="1.59.0" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.59.0" />
+    <PackageReference Include="Google.Apis.Core" Version="1.59.0" />
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.59.0.2958" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>

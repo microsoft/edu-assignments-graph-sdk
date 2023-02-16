@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Graph;
 using MicrosoftEduImportFromGoogle.Models;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Web;
 
 namespace MicrosoftEduImportFromGoogle
 {
@@ -77,6 +80,28 @@ namespace MicrosoftEduImportFromGoogle
             return courseWorkMaterialDictionary["courseWorkMaterial"];
         }
 
+        public async Task<Dictionary<string, string>> GetGoogleDriveFileMetadata(string fileId)
+        {
+            string url = $"https://www.googleapis.com/drive/v3/files/{fileId}";
+            Dictionary<string, string> fileDetails = JsonSerializer.Deserialize<Dictionary<string, string>>(await Utilities.MakeHttpGetRequest(accessToken, url));
+            return fileDetails;
+        }
+
+        public async Task<Byte[]> GetGoogleDoc(string fileId, string targetMimeType, bool export = false)
+        {
+            string query = export ? $"/export?mimeType={targetMimeType}" : "?alt=media";
+            //string url;
+            //if(export)
+            //{
+            //    url = $"https://www.googleapis.com/drive/v3/files/{fileId}/export?mimeType={targetMimeType}";
+            //}
+            //else
+            //{
+            //    url = $"https://www.googleapis.com/drive/v3/files/{fileId}?alt=media";
+            //}
+            string url = $"https://www.googleapis.com/drive/v3/files/{fileId}{query}";
+            return await Utilities.MakeHttpGetByteArrayRequest(accessToken, url);
+        }
 
     }
 }

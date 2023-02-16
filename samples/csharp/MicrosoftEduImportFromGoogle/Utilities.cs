@@ -13,8 +13,22 @@ using System.Runtime.InteropServices;
 
 namespace MicrosoftEduImportFromGoogle
 {
-    internal class Utilities
+    public class FileTypeDetails
     {
+        public string FileExtension { get; set; }
+        public string FileMimeType { get; set; }
+    }
+    public class Utilities
+    {
+       
+        public static FileTypeDetails GetFileDetails(string sourceMimeType) => sourceMimeType switch
+        {
+            "application/vnd.google-apps.document" => new FileTypeDetails { FileExtension = ".docx", FileMimeType = WebUtility.UrlEncode("application/vnd.openxmlformats-officedocument.wordprocessingml.document") },
+            "application/vnd.google-apps.presentation" => new FileTypeDetails { FileExtension = ".pptx", FileMimeType = WebUtility.UrlEncode("application/vnd.openxmlformats-officedocument.presentationml.presentation") },
+            "application/vnd.google-apps.spreadsheet" => new FileTypeDetails { FileExtension = ".xlsx", FileMimeType = WebUtility.UrlEncode("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") },
+            _ => new FileTypeDetails { FileExtension = "", FileMimeType = sourceMimeType }
+        };
+
         public static async Task<string> MakeHttpGetRequest(string access_token, string url)
         {
             using (HttpClient client = new HttpClient())
@@ -27,6 +41,19 @@ namespace MicrosoftEduImportFromGoogle
                     var content = await response.Content.ReadAsStringAsync();
                     return content;
 
+                }
+            }
+        }
+        public static async Task<Byte[]> MakeHttpGetByteArrayRequest(string access_token, string url)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+                httpRequestMessage.Headers.Authorization =
+                    new AuthenticationHeaderValue("Bearer", access_token);
+                using (HttpResponseMessage response = await client.SendAsync(httpRequestMessage))
+                {
+                    return await response.Content.ReadAsByteArrayAsync();
                 }
             }
         }
