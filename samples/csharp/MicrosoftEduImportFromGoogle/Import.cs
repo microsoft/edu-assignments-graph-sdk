@@ -1,19 +1,7 @@
-﻿using Azure.Core;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
-using Microsoft.Graph.SecurityNamespace;
-using Microsoft.IdentityModel.Tokens;
 using MicrosoftEduImportFromGoogle.Models;
 using MicrosoftGraphSDK;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace MicrosoftEduImportFromGoogle
 {
@@ -61,7 +49,7 @@ namespace MicrosoftEduImportFromGoogle
             }
             return assignmentsCreated;
         }
-        
+
 
         private async Task MapAndCreateResources(List<Material> materials, EducationAssignment createdAssignment, Export exporterInstance)
         {
@@ -74,11 +62,11 @@ namespace MicrosoftEduImportFromGoogle
                     var sourceFileMetadata = await exporterInstance.GetGoogleDriveFileMetadata(material.DriveFile.DriveFile.Id);
                     FileTypeDetails targetFileTypeDetails = Utilities.GetFileDetails(sourceFileMetadata["mimeType"]);
                     fileAsByteArray = await exporterInstance.GetGoogleDoc(material.DriveFile.DriveFile.Id, targetFileTypeDetails.FileMimeType, !string.IsNullOrEmpty(targetFileTypeDetails.FileExtension));
-                    
+
                     fileName = $"{material.DriveFile.DriveFile.Title}{targetFileTypeDetails.FileExtension}";
                     if (fileName != null)
                     {
-                        if(createdAssignment.ResourcesFolderUrl == null)
+                        if (createdAssignment.ResourcesFolderUrl == null)
                         {
                             createdAssignment = await graphServiceClient.Education.Classes[createdAssignment.ClassId].Assignments[createdAssignment.Id]
                             .SetUpResourcesFolder()
@@ -100,7 +88,7 @@ namespace MicrosoftEduImportFromGoogle
                             .PutAsync<DriveItem>(fileStream);
                         }
                         string assignmentFileUrl = $"https://graph.microsoft.com/v1.0/drives/{driveId}/items/{driveItem.Id}";
-                        
+
                         EducationAssignmentResource assignmentResource = new EducationAssignmentResource() { DistributeForStudentWork = material.DriveFile.ShareMode == "STUDENT_COPY" };
                         EducationResource educationResource = GetEducationResource(sourceFileMetadata["mimeType"], assignmentFileUrl, fileName);
                         assignmentResource.Resource = educationResource;
@@ -111,7 +99,7 @@ namespace MicrosoftEduImportFromGoogle
                             .AddAsync(assignmentResource);
                     }
                 }
-                else if(material.Link != null)
+                else if (material.Link != null)
                 {
                     EducationAssignmentResource assignmentResource = new EducationAssignmentResource() { DistributeForStudentWork = false };
                     EducationResource educationResource = new EducationLinkResource
@@ -126,7 +114,7 @@ namespace MicrosoftEduImportFromGoogle
                             .Request()
                             .AddAsync(assignmentResource);
                 }
-                else if(material.YoutubeVideo!= null)
+                else if (material.YoutubeVideo != null)
                 {
                     EducationAssignmentResource assignmentResource = new EducationAssignmentResource() { DistributeForStudentWork = false };
                     EducationResource educationResource = new EducationLinkResource
@@ -146,7 +134,7 @@ namespace MicrosoftEduImportFromGoogle
         private EducationResource GetEducationResource(string mimeType, string fileUrl, string displayName)
         {
             EducationResource educationResource;
-            switch(mimeType)
+            switch (mimeType)
             {
                 case "application/vnd.google-apps.document":
                     educationResource = new EducationWordResource
@@ -157,6 +145,13 @@ namespace MicrosoftEduImportFromGoogle
                     break;
                 case "application/vnd.google-apps.presentation":
                     educationResource = new EducationPowerPointResource
+                    {
+                        FileUrl = fileUrl,
+                        DisplayName = displayName
+                    };
+                    break;
+                case "application/vnd.google-apps.spreadsheet":
+                    educationResource = new EducationExcelResource
                     {
                         FileUrl = fileUrl,
                         DisplayName = displayName
@@ -176,7 +171,7 @@ namespace MicrosoftEduImportFromGoogle
         public async Task<EducationAssignment> CreateAssignmentAsync(
             string classId,
             EducationAssignment educationAssignment)
-        
+
         {
             try
             {

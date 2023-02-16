@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Graph;
 using MicrosoftEduImportFromGoogle.Models;
-using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Web;
 
 namespace MicrosoftEduImportFromGoogle
 {
@@ -24,14 +21,14 @@ namespace MicrosoftEduImportFromGoogle
 
         public async Task<Course[]> GetCourses()
         {
-            List<string> courseIds= new List<string>();
+            List<string> courseIds = new List<string>();
             string content = await Utilities.MakeHttpGetRequest(accessToken, "https://classroom.googleapis.com/v1/courses");
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
             Dictionary<string, Course[]> courseDictionary = JsonSerializer.Deserialize<Dictionary<string, Course[]>>(content, options);
-            if(courseDictionary != null )
+            if (courseDictionary != null)
             {
                 int i = 0;
                 foreach (var course in courseDictionary["courses"])
@@ -73,7 +70,7 @@ namespace MicrosoftEduImportFromGoogle
                 PropertyNameCaseInsensitive = true
             };
             Dictionary<string, CourseWorkMaterials[]> courseWorkMaterialDictionary = JsonSerializer.Deserialize<Dictionary<string, CourseWorkMaterials[]>>(content, options);
-            foreach(var material in courseWorkMaterialDictionary["courseWorkMaterial"])
+            foreach (var material in courseWorkMaterialDictionary["courseWorkMaterial"])
             {
                 Console.WriteLine($"Id: {material.Id},Title: {material.Title}, Link: {material.AlternateLink}");
             }
@@ -90,15 +87,6 @@ namespace MicrosoftEduImportFromGoogle
         public async Task<Byte[]> GetGoogleDoc(string fileId, string targetMimeType, bool export = false)
         {
             string query = export ? $"/export?mimeType={targetMimeType}" : "?alt=media";
-            //string url;
-            //if(export)
-            //{
-            //    url = $"https://www.googleapis.com/drive/v3/files/{fileId}/export?mimeType={targetMimeType}";
-            //}
-            //else
-            //{
-            //    url = $"https://www.googleapis.com/drive/v3/files/{fileId}?alt=media";
-            //}
             string url = $"https://www.googleapis.com/drive/v3/files/{fileId}{query}";
             return await Utilities.MakeHttpGetByteArrayRequest(accessToken, url);
         }
