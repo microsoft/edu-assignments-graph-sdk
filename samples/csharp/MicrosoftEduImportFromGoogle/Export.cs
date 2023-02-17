@@ -19,44 +19,29 @@ namespace MicrosoftEduImportFromGoogle
 
         // client configuration
 
-        public async Task<Course[]> GetCourses()
+        public async Task<Course[]?> GetCourses()
         {
-            List<string> courseIds= new List<string>();
+            Console.WriteLine("* Fetching courses from Google Classroom...");
             string content = await Utilities.MakeHttpGetRequest(accessToken, "https://classroom.googleapis.com/v1/courses");
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
-            Dictionary<string, Course[]> courseDictionary = JsonSerializer.Deserialize<Dictionary<string, Course[]>>(content, options);
-            if(courseDictionary != null )
-            {
-                int i = 0;
-                foreach (var course in courseDictionary["courses"])
-                {
-                    i++;
-                    Console.WriteLine($"{i}) Course Id - {course.Id}, Course Name: {course.Name}, Description: {course.Description}");
-                    courseIds.Add(course.Id);
-                }
-            }
-            return courseDictionary["courses"];
+            Dictionary<string, Course[]>? courseDictionary = JsonSerializer.Deserialize<Dictionary<string, Course[]>>(content, options);
+            return (courseDictionary == null) ? null : courseDictionary?["courses"];
         }
 
-        public async Task<CourseWork[]> GetCourseWork(string courseId)
+        public async Task<CourseWork[]?> GetCourseWork(Course course)
         {
-            Console.WriteLine("\nCourse Work");
-            Console.WriteLine("________________________________________");
-            string url = $"https://classroom.googleapis.com/v1/courses/{courseId}/courseWork";
+			Console.WriteLine("* Getting coursework for course [{0}] from Google Classroom...", course.Name);
+			string url = $"https://classroom.googleapis.com/v1/courses/{course.Id}/courseWork";
             string content = await Utilities.MakeHttpGetRequest(accessToken, url);
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
-            Dictionary<string, CourseWork[]> courseWorkDictionary = JsonSerializer.Deserialize<Dictionary<string, CourseWork[]>>(content, options);
-            foreach (var work in courseWorkDictionary["courseWork"])
-            {
-                Console.WriteLine($"Id: {work.Id},Title: {work.Title}, Description: {work.Description}");
-            }
-            return courseWorkDictionary["courseWork"];
+            Dictionary<string, CourseWork[]>? courseWorkDictionary = JsonSerializer.Deserialize<Dictionary<string, CourseWork[]>>(content, options);
+            return (courseWorkDictionary == null) ? null : courseWorkDictionary["courseWork"];
         }
 
         public async Task<CourseWorkMaterials[]> GetCourseWorkMaterials(string courseId)

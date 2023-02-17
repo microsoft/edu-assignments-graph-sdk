@@ -1,55 +1,112 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ConsoleTools;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Graph;
 using MicrosoftEduImportFromGoogle;
 using MicrosoftEduImportFromGoogle.Models;
 
 // See https://aka.ms/new-console-template for more information
+Console.WriteLine("--- Google Classroom Migrator (v0.1) ---");
 
 // Build configuration
+Console.WriteLine("* Reading configuration...");
 IConfiguration config = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
+    .SetBasePath(System.IO.Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", true, true)
     .Build();
 
-//Export from Google
+// -- Google Classroom side selections
 
+// Authorize with Google
+Console.WriteLine("* Signing in to Google Classroom...");
+Thread.Sleep(2000);
 Export export = new Export(config);
 await export.AuthorizeApp();
-Course[] courses = await export.GetCourses();
-Console.WriteLine("Select Course and hit Enter to start import process.");
-int index = Convert.ToInt32(Console.ReadLine());
 
-CourseWork[] courseWorkList = await export.GetCourseWork(courses[index - 1].Id);
-Console.WriteLine("Select Coursework to copy. Enter courseworks to copy as a \"space\" separated list.\neg: 3 5 6\n OR. Enter 0(zero) to copy everything.");
-List<string> courseWorkIds = new List<string>();
-string courseWorkIndices = Console.ReadLine();
-if (Int32.TryParse(Console.ReadLine(), out index) && index == 0)
+// Choose a course
+Course[]? courses = await export.GetCourses();
+if (courses == null)
 {
-    var courseWorkToCopy = courseWorkList;
-}
-try
-{
-    IEnumerable<int> indices = Console.ReadLine().Split(' ').Select(x => Convert.ToInt32(x));
-    var courseWorkToCopy = courseWorkList.Where((x, i) => indices.Contains(i));
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Wrong input, {ex.Message}");
+	Console.WriteLine("!! No courses found in Google Classroom !!");
+    goto lastStep;
 }
 
+Course? selectedCourse = null;
+ConsoleMenu courseMenu = new ConsoleMenu()
+.AddRange(courses.Select(x => new Tuple<string, Action>(x.Name, () => { selectedCourse = x; })))
+.Add("DONE CHOOSING", ConsoleMenu.Close)
+.Configure(config =>
+{
+    config.WriteHeaderAction = () => Console.WriteLine("** Choose a Google Classroom course to export coursework from:");
+});
+courseMenu.Show();
+courseMenu.CloseMenu();
+if (selectedCourse == null)
+{
+	Console.WriteLine("!! No courses selected !!");
+	goto lastStep;
+}
 
-// Import to Microsoft
+// Choose coursework from the selected course
+CourseWork[]? courseWorkList = await export.GetCourseWork(selectedCourse);
+if (courseWorkList == null)
+{
+	Console.WriteLine("!! No coursework found in Google Classroom for course [{0}] !!", selectedCourse.Name);
+	goto lastStep;
+}
 
+List<CourseWork> selectedCourseWorkList = new List<CourseWork>();
+ConsoleMenu courseWorkMenu = new ConsoleMenu()
+.Add("ADD ALL COURSEWORK", () => { selectedCourseWorkList = courseWorkList.ToList(); })
+.AddRange(courseWorkList.Select(x => new Tuple<string, Action>(x.Title, () => { selectedCourseWorkList.Add(x); })))
+.Add("DONE CHOOSING", ConsoleMenu.Close)
+.Configure(config =>
+{
+	config.WriteHeaderAction = () => Console.WriteLine("** Choose one or more coursework to export from Google Classroom course [{0}]:", selectedCourse.Name);
+});
+courseWorkMenu.Show();
+courseWorkMenu.CloseMenu();
+selectedCourseWorkList = selectedCourseWorkList.DistinctBy(x => x.Id).ToList();
+if (!selectedCourseWorkList.Any())
+{
+	Console.WriteLine("!! No coursework selected from course [{0}] !!", selectedCourse.Name);
+	goto lastStep;
+}
+
+// -- Microsoft Teams side selections
+
+// Authorize with Microsoft
 Import import = new Import(config);
 await import.AuthorizeApp();
-var myClasses = import.GetMeClasses();
-for(int i = 0; i< myClasses.Count; i++)
+
+// Choose a class
+var classes = import.GetMeClasses();
+if (!classes.Any())
 {
-    Console.WriteLine($"{i+1}) Class Name:{myClasses[i].DisplayName}");
+	Console.WriteLine("!! No classes found in Microsoft Teams !!");
+	goto lastStep;
 }
-Console.WriteLine("Select the class you want to import to...");
-int classIndex = Convert.ToInt32(Console.ReadLine());
 
-await import.MapAndCreateAssignments(courseWorkList ,myClasses[classIndex - 1].Id);
+EducationClass? selectedClass = null;
+ConsoleMenu classMenu = new ConsoleMenu()
+.AddRange(classes.Select(x => new Tuple<string, Action>(x.DisplayName, () => { selectedClass = x; })))
+.Add("DONE CHOOSING", ConsoleMenu.Close)
+.Configure(config =>
+{
+	config.WriteHeaderAction = () => Console.WriteLine("** Choose a Microsoft Teams class team to import Google Classroom coursework to:");
+});
+classMenu.Show();
+classMenu.CloseMenu();
+if (selectedClass == null)
+{
+	Console.WriteLine("!! No class selected !!");
+	goto lastStep;
+}
 
-//await export.GetCourseWorkMaterials(courseIds[index - 1]);
+// -- Do the actual migration
 
+await import.MapAndCreateAssignments(courseWorkList, selectedClass.Id);
+Console.WriteLine("--- Google Classroom migration to Microsoft Teams completed successfully! ---");
+
+lastStep:
+Console.WriteLine("* Type any key to exit...");
+Console.ReadKey();

@@ -27,7 +27,8 @@ namespace MicrosoftEduImportFromGoogle
 
         public List<EducationClass> GetMeClasses()
         {
-            return graphServiceClient.Education.Me.Classes
+			Console.WriteLine("* Fetching classes from Microsoft Teams...");
+			return graphServiceClient.Education.Me.Classes
                     .Request()
                     .GetAsync()
                     .Result.ToList();
@@ -36,7 +37,8 @@ namespace MicrosoftEduImportFromGoogle
 
         public async Task<List<string>> MapAndCreateAssignments(CourseWork[] courseWorks, string classId)
         {
-            List<string> assignmentsCreated = new List<string>();
+			Console.WriteLine("* Importing coursework from Google Classroom into Microsoft Teams...");
+			List<string> assignmentsCreated = new List<string>();
             foreach(var courseWork in courseWorks)
             {
                 var createdAssignment = await CreateAssignmentAsync(classId,
