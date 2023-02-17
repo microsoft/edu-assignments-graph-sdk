@@ -10,9 +10,9 @@ Console.WriteLine("--- Google Classroom Migrator (v0.1) ---");
 // Build configuration
 Console.WriteLine("* Reading configuration...");
 IConfiguration config = new ConfigurationBuilder()
-    .SetBasePath(System.IO.Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", true, true)
-    .Build();
+	.SetBasePath(System.IO.Directory.GetCurrentDirectory())
+	.AddJsonFile("appsettings.json", true, true)
+	.Build();
 
 // -- Google Classroom side selections
 
@@ -27,7 +27,7 @@ Course[]? courses = await export.GetCourses();
 if (courses == null)
 {
 	Console.WriteLine("!! No courses found in Google Classroom !!");
-    goto lastStep;
+	goto lastStep;
 }
 
 Course? selectedCourse = null;
@@ -36,7 +36,7 @@ ConsoleMenu courseMenu = new ConsoleMenu()
 .Add("DONE CHOOSING", ConsoleMenu.Close)
 .Configure(config =>
 {
-    config.WriteHeaderAction = () => Console.WriteLine("** Choose a Google Classroom course to export coursework from:");
+	config.WriteHeaderAction = () => Console.WriteLine("** Choose a Google Classroom course to export coursework from:");
 });
 courseMenu.Show();
 courseMenu.CloseMenu();
@@ -104,7 +104,7 @@ if (selectedClass == null)
 
 // -- Do the actual migration
 
-await import.MapAndCreateAssignments(courseWorkList, selectedClass.Id);
+await import.MapAndCreateAssignments(selectedCourseWorkList.ToArray(), selectedClass.Id, export);
 Console.WriteLine("--- Google Classroom migration to Microsoft Teams completed successfully! ---");
 
 lastStep:
