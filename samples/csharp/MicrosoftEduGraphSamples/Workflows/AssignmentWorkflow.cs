@@ -59,17 +59,21 @@ namespace MicrosoftEduGraphSamples.Workflows
         /// <summary>
         /// Workflow to get assignments from all the classes which are not archived
         /// </summary>
-        public async Task<IEnumerable<EducationAssignment>> GetMeAssignmentsFromNonArchivedClassesAsync()
+        /// <param name="isTeacher">True value accepts Teacher account and false for Student account</param> 
+        public async Task<IEnumerable<EducationAssignment>> GetMeAssignmentsFromNonArchivedClassesAsync(bool isTeacher = true)
         {
             try
             {
+                //Check user details for assignments               
+                string userAccount = isTeacher ? _config["teacherAccount"] : _config["studentAccount"];
+
                 // Get a Graph client using delegated permissions
-                var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+                var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], userAccount, _config["password"]);
 
                 // Call to get user classes
                 var joinedTeams = await graphClient.GetJoinedTeamsAsync();
 
-                Console.WriteLine($"Getting assignments from MeAssignments Endpoint");
+                Console.WriteLine($"Getting assignments from MeAssignments Endpoint for {userAccount}");
                 var meAssignments = await MicrosoftGraphSDK.User.GetMeAssignmentsAsync(graphClient);
 
                 // Exclude assignments from archived and deleted classes
@@ -88,7 +92,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                 return finalList;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"AssignmentsFromNotArchivedClasses: {ex.ToString()}");
                 return null;
