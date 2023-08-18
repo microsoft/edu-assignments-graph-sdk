@@ -114,7 +114,7 @@ Use the `Program.cs` file to test any of the current workflows.
 |    | Sample Name        | Description                                                                      | C#    |
 |:--:|:-------------------|:----------------------------------------------------------------------------------------------|:--------|
 |1| Reassign submission   | Sample showing how the teacher creates an assignment and then publish it; the student submit his work and then teacher reassign it with feedback.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/SubmissionWorkflow.cs#L63)|
-|2| Filter archived classes from assignments   | Get me assignments from non-archived classes.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/AssignmentWorkflow.cs#L63)|
+|2| Filter archived and deleted classes from assignments | Get me assignments from active and non-archived classes. |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/AssignmentWorkflow.cs#L63)|
 |3| Get assignment submissions using batch request   | Since as a teacher you can't expand submissions, you will have to request every assignment for submissions on it. This SDK sample is to illustrate on how you can do this in a single batch request.|[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/SubmissionWorkflow.cs#L154)|
 
 ## Need help?
