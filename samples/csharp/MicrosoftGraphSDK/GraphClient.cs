@@ -53,13 +53,18 @@ namespace MicrosoftGraphSDK
         {
             try
             {
-                var clientSecretCredential = new ClientSecretCredential(tenantId, applicationId, secret);
-                const string DefaultAuthScope = "https://graph.microsoft.com/.default";
-                var authProvider = new TokenCredentialAuthProvider(
-                    clientSecretCredential,
-                    new List<string> { DefaultAuthScope });
+                var scopes = new[] { "https://graph.microsoft.com/.default" };
 
-                return new Microsoft.Graph.GraphServiceClient(authProvider);
+                var options = new ClientSecretCredentialOptions
+                {
+                    AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
+                };
+
+                // Learn more: https://learn.microsoft.com/dotnet/api/azure.identity.clientsecretcredential
+                var clientSecretCredential = new ClientSecretCredential(
+                    tenantId, applicationId, secret, options);
+
+                return new GraphServiceClient(clientSecretCredential, scopes);
             }
             catch (Exception ex)
             {

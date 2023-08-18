@@ -53,8 +53,8 @@ All the methods added in those classes can be used into your application.
 This project works with these nuget packages:
 
 * [Azure.Identity (1.6.1)](https://www.nuget.org/packages/Azure.Identity).
-* [Microsoft.Graph.Beta (latest 4.XX.X) for Beta](https://www.nuget.org/packages/Microsoft.Graph.Beta/4.67.0-preview).
-* [Microsoft.Graph (latest 4.XX.X) for V1.0](https://www.nuget.org/packages/Microsoft.Graph/4.48.0).
+* [Microsoft.Graph.Beta (latest 5.XX.X) for Beta](https://www.nuget.org/packages/Microsoft.Graph.Beta/5.44.0-preview).
+* [Microsoft.Graph (latest 5.XX.X) for V1.0](https://www.nuget.org/packages/Microsoft.Graph).
 
 > __NOTE__: make sure you install only the package needed according to the desired version, the project is using `Microsoft.Graph` package for `v1.0` by default. Both packages (`Microsoft.Graph` and `Microsoft.Graph.Beta`) __cannot__ be installed at the same time.
 
@@ -67,8 +67,8 @@ Go to menu **View / Other Windows / Package Manager Console**, and copy and run 
 ```
     Uninstall-Package Microsoft.Graph.Beta -Project MicrosoftEduGraphSamples
     Uninstall-Package Microsoft.Graph.Beta -Project MicrosoftGraphSDK
-    Install-Package Microsoft.Graph -Version 4.48.0 -Project MicrosoftEduGraphSamples
-    Install-Package Microsoft.Graph -Version 4.48.0 -Project MicrosoftGraphSDK
+    Install-Package Microsoft.Graph -Version 5.21.0 -Project MicrosoftEduGraphSamples
+    Install-Package Microsoft.Graph -Version 5.21.0 -Project MicrosoftGraphSDK
 ```
 
 * Switch to Beta
@@ -76,8 +76,8 @@ Go to menu **View / Other Windows / Package Manager Console**, and copy and run 
 ```
     Uninstall-Package Microsoft.Graph -Project MicrosoftEduGraphSamples
     Uninstall-Package Microsoft.Graph -Project MicrosoftGraphSDK
-    Install-Package Microsoft.Graph.Beta -Version 4.67.0-preview -Project MicrosoftEduGraphSamples
-    Install-Package Microsoft.Graph.Beta -Version 4.67.0-preview -Project MicrosoftGraphSDK
+    Install-Package Microsoft.Graph.Beta -Version 5.44.0-preview -Project MicrosoftEduGraphSamples
+    Install-Package Microsoft.Graph.Beta -Version 5.44.0-preview -Project MicrosoftGraphSDK
  ```
 
 ### MicrosoftEduGraphSamples
@@ -95,8 +95,8 @@ Use the `Program.cs` file to test any of the current workflows.
 
 2. Install/uninstall nuget packages as needed.
 
-    * Microsoft.Graph.Beta (latest 4.XX.X) for Beta.
-    * Microsoft.Graph (latest 4.XX.X) for V1.0. *Installed by default*.
+    * Microsoft.Graph.Beta (latest 5.XX.X) for Beta.
+    * Microsoft.Graph (latest 5.XX.X) for V1.0. *Installed by default*.
 
 3. Create an instance of the class you want to test.
 
@@ -113,9 +113,9 @@ Use the `Program.cs` file to test any of the current workflows.
 ## [Code samples](/samples/csharp/MicrosoftEduGraphSamples/workflows)
 |    | Sample Name        | Description                                                                      | C#    |
 |:--:|:-------------------|:----------------------------------------------------------------------------------------------|:--------|
-|1| Reassign submission   | Sample showing how the teacher creates an assignment and then publish it; the student submit his work and then teacher reassign it with feedback.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/SubmissionWorkflow.cs#L62)|
-|2| Filter archived classes from assignments   | Get me assignments from non-archived classes.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/AssignmentWorkflow.cs#L62)|
-|3| Get assignment submissions using batch request   | Since as a teacher you can't expand submissions, you will have to request every assignment for submissions on it. This SDK sample is to illustrate on how you can do this in a single batch request.|[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/SubmissionWorkflow.cs#L153)|
+|1| Reassign submission   | Sample showing how the teacher creates an assignment and then publish it; the student submit his work and then teacher reassign it with feedback.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/SubmissionWorkflow.cs#L63)|
+|2| Filter archived classes from assignments   | Get me assignments from non-archived classes.                      |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/AssignmentWorkflow.cs#L63)|
+|3| Get assignment submissions using batch request   | Since as a teacher you can't expand submissions, you will have to request every assignment for submissions on it. This SDK sample is to illustrate on how you can do this in a single batch request.|[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/SubmissionWorkflow.cs#L154)|
 
 ## Need help?
 

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.Graph;
+using Microsoft.Graph.Models;
 
 namespace MicrosoftGraphSDK
 {
@@ -17,7 +18,7 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment> GetAssignmentAsync(
+        public static async Task<EducationAssignment?> GetAssignmentAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId)
@@ -27,7 +28,6 @@ namespace MicrosoftGraphSDK
                 return await client.Education
                     .Classes[classId]
                     .Assignments[assignmentId]
-                    .Request()
                     .GetAsync();
             }
             catch (Exception ex)
@@ -41,8 +41,8 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
-        /// <returns>IEducationClassAssignmentsCollectionPage</returns>
-        public static async Task<IEducationClassAssignmentsCollectionPage> GetAssignmentsAsync(
+        /// <returns>EducationAssignmentCollectionResponse</returns>
+        public static async Task<EducationAssignmentCollectionResponse?> GetAssignmentsAsync(
             GraphServiceClient client,
             string classId)
         {
@@ -51,7 +51,6 @@ namespace MicrosoftGraphSDK
                 return await client.Education
                     .Classes[classId]
                     .Assignments
-                    .Request()
                     .GetAsync();
             }
             catch (Exception ex)
@@ -66,7 +65,7 @@ namespace MicrosoftGraphSDK
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment> CreateAsync(
+        public static async Task<EducationAssignment?> CreateAsync(
             GraphServiceClient client,
             string classId)
         {
@@ -83,10 +82,12 @@ namespace MicrosoftGraphSDK
                     },
                     Grading = new EducationAssignmentPointsGradeType
                     {
+                        OdataType = "#microsoft.graph.educationAssignmentPointsGradeType",
                         MaxPoints = 50f
                     },
                     AssignTo = new EducationAssignmentClassRecipient
                     {
+                        OdataType = "#microsoft.graph.educationAssignmentClassRecipient"
                     },
                     Status = EducationAssignmentStatus.Draft,
                     AllowStudentsToAddResourcesToSubmission = true,
@@ -96,9 +97,10 @@ namespace MicrosoftGraphSDK
                 return await client.Education
                     .Classes[classId]
                     .Assignments
-                    .Request()
-                    .Header("Prefer", "include-unknown-enum-members")
-                    .AddAsync(assignment);
+                    .PostAsync(assignment, requestConfig => {
+                            requestConfig.Headers.Add(
+                                "Prefer", "include-unknown-enum-members");
+                        });
             }
             catch (Exception ex)
             {
@@ -113,7 +115,7 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment> PublishAsync(
+        public static async Task<EducationAssignment?> PublishAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId)
@@ -123,8 +125,7 @@ namespace MicrosoftGraphSDK
                 return await client.Education
                     .Classes[classId]
                     .Assignments[assignmentId]
-                    .Publish()
-                    .Request()
+                    .Publish
                     .PostAsync();
             }
             catch (Exception ex)

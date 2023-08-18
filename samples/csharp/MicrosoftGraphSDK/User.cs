@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.Graph;
-using System;
+using Microsoft.Graph.Models;
 
 namespace MicrosoftGraphSDK
 {
@@ -15,14 +15,13 @@ namespace MicrosoftGraphSDK
         /// Returns current user information
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
-        /// <returns>Microsoft.Graph.User</returns>
-        public static async Task<Microsoft.Graph.User> GetUserInfoAsync(
+        /// <returns>Microsoft.Graph.Models.User</returns>
+        public static async Task<Microsoft.Graph.Models.User?> GetUserInfoAsync(
             GraphServiceClient client)
         {
             try
             {
                 return await client.Me
-                    .Request()
                     .GetAsync();
             }
             catch (Exception ex)
@@ -35,14 +34,13 @@ namespace MicrosoftGraphSDK
         /// Lists assignments for the given user
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
-        /// <returns>IEducationUserAssignmentsCollectionPage</returns>
-        public static async Task<IEducationUserAssignmentsCollectionPage> GetMeAssignmentsAsync(
+        /// <returns>EducationAssignmentCollectionResponse</returns>
+        public static async Task<EducationAssignmentCollectionResponse?> GetMeAssignmentsAsync(
             GraphServiceClient client)
         {
             try
             {
                 return await client.Education.Me.Assignments
-                    .Request()
                     .GetAsync();
             }
             catch (Exception ex)
@@ -56,17 +54,17 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="top">Top</param>
-        /// <returns>IEducationUserAssignmentsCollectionPage</returns>
-        public static async Task<IEducationUserAssignmentsCollectionPage> GetMeAssignmentsWithTopAsync(
+        /// <returns>EducationAssignmentCollectionResponse</returns>
+        public static async Task<EducationAssignmentCollectionResponse?> GetMeAssignmentsWithTopAsync(
             GraphServiceClient client,
             int top)
         {
             try
             {
                 return await client.Education.Me.Assignments
-                    .Request()
-                    .Top(top)
-                    .GetAsync();
+                    .GetAsync(requestConfiguration => { 
+                        requestConfiguration.QueryParameters.Top = top;
+                    });
             }
             catch (Exception ex)
             {
