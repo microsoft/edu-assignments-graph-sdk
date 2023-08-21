@@ -206,12 +206,10 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                     // "Value" contains the request response
                     var submissions = submissionsResponse.Value;
-                    foreach (var submission in submissions!)
+                    foreach (var submission in submissions)
                     {
                         Console.WriteLine($"Assignment {assignment.Id}, submission: {submission.Id}, status: {submission.Status}");
                     }
-
-                    Thread.Sleep(2000); // Wait two seconds between calls
                 }
             }
             catch (Exception ex)

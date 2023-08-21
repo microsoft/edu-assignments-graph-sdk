@@ -70,14 +70,8 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Get a Graph client using delegated permissions
                 var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], userAccount, _config["password"]);
 
-                // Get a Graph client using app-only permissions
-                var graphAppClient = GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]);
-
-                // Get user info
-                var teacher = await MicrosoftGraphSDK.User.GetUserInfoAsync(graphClient);
-
-                // Call to get user joined teams
-                var joinedTeams = await graphAppClient.GetUserJoinedTeamsAsync(teacher.Id);
+                // Call to get user classes
+                var joinedTeams = await graphClient.GetJoinedTeamsAsync();
 
                 Console.WriteLine($"Getting assignments from MeAssignments Endpoint for {userAccount}");
                 var meAssignments = await MicrosoftGraphSDK.User.GetMeAssignmentsAsync(graphClient);
