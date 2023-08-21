@@ -3,6 +3,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
+using Microsoft.Graph.Models;
 
 namespace MicrosoftEduGraphSamples.Workflows
 {
@@ -98,9 +99,9 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                 // Get the student submission
                 var submissions = await MicrosoftGraphSDK.Submission.GetSubmissionsAsync(graphClient, _config["classId"], assignmentId);
-                if (submissions.Count > 0) // submissions.Result.Value.Count (for Beta)
+                if (submissions.Value.Count > 0)
                 {
-                    submissionId = submissions[0].Id;
+                    submissionId = submissions.Value[0].Id;
                     Console.WriteLine($"Submission {submissionId} found for {_config["studentAccount"]}");
                 }
                 else
@@ -150,7 +151,8 @@ namespace MicrosoftEduGraphSamples.Workflows
         /// <summary>
         /// Workflow to create a batch request and get the responses
         /// </summary>
-        public async Task BatchRequestWorkflow() {
+        public async Task BatchRequestWorkflow()
+        {
             try
             {
                 // Get a Graph client using delegated permissions
@@ -160,37 +162,44 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                 // Batch is limited to 20 requests
                 var meAssignments = await MicrosoftGraphSDK.User.GetMeAssignmentsWithTopAsync(graphClient, 20);
-                
+
                 // Build the batch
-                var batchRequestContent = new BatchRequestContent();
+                var batchRequestContent = new BatchRequestContent(graphClient);
 
                 Console.WriteLine($"Iterating over me assignments");
-                foreach (var assignment in meAssignments)
+                foreach (var assignment in meAssignments.Value)
                 {
-                    // Adds each request to the batch
-                    batchRequestContent.AddBatchRequestStep(
-                            new BatchRequestStep(
-                                // Use the current assignment as id for this step
-                                assignment.Id,
-                                // The step takes the HttpRequestMessage from the request
-                                graphClient.Education
+                    // Use the request builder to generate a regular request to get the assignment submissions
+                    var asgSubmissionsRequest = graphClient.Education
                                     .Classes[assignment.ClassId]
                                     .Assignments[assignment.Id]
                                     .Submissions
-                                    .Request()
-                                    .GetHttpRequestMessage())
-                        );
+                                    .ToGetRequestInformation();
+
+                    // Create HttpRequestMessage for the regular request
+                    var eventsRequestMessage = await graphClient.RequestAdapter.ConvertToNativeRequestAsync<HttpRequestMessage>(
+                        asgSubmissionsRequest
+                     );
+
+                    // Adds each request to the batch
+                    batchRequestContent.AddBatchRequestStep(
+                        new BatchRequestStep(
+                            // Use the current assignment as id for this step
+                            assignment.Id,
+                            // The step takes the HttpRequestMessage from the request
+                            eventsRequestMessage)
+                    );
                 }
 
                 // Build a return response object for our batch
-                var returnedResponse = await graphClient.Batch.Request().PostAsync(batchRequestContent);
-                
-                foreach (var assignment in meAssignments)
+                var returnedResponse = await graphClient.Batch.PostAsync(batchRequestContent);
+
+                foreach (var assignment in meAssignments.Value)
                 {
                     Console.WriteLine($"Getting assignment {assignment.Id} submissions");
 
                     // De-serialize the response based on return type
-                    var submissionsResponse = await returnedResponse.GetResponseByIdAsync<EducationAssignmentSubmissionsCollectionResponse>(assignment.Id);
+                    var submissionsResponse = await returnedResponse.GetResponseByIdAsync<EducationSubmissionCollectionResponse>(assignment.Id);
 
                     // Get and print submissions (if any)
                     if (submissionsResponse == null) continue;

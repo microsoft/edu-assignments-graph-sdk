@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.Extensions.Configuration;
-using Microsoft.Graph;
+using Microsoft.Graph.Models;
 using MicrosoftGraphSDK;
 
 namespace MicrosoftEduGraphSamples.Workflows
@@ -64,11 +64,11 @@ namespace MicrosoftEduGraphSamples.Workflows
         {
             try
             {
-                //Check user details for assignments               
+                //Check user details for assignments
                 string userAccount = isTeacher ? _config["teacherAccount"] : _config["studentAccount"];
 
                 // Get a Graph client using delegated permissions
-                var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], userAccount, _config["password"]);
+                var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], userAccount, _config["password"]);
 
                 // Call to get user classes
                 var joinedTeams = await graphClient.GetJoinedTeamsAsync();
@@ -77,8 +77,8 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var meAssignments = await MicrosoftGraphSDK.User.GetMeAssignmentsAsync(graphClient);
 
                 // Exclude assignments from archived and deleted classes
-                var finalList = meAssignments.Join(                 // First source
-                    joinedTeams.Where(t => t.IsArchived == false),  // Second source with filter applied to discard archived classes
+                var finalList = meAssignments.Value.Join(                 // First source
+                    joinedTeams.Value.Where(t => t.IsArchived == false),  // Second source with filter applied to discard archived classes
                     assignment => assignment.ClassId,               // Key selector for me assignments
                     team => team.Id,                                // Key selector for joined teams
                     (assignment, team) => assignment);              // Expression to formulate the result

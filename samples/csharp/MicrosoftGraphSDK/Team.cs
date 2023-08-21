@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.Graph;
+using Microsoft.Graph.Models;
 
 namespace MicrosoftGraphSDK
 {
@@ -14,19 +15,39 @@ namespace MicrosoftGraphSDK
         /// Returns teams information joined by the user
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
-        /// <returns>V1.0: IUserJoinedTeamsCollectionPage | BETA: IUserJoinedTeamsCollectionWithReferencesPage</returns>
-        public static async Task<IUserJoinedTeamsCollectionPage> GetJoinedTeamsAsync(
+        /// <returns>TeamCollectionResponse</returns>
+        public static async Task<TeamCollectionResponse> GetJoinedTeamsAsync(
              this GraphServiceClient client)
         {
             try
             {
                 return await client.Me.JoinedTeams
-                    .Request()
                     .GetAsync();
             }
             catch (Exception ex)
             {
                 throw new GraphException($"GetJoinedTeamsAsync call: {ex.Message}", ex);
+            }
+        }
+
+        /// <summary>
+        /// Returns teams information joined by an specific user
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="userId">User id</param>
+        /// <returns>TeamCollectionResponse</returns>
+        public static async Task<TeamCollectionResponse> GetUserJoinedTeamsAsync(
+             this GraphServiceClient client,
+             string userId)
+        {
+            try
+            {
+                return await client.Users[userId].JoinedTeams
+                    .GetAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetUserJoinedTeamsAsync call: {ex.Message}", ex);
             }
         }
     }
