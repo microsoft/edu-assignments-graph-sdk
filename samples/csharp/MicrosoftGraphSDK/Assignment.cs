@@ -18,7 +18,7 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment?> GetAssignmentAsync(
+        public static async Task<EducationAssignment> GetAssignmentAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId)
@@ -42,7 +42,7 @@ namespace MicrosoftGraphSDK
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
         /// <returns>EducationAssignmentCollectionResponse</returns>
-        public static async Task<EducationAssignmentCollectionResponse?> GetAssignmentsAsync(
+        public static async Task<EducationAssignmentCollectionResponse> GetAssignmentsAsync(
             GraphServiceClient client,
             string classId)
         {
@@ -65,7 +65,7 @@ namespace MicrosoftGraphSDK
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment?> CreateAsync(
+        public static async Task<EducationAssignment> CreateAsync(
             GraphServiceClient client,
             string classId)
         {
@@ -115,7 +115,7 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment?> PublishAsync(
+        public static async Task<EducationAssignment> PublishAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId)

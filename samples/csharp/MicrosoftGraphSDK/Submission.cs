@@ -19,7 +19,7 @@ namespace MicrosoftGraphSDK
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="submissionId">Student submission id</param>
         /// <returns>EducationSubmission</returns>
-        public static async Task<EducationSubmission?> GetSubmissionAsync(
+        public static async Task<EducationSubmission> GetSubmissionAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId,
@@ -46,7 +46,7 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <returns>EducationSubmissionCollectionResponse</returns>
-        public static async Task<EducationSubmissionCollectionResponse?> GetSubmissionsAsync(
+        public static async Task<EducationSubmissionCollectionResponse> GetSubmissionsAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId)
@@ -75,7 +75,7 @@ namespace MicrosoftGraphSDK
         /// <param name="headerName">Header parameter name</param>
         /// <param name="headerValue">Value for the header parameter</param>
         /// <returns>EducationSubmission</returns>
-        public static async Task<EducationSubmission?> GetSubmissionWithHeaderAsync(
+        public static async Task<EducationSubmission> GetSubmissionWithHeaderAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId,
@@ -108,7 +108,7 @@ namespace MicrosoftGraphSDK
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="submissionId">Student submission id</param>
         /// <returns>EducationSubmission</returns>
-        public static async Task<EducationSubmission?> SubmitAsync(
+        public static async Task<EducationSubmission> SubmitAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId,
@@ -137,7 +137,7 @@ namespace MicrosoftGraphSDK
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="submissionId">Student submission id</param>
         /// <returns>EducationSubmission</returns>
-        public static async Task<EducationSubmission?> ReassignAsync(
+        public static async Task<EducationSubmission> ReassignAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId,

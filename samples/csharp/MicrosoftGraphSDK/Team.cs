@@ -16,7 +16,7 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <returns>TeamCollectionResponse</returns>
-        public static async Task<TeamCollectionResponse?> GetJoinedTeamsAsync(
+        public static async Task<TeamCollectionResponse> GetJoinedTeamsAsync(
              this GraphServiceClient client)
         {
             try
@@ -36,7 +36,7 @@ namespace MicrosoftGraphSDK
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="userId">User id</param>
         /// <returns>TeamCollectionResponse</returns>
-        public static async Task<TeamCollectionResponse?> GetUserJoinedTeamsAsync(
+        public static async Task<TeamCollectionResponse> GetUserJoinedTeamsAsync(
              this GraphServiceClient client,
              string userId)
         {

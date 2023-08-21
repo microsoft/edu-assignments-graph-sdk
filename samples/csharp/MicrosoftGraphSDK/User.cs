@@ -16,7 +16,7 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <returns>Microsoft.Graph.Models.User</returns>
-        public static async Task<Microsoft.Graph.Models.User?> GetUserInfoAsync(
+        public static async Task<Microsoft.Graph.Models.User> GetUserInfoAsync(
             GraphServiceClient client)
         {
             try
@@ -35,7 +35,7 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <returns>EducationAssignmentCollectionResponse</returns>
-        public static async Task<EducationAssignmentCollectionResponse?> GetMeAssignmentsAsync(
+        public static async Task<EducationAssignmentCollectionResponse> GetMeAssignmentsAsync(
             GraphServiceClient client)
         {
             try
@@ -55,7 +55,7 @@ namespace MicrosoftGraphSDK
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="top">Top</param>
         /// <returns>EducationAssignmentCollectionResponse</returns>
-        public static async Task<EducationAssignmentCollectionResponse?> GetMeAssignmentsWithTopAsync(
+        public static async Task<EducationAssignmentCollectionResponse> GetMeAssignmentsWithTopAsync(
             GraphServiceClient client,
             int top)
         {
