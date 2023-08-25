@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.Graph;
+using Microsoft.Graph.Models;
 
 namespace MicrosoftGraphSDK
 {
@@ -30,7 +31,6 @@ namespace MicrosoftGraphSDK
                     .Classes[classId]
                     .Assignments[assignmentId]
                     .Submissions[submissionId]
-                    .Request()
                     .GetAsync();
             }
             catch (Exception ex)
@@ -45,8 +45,8 @@ namespace MicrosoftGraphSDK
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
-        /// <returns>IEducationAssignmentSubmissionsCollectionPage</returns>
-        public static async Task<IEducationAssignmentSubmissionsCollectionPage> GetSubmissionsAsync(
+        /// <returns>EducationSubmissionCollectionResponse</returns>
+        public static async Task<EducationSubmissionCollectionResponse> GetSubmissionsAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId)
@@ -57,7 +57,6 @@ namespace MicrosoftGraphSDK
                     .Classes[classId]
                     .Assignments[assignmentId]
                     .Submissions
-                    .Request()
                     .GetAsync();
             }
             catch (Exception ex)
@@ -90,9 +89,10 @@ namespace MicrosoftGraphSDK
                     .Classes[classId]
                     .Assignments[assignmentId]
                     .Submissions[submissionId]
-                    .Request()
-                    .Header(headerName, headerValue)
-                    .GetAsync();
+                    .GetAsync(requestConfig => {
+                        requestConfig.Headers.Add(
+                            headerName, headerValue);
+                        });
             }
             catch (Exception ex)
             {
@@ -120,8 +120,7 @@ namespace MicrosoftGraphSDK
                     .Classes[classId]
                     .Assignments[assignmentId]
                     .Submissions[submissionId]
-                    .Submit()
-                    .Request()
+                    .Submit
                     .PostAsync();
             }
             catch (Exception ex)
@@ -150,8 +149,7 @@ namespace MicrosoftGraphSDK
                     .Classes[classId]
                     .Assignments[assignmentId]
                     .Submissions[submissionId]
-                    .Reassign()
-                    .Request()
+                    .Reassign
                     .PostAsync();
             }
             catch (Exception ex)
