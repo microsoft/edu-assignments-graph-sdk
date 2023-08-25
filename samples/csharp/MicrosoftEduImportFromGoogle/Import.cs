@@ -15,8 +15,18 @@ namespace MicrosoftEduImportFromGoogle
         }
         public async Task AuthorizeApp()
         {
-            this.graphServiceClient = await MicrosoftAuthenticator.InitializeMicrosoftGraphClient(_config["microsoftClientId"]);
+            this.graphServiceClient = await MicrosoftAuthenticator.GetApplicationClient(_config["microsoftTenantId"], _config["microsoftClientId"], _config["microsoftSecret"]);
+        }
 
+        public List<Microsoft.Graph.Team> GetUserClasses()
+        {
+            Console.WriteLine("* Fetching classes from Microsoft Teams...");
+            return graphServiceClient
+                    .Users[_config["microsoftTeacherId"]]
+                    .JoinedTeams
+                    .Request()
+                    .GetAsync()
+                    .Result.ToList();
         }
 
         public List<EducationClass> GetMeClasses()
@@ -154,6 +164,13 @@ namespace MicrosoftEduImportFromGoogle
                     break;
                 case "application/vnd.google-apps.spreadsheet":
                     educationResource = new EducationExcelResource
+                    {
+                        FileUrl = fileUrl,
+                        DisplayName = displayName
+                    };
+                    break;
+                case string a when a.Contains("image/"):
+                    educationResource = new EducationMediaResource
                     {
                         FileUrl = fileUrl,
                         DisplayName = displayName

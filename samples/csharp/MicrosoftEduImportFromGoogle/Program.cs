@@ -79,14 +79,14 @@ Import import = new Import(config);
 await import.AuthorizeApp();
 
 // Choose a class
-var classes = import.GetMeClasses();
+var classes = import.GetUserClasses();
 if (!classes.Any())
 {
 	Console.WriteLine("!! No classes found in Microsoft Teams !!");
 	goto lastStep;
 }
 
-EducationClass? selectedClass = null;
+Microsoft.Graph.Team? selectedClass = null;
 ConsoleMenu classMenu = new ConsoleMenu()
 .AddRange(classes.Select(x => new Tuple<string, Action>(x.DisplayName, () => { selectedClass = x; })))
 .Add("DONE CHOOSING", ConsoleMenu.Close)

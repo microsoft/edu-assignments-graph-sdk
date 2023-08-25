@@ -34,7 +34,7 @@ namespace MicrosoftEduImportFromGoogle
         public async Task<CourseWork[]?> GetCourseWork(Course course)
         {
 			Console.WriteLine("* Getting coursework for course [{0}] from Google Classroom...", course.Name);
-			string url = $"https://classroom.googleapis.com/v1/courses/{course.Id}/courseWork";
+			string url = $"https://classroom.googleapis.com/v1/courses/{course.Id}/courseWork?courseWorkStates=DRAFT&courseWorkStates=PUBLISHED";
             string content = await Utilities.MakeHttpGetRequest(accessToken, url);
             var options = new JsonSerializerOptions
             {
