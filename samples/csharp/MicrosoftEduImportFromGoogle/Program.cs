@@ -1,6 +1,7 @@
 ﻿using ConsoleTools;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Graph;
+using Microsoft.Graph.Beta;
+using Microsoft.Graph.Beta.Models;
 using MicrosoftEduImportFromGoogle;
 using MicrosoftEduImportFromGoogle.Models;
 
@@ -86,7 +87,7 @@ if (!classes.Any())
 	goto lastStep;
 }
 
-Microsoft.Graph.Team? selectedClass = null;
+Team selectedClass = null;
 ConsoleMenu classMenu = new ConsoleMenu()
 .AddRange(classes.Select(x => new Tuple<string, Action>(x.DisplayName, () => { selectedClass = x; })))
 .Add("DONE CHOOSING", ConsoleMenu.Close)
@@ -105,6 +106,10 @@ if (selectedClass == null)
 // -- Do the actual migration
 
 await import.MapAndCreateAssignments(selectedCourseWorkList.ToArray(), selectedClass.Id, export);
+
+CourseWorkMaterials[] courseWorkMaterials = await export.GetCourseWorkMaterials(selectedCourse.Id);
+await import.MapAndCreateModules(courseWorkMaterials, selectedClass.Id, export);
+
 Console.WriteLine("--- Google Classroom migration to Microsoft Teams completed successfully! ---");
 
 lastStep:

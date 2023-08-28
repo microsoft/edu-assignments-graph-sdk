@@ -15,6 +15,6 @@ namespace MicrosoftEduImportFromGoogle.Models
         public string AlternateLink { get; set; }
         public string State { get; set; }
         public string TopicId { get; set; }
-
+        public List<Material> Materials { get; set; }
     }
 }

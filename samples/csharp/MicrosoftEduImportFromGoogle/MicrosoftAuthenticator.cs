@@ -1,13 +1,6 @@
-﻿using Azure.Core;
-using Azure.Identity;
-using Microsoft.Graph;
+﻿using Azure.Identity;
+using Microsoft.Graph.Beta;
 using MicrosoftGraphSDK;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace MicrosoftEduImportFromGoogle
 {

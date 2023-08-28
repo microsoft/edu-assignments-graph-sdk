@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 using Azure.Identity;
-using Microsoft.Graph;
+using Microsoft.Graph.Beta;
 
 namespace MicrosoftGraphSDK
 {
