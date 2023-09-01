@@ -21,7 +21,7 @@ This project has a whole sample to guide partners to import assignments and clas
         "googleClientId": "GOOGLE_CLIENT_ID",
         "googleClientSecret": "GOOGLE_CLIENT_SECRET",
         "googleAuthEndpoint": "https://accounts.google.com/o/oauth2/v2/auth",
-        "importAll": true,
+        "importAll": false,
         "googleSourceClass": {
             "id": null,
             "courseWorkMaterials": [],
