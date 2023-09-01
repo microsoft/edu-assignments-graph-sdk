@@ -19,20 +19,20 @@ namespace MicrosoftEduImportFromGoogle
             this.graphServiceClient = await MicrosoftAuthenticator.GetApplicationClient(_config["microsoftTenantId"], _config["microsoftClientId"], _config["microsoftSecret"]);
         }
 
-        public List<Microsoft.Graph.Beta.Models.Team> GetUserClasses()
+        public List<Microsoft.Graph.Beta.Models.Team> GetUserClasses(string userId)
         {
             Console.WriteLine("* Fetching classes from Microsoft Teams...");
             return graphServiceClient
-                    .Users[_config["microsoftTeacherId"]]
+                    .Users[userId]
                     .JoinedTeams
                     .GetAsync()
                     .Result.Value.ToList();
         }
 
-        public List<EducationClass> GetMeClasses()
+        public List<EducationClass> GetClasses()
         {
-			Console.WriteLine("* Fetching classes from Microsoft Teams...");
-			return graphServiceClient.Education.Me.Classes
+            Console.WriteLine("* Fetching classes from Microsoft Teams...");
+            return graphServiceClient.Education.Classes
                     .GetAsync()
                     .Result.Value.ToList();
         }
@@ -93,6 +93,8 @@ namespace MicrosoftEduImportFromGoogle
                 if (material.DriveFile != null)
                 {
                     var sourceFileMetadata = await exporterInstance.GetGoogleDriveFileMetadata(material.DriveFile.DriveFile.Id);
+                    if (sourceFileMetadata["mimeType"].Contains("drawing")) // Skip Google drawing resources, not supported in Microsoft
+                        continue;
                     FileTypeDetails targetFileTypeDetails = Utilities.GetFileDetails(sourceFileMetadata["mimeType"]);
                     fileAsByteArray = await exporterInstance.GetGoogleDoc(material.DriveFile.DriveFile.Id, targetFileTypeDetails.FileMimeType, !string.IsNullOrEmpty(targetFileTypeDetails.FileExtension));
 
@@ -169,6 +171,8 @@ namespace MicrosoftEduImportFromGoogle
                 if (material.DriveFile != null)
                 {
                     var sourceFileMetadata = await exporterInstance.GetGoogleDriveFileMetadata(material.DriveFile.DriveFile.Id);
+                    if (sourceFileMetadata["mimeType"].Contains("drawing")) // Skip Google drawing resources, not supported in Microsoft
+                        continue;
                     FileTypeDetails targetFileTypeDetails = Utilities.GetFileDetails(sourceFileMetadata["mimeType"]);
                     fileAsByteArray = await exporterInstance.GetGoogleDoc(material.DriveFile.DriveFile.Id, targetFileTypeDetails.FileMimeType, !string.IsNullOrEmpty(targetFileTypeDetails.FileExtension));
 

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.Extensions.Configuration;
-using Microsoft.Graph.Models;
+using Microsoft.Graph.Beta.Models;
 using MicrosoftGraphSDK;
 
 namespace MicrosoftEduGraphSamples.Workflows

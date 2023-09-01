@@ -55,10 +55,6 @@ namespace MicrosoftEduImportFromGoogle
                 PropertyNameCaseInsensitive = true
             };
             Dictionary<string, CourseWorkMaterials[]> courseWorkMaterialDictionary = JsonSerializer.Deserialize<Dictionary<string, CourseWorkMaterials[]>>(content, options);
-            foreach (var material in courseWorkMaterialDictionary["courseWorkMaterial"])
-            {
-                Console.WriteLine($"Id: {material.Id},Title: {material.Title}, Link: {material.AlternateLink}");
-            }
             return courseWorkMaterialDictionary["courseWorkMaterial"];
         }
 

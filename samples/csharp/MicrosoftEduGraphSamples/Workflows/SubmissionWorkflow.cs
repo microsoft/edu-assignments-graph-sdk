@@ -3,7 +3,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
-using Microsoft.Graph.Models;
+using Microsoft.Graph.Beta.Models;
 
 namespace MicrosoftEduGraphSamples.Workflows
 {
