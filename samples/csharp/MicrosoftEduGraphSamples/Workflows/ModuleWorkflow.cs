@@ -67,12 +67,12 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Get a Graph client using delegated permissions
                 var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
-                //1 - create a draft module.
+                //create a draft module.
                 var module = await MicrosoftGraphSDK.Module.CreateAsync(graphClient, _config["classId"], "Module Workflow", "This is the first module created using Graph SDK.");
                 Console.WriteLine($"New module has been created: {module.Id} - {module.DisplayName} - {module.Status}");
                 await MicrosoftGraphSDK.Module.SetupResourcesFolder(graphClient, _config["classId"], module.Id);
 
-                //2 - add a link resource.
+                //add a link resource.
                 EducationModuleResource requestBody = new EducationModuleResource
                 {
                     Resource = new EducationLinkResource
@@ -85,7 +85,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // A new file is added
                 var newResource = await MicrosoftGraphSDK.Module.PostResourceAsync(graphClient, _config["classId"], module.Id.ToString(), requestBody);
 
-                //3 - add a new word document resource.
+                //add a new word document resource.
                 requestBody = new EducationModuleResource
                 {
                     Resource = new EducationWordResource
@@ -98,20 +98,20 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // A new Word file is added
                 newResource = await MicrosoftGraphSDK.Module.PostResourceAsync(graphClient, _config["classId"], module.Id.ToString(), requestBody);
 
-                //5 - add a channel resource
+                //add a channel resource
                 requestBody = new EducationModuleResource
                 {
                     Resource = new EducationChannelResource
                     {
                         OdataType = "#microsoft.graph.educationChannelResource",
-                        Url = "https://graph.microsoft.com/v1.0/teams/" + _config["classId"] + "/channels/19:Z2JOIPdvU-i1gymVObk9KhJj_sZCvDFEyGXPO7jLLUA1@thread.tacv2",
+                        Url = "https://graph.microsoft.com/v1.0/teams/"+ _config["classId"] +"/channels/19:Z2JOIPdvU-i1gymVObk9KhJj_sZCvDFEyGXPO7jLLUA1@thread.tacv2",
                         DisplayName = "General",
                     },
                 };
-                // Added a channel resource
+                //Added a channel resource
                 newResource = await MicrosoftGraphSDK.Module.PostResourceAsync(graphClient, _config["classId"], module.Id.ToString(), requestBody);
 
-                //7 - assignment resource
+                //assignment resource
                 var assignment = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
                 var assignmentId = assignment.Id;
                 requestBody = new EducationModuleResource
@@ -119,19 +119,19 @@ namespace MicrosoftEduGraphSamples.Workflows
                     Resource = new EducationLinkedAssignmentResource
                     {
                         OdataType = "#microsoft.graph.educationLinkedAssignmentResource",
-                        Url = "https://graph.microsoft.com/v1.0/education/classes/" + _config["classId"] + "/assignments/"+assignmentId,
+                        Url = "https://graph.microsoft.com/v1.0/education/classes/"+ _config["classId"] +"/assignments/"+assignmentId,
                     },
                 };
                 // Added a assignment resource
                 newResource = await MicrosoftGraphSDK.Module.PostResourceAsync(graphClient, _config["classId"], module.Id.ToString(), requestBody);
 
-                //8 - publish the module.
+                //publish the module.
                 module = await MicrosoftGraphSDK.Module.PublishAsync(graphClient, _config["classId"], module.Id.ToString());
 
-                //9 - switch to student account
+                //switch to student account
                 graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["password"]);
 
-                //10 - get all module resources and log in the sample. (student).
+                //get all module resources and log in the sample. (student).
                 var resources = await MicrosoftGraphSDK.Module.GetModuleResourcesAsync(graphClient, _config["classId"], module.Id.ToString());
 
                 // Iterate over all the resources values
