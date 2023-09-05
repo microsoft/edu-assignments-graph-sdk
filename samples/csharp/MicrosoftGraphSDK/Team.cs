@@ -50,5 +50,25 @@ namespace MicrosoftGraphSDK
                 throw new GraphException($"GetUserJoinedTeamsAsync call: {ex.Message}", ex);
             }
         }
+
+        /// <summary>
+        /// Returns channels information for a team
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User id</param>
+        /// <returns>ChannelCollectionResponse</returns>
+        public static async Task<ChannelCollectionResponse> GetChannelsAsync(
+             this GraphServiceClient client,
+             string classId)
+        {
+            try
+            {
+                return await client.Teams[classId].Channels.GetAsync(requestConfig => {requestConfig.QueryParameters.Filter = "displayName eq 'General'"; });
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"ChannelCollectionResponse call: {ex.Message}", ex, classId);
+            }
+        }
     }
 }

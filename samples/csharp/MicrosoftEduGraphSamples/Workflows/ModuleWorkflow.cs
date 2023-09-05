@@ -98,13 +98,16 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // A new Word file is added
                 newResource = await MicrosoftGraphSDK.Module.PostResourceAsync(graphClient, _config["classId"], module.Id.ToString(), requestBody);
 
+                //Get the General channel
+                var channels = await MicrosoftGraphSDK.Team.GetChannelsAsync(graphClient, _config["classId"]);
+
                 //add a channel resource
                 requestBody = new EducationModuleResource
                 {
                     Resource = new EducationChannelResource
                     {
                         OdataType = "#microsoft.graph.educationChannelResource",
-                        Url = "https://graph.microsoft.com/v1.0/teams/"+ _config["classId"] +"/channels/19:Z2JOIPdvU-i1gymVObk9KhJj_sZCvDFEyGXPO7jLLUA1@thread.tacv2",
+                        Url = "https://graph.microsoft.com/v1.0/teams/"+ _config["classId"] + "/channels/"+ channels.Value[0].Id,
                         DisplayName = "General",
                     },
                 };
