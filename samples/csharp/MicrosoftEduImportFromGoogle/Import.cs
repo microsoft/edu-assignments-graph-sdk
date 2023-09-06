@@ -6,6 +6,9 @@ using MicrosoftGraphSDK;
 
 namespace MicrosoftEduImportFromGoogle
 {
+    /// <summary>
+    /// Microsoft endpoints needed to import assignments, classwork modules and resources
+    /// </summary>
     internal class Import
     {
         private readonly IConfiguration _config;
@@ -14,11 +17,21 @@ namespace MicrosoftEduImportFromGoogle
         {
             this._config = configuration;
         }
+
+        /// <summary>
+        /// Authorizes the application and creates a Microsoft Graph client
+        /// </summary>
+        /// <returns>Course[]</returns>
         public async Task AuthorizeApp()
         {
             this.graphServiceClient = await MicrosoftAuthenticator.GetApplicationClient(_config["microsoftTenantId"], _config["microsoftClientId"], _config["microsoftSecret"]);
         }
 
+        /// <summary>
+        /// Returns a list of Teams that the requesting user is permitted to view
+        /// </summary>
+        /// <param name="userId">User id</param>
+        /// <returns>List<Microsoft.Graph.Beta.Models.Team></returns>
         public List<Microsoft.Graph.Beta.Models.Team> GetUserClasses(string userId)
         {
             Console.WriteLine("* Fetching classes from Microsoft Teams...");
@@ -29,6 +42,10 @@ namespace MicrosoftEduImportFromGoogle
                     .Result.Value.ToList();
         }
 
+        /// <summary>
+        /// Returns a list of classes that the requesting application is permitted to view
+        /// </summary>
+        /// <returns>List<EducationClass></returns>
         public List<EducationClass> GetClasses()
         {
             Console.WriteLine("* Fetching classes from Microsoft Teams...");
@@ -37,6 +54,13 @@ namespace MicrosoftEduImportFromGoogle
                     .Result.Value.ToList();
         }
 
+        /// <summary>
+        /// Maps Google entities to create assignments
+        /// </summary>
+        /// <param name="courseWorks">Array of courseWorks to import</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="exporterInstance">Instance of the Export class</param>
+        /// <returns>List<string></returns>
         public async Task<List<string>> MapAndCreateAssignments(CourseWork[] courseWorks, string classId, Export exporterInstance)
         {
 			Console.WriteLine("* Importing coursework from Google Classroom into Microsoft Teams...");
@@ -60,7 +84,13 @@ namespace MicrosoftEduImportFromGoogle
             return assignmentsCreated;
         }
 
-
+        /// <summary>
+        /// Maps Google entities to create modules
+        /// </summary>
+        /// <param name="courseWorks">Array of courseWorkMaterials to import</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="exporterInstance">Instance of the Export class</param>
+        /// <returns>List<string></returns>
         public async Task<List<string>> MapAndCreateModules(CourseWorkMaterials[] courseWorkMaterials, string classId, Export exporterInstance)
         {
             Console.WriteLine("* Importing coursework materials from Google Classroom into Microsoft Teams classwork...");
@@ -84,6 +114,13 @@ namespace MicrosoftEduImportFromGoogle
             return modulesCreated;
         }
 
+        /// <summary>
+        /// Maps Google entities to create assignments resources
+        /// </summary>
+        /// <param name="courseWorks">List of Materials to import</param>
+        /// <param name="createdAssignment">EducationAssignment</param>
+        /// <param name="exporterInstance">Instance of the Export class</param>
+        /// <returns>List<string></returns>
         private async Task MapAndCreateResources(List<Material> materials, EducationAssignment createdAssignment, Export exporterInstance)
         {
             foreach (var material in materials)
@@ -162,6 +199,14 @@ namespace MicrosoftEduImportFromGoogle
             }
         }
 
+        /// <summary>
+        /// Maps Google entities to create module resources
+        /// </summary>
+        /// <param name="courseWorks">List of Materials to import</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="createdModule">EducationModule</param>
+        /// <param name="exporterInstance">Instance of the Export class</param>
+        /// <returns>List<string></returns>
         private async Task MapAndCreateModuleResources(List<Material> materials, string classId, EducationModule createdModule, Export exporterInstance)
         {
             foreach (var material in materials)
@@ -240,6 +285,13 @@ namespace MicrosoftEduImportFromGoogle
             }
         }
 
+        /// <summary>
+        /// Gets the proper educationResource type
+        /// </summary>
+        /// <param name="mimeType">Resource mime type</param>
+        /// <param name="fileUrl">File url from drive</param>
+        /// <param name="displayName">Display name for the resource</param>
+        /// <returns>EducationResource</returns>
         private EducationResource GetEducationResource(string mimeType, string fileUrl, string displayName)
         {
             EducationResource educationResource;
@@ -284,6 +336,12 @@ namespace MicrosoftEduImportFromGoogle
             return educationResource;
         }
 
+        /// <summary>
+        /// Creates a new assignment
+        /// </summary>
+        /// <param name="classId">User class id</param>
+        /// <param name="educationAssignment">EducationAssignment object</param>
+        /// <returns>EducationAssignment</returns>
         public async Task<EducationAssignment> CreateAssignmentAsync(
             string classId,
             EducationAssignment educationAssignment)
@@ -304,6 +362,12 @@ namespace MicrosoftEduImportFromGoogle
             }
         }
 
+        /// <summary>
+        /// Creates a new module
+        /// </summary>
+        /// <param name="classId">User class id</param>
+        /// <param name="educationModule">EducationModule object</param>
+        /// <returns>EducationModule</returns>
         public async Task<EducationModule> CreateModuleAsync(
             string classId,
             EducationModule educationModule)
