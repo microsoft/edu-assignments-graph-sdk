@@ -1,10 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MicrosoftEduImportFromGoogle
 {
@@ -25,12 +21,19 @@ namespace MicrosoftEduImportFromGoogle
             // Creates an HttpListener to listen for requests on that redirect URI.
             var http = new HttpListener();
             http.Prefixes.Add(redirectURI);
-            //output("Listening..");
             http.Start();
 
+            var scopes = new List<string>() {
+                "https://www.googleapis.com/auth/classroom.courses.readonly",
+                "https://www.googleapis.com/auth/classroom.coursework.students.readonly",
+                "https://www.googleapis.com/auth/classroom.courseworkmaterials.readonly",
+                "https://www.googleapis.com/auth/drive.readonly"
+            };
+
             // Creates the OAuth 2.0 authorization request.
-            string authorizationRequest = string.Format("{0}?response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fclassroom.courses.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fclassroom.coursework.students.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fclassroom.courseworkmaterials.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive.readonly&redirect_uri={1}&client_id={2}&state={3}&code_challenge={4}&code_challenge_method={5}",
+            string authorizationRequest = string.Format("{0}?response_type=code&scope={1}&redirect_uri={2}&client_id={3}&state={4}&code_challenge={5}&code_challenge_method={6}",
                 authorizationEndpoint,
+                System.Uri.EscapeDataString(string.Join(" ", scopes)),
                 System.Uri.EscapeDataString(redirectURI),
                 clientID,
                 state,

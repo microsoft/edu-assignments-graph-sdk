@@ -48,7 +48,7 @@ namespace MicrosoftEduImportFromGoogle
                     {
                         DisplayName = courseWork.Title,
                         Instructions = new EducationItemBody { Content = courseWork.Description },
-                        DueDateTime = DateTime.Now.AddDays(7),//revisit
+                        DueDateTime = DateTime.Now.AddDays(7), // Default due date is 7 days from today
                     }
                 );
                 assignmentsCreated.Add(createdAssignment.DisplayName);
