@@ -55,8 +55,8 @@ namespace MicrosoftGraphSDK
         /// Returns channels information for a team
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
-        /// <param name="classId">User id</param>
-        /// <returns>ChannelCollectionResponse</returns>
+        /// <param name="classId">Class id</param>
+        /// <returns>Channels</returns>
         public static async Task<ChannelCollectionResponse> GetChannelsAsync(
              this GraphServiceClient client,
              string classId)
@@ -67,7 +67,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"ChannelCollectionResponse call: {ex.Message}", ex, classId);
+                throw new GraphException($"GetChannelsAsync call: {ex.Message}", ex, classId);
             }
         }
     }
