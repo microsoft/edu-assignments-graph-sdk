@@ -100,7 +100,7 @@ namespace MicrosoftGraphSDK
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
         /// <param name="moduleId">User module id</param>
-        /// <returns>EducationModules</returns>
+        /// <returns>EducationModuleResourceCollectionResponse</returns>
         public static async Task<EducationModuleResourceCollectionResponse> GetModuleResourcesAsync(
             GraphServiceClient client,
             string classId,
@@ -125,7 +125,7 @@ namespace MicrosoftGraphSDK
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
         /// <param name="moduleId">User module id</param>
-        /// <returns>EducationSetupResourcesFolder</returns>
+        /// <returns>EducationModule</returns>
         public static async Task<EducationModule> SetupResourcesFolder(
             GraphServiceClient client,
             string classId,

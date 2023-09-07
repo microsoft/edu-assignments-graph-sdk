@@ -56,7 +56,7 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">Class id</param>
-        /// <returns>Channels</returns>
+        /// <returns>ChannelCollectionResponse</returns>
         public static async Task<ChannelCollectionResponse> GetChannelsAsync(
              this GraphServiceClient client,
              string classId)
