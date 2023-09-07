@@ -21,10 +21,14 @@ namespace MicrosoftEduImportFromGoogle
         /// <summary>
         /// Authorizes the application and creates a Microsoft Graph client
         /// </summary>
-        /// <returns>Course[]</returns>
-        public async Task AuthorizeApp()
+        /// <returns></returns>
+        public void AuthorizeApp()
         {
-            this.graphServiceClient = await MicrosoftAuthenticator.GetApplicationClient(_config["microsoftTenantId"], _config["microsoftClientId"], _config["microsoftSecret"]);
+            // App-only scenario
+            this.graphServiceClient = GraphClient.GetApplicationClient(_config["microsoftTenantId"], _config["microsoftClientId"], _config["microsoftSecret"]);
+
+            // Use the line below for App+user scenario
+            // this.graphServiceClient = GraphClient.GetDelegateClient(_config["microsoftClientId"]);
         }
 
         /// <summary>
@@ -67,7 +71,7 @@ namespace MicrosoftEduImportFromGoogle
 			List<string> assignmentsCreated = new List<string>();
             foreach(var courseWork in courseWorks)
             {
-                var createdAssignment = await CreateAssignmentAsync(classId,
+                var createdAssignment = await Assignment.CreateAsync(graphServiceClient, classId,
                     new EducationAssignment
                     {
                         DisplayName = courseWork.Title,
@@ -97,7 +101,7 @@ namespace MicrosoftEduImportFromGoogle
             List<string> modulesCreated = new List<string>();
             foreach (var courseWork in courseWorkMaterials)
             {
-                var createdModule = await CreateModuleAsync(classId,
+                var createdModule = await Module.CreateAsync(graphServiceClient, classId,
                     new EducationModule
                     {
                         DisplayName = courseWork.Title,
@@ -140,9 +144,7 @@ namespace MicrosoftEduImportFromGoogle
                     {
                         if (createdAssignment.ResourcesFolderUrl == null)
                         {
-                            createdAssignment = await graphServiceClient.Education.Classes[createdAssignment.ClassId].Assignments[createdAssignment.Id]
-                            .SetUpResourcesFolder
-                            .PostAsync();
+                            createdAssignment = await Assignment.SetupResourcesFolder(graphServiceClient, createdAssignment.ClassId, createdAssignment.Id);
                         }
                         string uploadUrl = $"{createdAssignment.ResourcesFolderUrl}:/{fileName}:/content";
                         string[] urlSegments = createdAssignment.ResourcesFolderUrl.Split('/');
@@ -162,10 +164,8 @@ namespace MicrosoftEduImportFromGoogle
                         EducationAssignmentResource assignmentResource = new EducationAssignmentResource() { DistributeForStudentWork = material.DriveFile.ShareMode == "STUDENT_COPY" };
                         EducationResource educationResource = GetEducationResource(sourceFileMetadata["mimeType"], assignmentFileUrl, fileName);
                         assignmentResource.Resource = educationResource;
-                        await graphServiceClient.Education.Classes[createdAssignment.ClassId]
-                            .Assignments[createdAssignment.Id]
-                            .Resources
-                            .PostAsync(assignmentResource);
+
+                        await Assignment.PostResourceAsync(graphServiceClient, createdAssignment.ClassId, createdAssignment.Id, assignmentResource);
                     }
                 }
                 else if (material.Link != null)
@@ -177,10 +177,7 @@ namespace MicrosoftEduImportFromGoogle
                         DisplayName = material.Link.Title
                     };
                     assignmentResource.Resource = educationResource;
-                    await graphServiceClient.Education.Classes[createdAssignment.ClassId]
-                            .Assignments[createdAssignment.Id]
-                            .Resources
-                            .PostAsync(assignmentResource);
+                    await Assignment.PostResourceAsync(graphServiceClient, createdAssignment.ClassId, createdAssignment.Id, assignmentResource);
                 }
                 else if (material.YoutubeVideo != null)
                 {
@@ -191,10 +188,7 @@ namespace MicrosoftEduImportFromGoogle
                         DisplayName = material.YoutubeVideo.Title
                     };
                     assignmentResource.Resource = educationResource;
-                    await graphServiceClient.Education.Classes[createdAssignment.ClassId]
-                            .Assignments[createdAssignment.Id]
-                            .Resources
-                            .PostAsync(assignmentResource);
+                    await Assignment.PostResourceAsync(graphServiceClient, createdAssignment.ClassId, createdAssignment.Id, assignmentResource);
                 }
             }
         }
@@ -226,9 +220,7 @@ namespace MicrosoftEduImportFromGoogle
                     {
                         if (createdModule.ResourcesFolderUrl == null)
                         {
-                            createdModule = await graphServiceClient.Education.Classes[classId].Modules[createdModule.Id]
-                            .SetUpResourcesFolder
-                            .PostAsync();
+                            createdModule = await Module.SetupResourcesFolder(graphServiceClient, classId, createdModule.Id);
                         }
                         string uploadUrl = $"{createdModule.ResourcesFolderUrl}:/{fileName}:/content";
                         string[] urlSegments = createdModule.ResourcesFolderUrl.Split('/');
@@ -248,10 +240,7 @@ namespace MicrosoftEduImportFromGoogle
                         EducationModuleResource moduleResource = new EducationModuleResource();
                         EducationResource educationResource = GetEducationResource(sourceFileMetadata["mimeType"], fileUrl, fileName);
                         moduleResource.Resource = educationResource;
-                        await graphServiceClient.Education.Classes[classId]
-                            .Modules[createdModule.Id]
-                            .Resources
-                            .PostAsync(moduleResource);
+                        await Module.PostResourceAsync(graphServiceClient, classId, createdModule.Id, moduleResource);
                     }
                 }
                 else if (material.Link != null)
@@ -263,10 +252,7 @@ namespace MicrosoftEduImportFromGoogle
                         DisplayName = material.Link.Title
                     };
                     moduleResource.Resource = educationResource;
-                    await graphServiceClient.Education.Classes[classId]
-                            .Modules[createdModule.Id]
-                            .Resources
-                            .PostAsync(moduleResource);
+                    await Module.PostResourceAsync(graphServiceClient, classId, createdModule.Id, moduleResource);
                 }
                 else if (material.YoutubeVideo != null)
                 {
@@ -277,10 +263,7 @@ namespace MicrosoftEduImportFromGoogle
                         DisplayName = material.YoutubeVideo.Title
                     };
                     moduleResource.Resource = educationResource;
-                    await graphServiceClient.Education.Classes[classId]
-                            .Modules[createdModule.Id]
-                            .Resources
-                            .PostAsync(moduleResource);
+                    await Module.PostResourceAsync(graphServiceClient, classId, createdModule.Id, moduleResource);
                 }
             }
         }
@@ -336,53 +319,5 @@ namespace MicrosoftEduImportFromGoogle
             return educationResource;
         }
 
-        /// <summary>
-        /// Creates a new assignment
-        /// </summary>
-        /// <param name="classId">User class id</param>
-        /// <param name="educationAssignment">EducationAssignment object</param>
-        /// <returns>EducationAssignment</returns>
-        public async Task<EducationAssignment> CreateAssignmentAsync(
-            string classId,
-            EducationAssignment educationAssignment)
-        {
-            try
-            {
-                return await graphServiceClient.Education
-                    .Classes[classId]
-                    .Assignments
-                    .PostAsync(educationAssignment, requestConfig => {
-                        requestConfig.Headers.Add(
-                            "Prefer", "include-unknown-enum-members");
-                    });
-            }
-            catch (Exception ex)
-            {
-                throw new GraphException($"CreateAssignmentAsync call: {ex.Message}", ex, classId);
-            }
-        }
-
-        /// <summary>
-        /// Creates a new module
-        /// </summary>
-        /// <param name="classId">User class id</param>
-        /// <param name="educationModule">EducationModule object</param>
-        /// <returns>EducationModule</returns>
-        public async Task<EducationModule> CreateModuleAsync(
-            string classId,
-            EducationModule educationModule)
-        {
-            try
-            {
-                return await graphServiceClient.Education
-                    .Classes[classId]
-                    .Modules
-                    .PostAsync(educationModule);
-            }
-            catch (Exception ex)
-            {
-                throw new GraphException($"CreateModuleAsync call: {ex.Message}", ex, classId);
-            }
-        }
     }
 }

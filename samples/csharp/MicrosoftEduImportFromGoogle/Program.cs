@@ -153,7 +153,7 @@ else {
 
 // Authorize with Microsoft
 Import import = new Import(config);
-await import.AuthorizeApp();
+import.AuthorizeApp();
 
 // Microsoft class specified in config?
 var microsoftClassId = config.GetSection("microsoftTargetClass:id").Value;
