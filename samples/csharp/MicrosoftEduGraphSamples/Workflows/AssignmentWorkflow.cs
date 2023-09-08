@@ -64,7 +64,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         {
             try
             {
-                //Check user details for assignments
+                // Check user details for assignments
                 string userAccount = isTeacher ? _config["teacherAccount"] : _config["studentAccount"];
 
                 // Get a Graph client using delegated permissions

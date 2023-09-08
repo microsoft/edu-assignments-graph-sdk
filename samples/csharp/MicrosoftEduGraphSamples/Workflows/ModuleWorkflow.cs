@@ -68,8 +68,8 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Get a Graph client using delegated permissions
                 var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
-                // This Classwork module was created with Microsoft Graph SDK
-                var module = await MicrosoftGraphSDK.Module.CreateAsync(graphClient, _config["classId"], "Sample Module " + DateTime.Now.ToString("dd/MM/yyyy HHmm"), "This is the first module created using Graph SDK.");
+                // Create a draft module.
+                var module = await MicrosoftGraphSDK.Module.CreateAsync(graphClient, _config["classId"], "Sample Module " + DateTime.Now.ToString("dd/MM/yyyy HHmm"), "This Classwork module was created with Microsoft Graph SDK.");
                 Console.WriteLine($"New module has been created: {module.Id} - {module.DisplayName} - {module.Status}");
                 await MicrosoftGraphSDK.Module.SetupResourcesFolder(graphClient, _config["classId"], module.Id);
 
