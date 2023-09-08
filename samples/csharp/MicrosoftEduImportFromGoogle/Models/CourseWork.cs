@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MicrosoftEduImportFromGoogle.Models
+﻿namespace MicrosoftEduImportFromGoogle.Models
 {
     internal class CourseWork
     {
@@ -17,7 +11,5 @@ namespace MicrosoftEduImportFromGoogle.Models
         public int MaxPoints { get; set; }
         public string TopicId { get; set; }
         public string GradeCategory { get; set; }
-
-
     }
 }

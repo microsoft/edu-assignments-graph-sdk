@@ -19,7 +19,7 @@ namespace MicrosoftEduImportFromGoogle
         /// <summary>
         /// Authorizes the application and sets the Google access token
         /// </summary>
-        /// <returns>Course[]</returns>
+        /// <returns></returns>
         public async Task AuthorizeApp()
         {
             this.accessToken = await GoogleAuthenticator.AuthorizeAppAndGetTokenFromGoogle(_config["googleClientId"], _config["googleClientSecret"], _config["googleAuthEndpoint"]);
@@ -29,7 +29,7 @@ namespace MicrosoftEduImportFromGoogle
         /// Returns an array of courses that the requesting user is permitted to view
         /// </summary>
         /// <returns>Course[]</returns>
-        public async Task<Course[]?> GetCourses()
+        public async Task<Course[]> GetCourses()
         {
             List<string> courseIds= new List<string>();
             string content = await Utilities.MakeHttpGetRequest(accessToken, "https://classroom.googleapis.com/v1/courses");
@@ -37,7 +37,7 @@ namespace MicrosoftEduImportFromGoogle
             {
                 PropertyNameCaseInsensitive = true
             };
-            Dictionary<string, Course[]>? courseDictionary = JsonSerializer.Deserialize<Dictionary<string, Course[]>>(content, options);
+            Dictionary<string, Course[]> courseDictionary = JsonSerializer.Deserialize<Dictionary<string, Course[]>>(content, options);
             return (courseDictionary == null) ? null : courseDictionary?["courses"];
         }
 
@@ -46,16 +46,16 @@ namespace MicrosoftEduImportFromGoogle
         /// </summary>
         /// <param name="course">Course</param>
         /// <returns>CourseWork[]</returns>
-        public async Task<CourseWork[]?> GetCourseWork(Course course)
+        public async Task<CourseWork[]> GetCourseWork(Course course)
         {
-			Console.WriteLine("* Getting coursework for course [{0}] from Google Classroom...", course.Name);
-			string url = $"https://classroom.googleapis.com/v1/courses/{course.Id}/courseWork?courseWorkStates=DRAFT&courseWorkStates=PUBLISHED";
+            Console.WriteLine("* Getting coursework for course [{0}] from Google Classroom...", course.Name);
+            string url = $"https://classroom.googleapis.com/v1/courses/{course.Id}/courseWork?courseWorkStates=DRAFT&courseWorkStates=PUBLISHED";
             string content = await Utilities.MakeHttpGetRequest(accessToken, url);
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
-            Dictionary<string, CourseWork[]>? courseWorkDictionary = JsonSerializer.Deserialize<Dictionary<string, CourseWork[]>>(content, options);
+            Dictionary<string, CourseWork[]> courseWorkDictionary = JsonSerializer.Deserialize<Dictionary<string, CourseWork[]>>(content, options);
             return (courseWorkDictionary == null) ? null : courseWorkDictionary["courseWork"];
         }
 

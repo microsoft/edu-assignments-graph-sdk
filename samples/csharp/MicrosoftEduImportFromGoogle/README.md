@@ -24,6 +24,7 @@ This project has a whole sample to guide partners to import assignments and clas
         "microsoftTenantId": "MICROSOFT_TENANT_ID",
         "microsoftClientId": "MICROSOFT_CLIENT_ID",
         "microsoftSecret": "MICROSOFT_CLIENT_SECRET",
+        "microsoftAuthMethod": "app-only",
         "googleClientId": "GOOGLE_CLIENT_ID",
         "googleClientSecret": "GOOGLE_CLIENT_SECRET",
         "googleAuthEndpoint": "https://accounts.google.com/o/oauth2/v2/auth",
@@ -47,6 +48,7 @@ This project has a whole sample to guide partners to import assignments and clas
 | microsoftTenantId | Look for it in [Azure portal](https://learn.microsoft.com/azure/active-directory/fundamentals/active-directory-how-to-find-tenant) | |
 | microsoftClientId |  [Create a new app or take any existing](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app) in your Azure portal. | |
 | microsoftSecret | Look for it in your app registration in Azure portal. | |
+| microsoftAuthMethod | Authentication method for Microsoft Graph operations. | Possible values are `app-only` and `delegated`. |
 | googleClientId | Look for it in [Google cloud console](https://cloud.google.com). | |
 | googleClientSecret | Look for it in **APIS & Services/Credentials** section in Google cloud console portal. | |
 | googleAuthEndpoint | Base URL for Google authentication endpoint. Keep it as default. | Default value is `https://accounts.google.com/o/oauth2/v2/auth` |

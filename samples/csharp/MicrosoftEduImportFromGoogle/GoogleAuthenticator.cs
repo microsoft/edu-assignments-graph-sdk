@@ -16,7 +16,6 @@ namespace MicrosoftEduImportFromGoogle
 
             // Creates a redirect URI using an available port on the loopback address.
             string redirectURI = string.Format("http://{0}:{1}/", IPAddress.Loopback, Utilities.GetRandomUnusedPort());
-            //output("redirect URI: " + redirectURI);
 
             // Creates an HttpListener to listen for requests on that redirect URI.
             var http = new HttpListener();
@@ -47,9 +46,6 @@ namespace MicrosoftEduImportFromGoogle
             // Waits for the OAuth authorization response.
             var context = await http.GetContextAsync();
 
-            // Brings this app back to the foreground.
-            //this.Activate();
-
             // Sends an HTTP response to the browser.
             var response = context.Response;
             string responseString = string.Format("<html><head><meta http-equiv='refresh' content='10;url=https://google.com'></head><body>Please return to the app.</body></html>");
@@ -65,17 +61,15 @@ namespace MicrosoftEduImportFromGoogle
             // Checks for errors.
             if (context.Request.QueryString.Get("error") != null)
             {
-                // output(String.Format("OAuth authorization error: {0}.", context.Request.QueryString.Get("error")));
                 return string.Empty;
             }
             if (context.Request.QueryString.Get("code") == null
                 || context.Request.QueryString.Get("state") == null)
             {
-                //output("Malformed authorization response. " + context.Request.QueryString);
                 return string.Empty;
             }
 
-            // extracts the code
+            // Extracts the code
             var code = context.Request.QueryString.Get("code");
             var incoming_state = context.Request.QueryString.Get("state");
 
@@ -83,10 +77,8 @@ namespace MicrosoftEduImportFromGoogle
             // this app made the request which resulted in authorization.
             if (incoming_state != state)
             {
-                //output(String.Format("Received request with invalid state ({0})", incoming_state));
                 return string.Empty;
             }
-            // output("Authorization code: " + code);
 
             // Starts the code exchange at the Token Endpoint.
             return await GetAccessToken(code, code_verifier, redirectURI, clientID, clientSecret);
@@ -94,9 +86,7 @@ namespace MicrosoftEduImportFromGoogle
 
         static async Task<string> GetAccessToken(string code, string code_verifier, string redirectURI, string clientID, string clientSecret)
         {
-            //output("Exchanging code for tokens...");
-
-            // builds the  request
+            // Builds the request
             string tokenRequestURI = "https://www.googleapis.com/oauth2/v4/token";
             string tokenRequestBody = string.Format("code={0}&redirect_uri={1}&client_id={2}&code_verifier={3}&client_secret={4}&scope=&grant_type=authorization_code",
                 code,
@@ -106,8 +96,7 @@ namespace MicrosoftEduImportFromGoogle
                 clientSecret
                 );
 
-            // sends the request
-
+            // Sends the request
             HttpWebRequest tokenRequest = (HttpWebRequest)WebRequest.Create(tokenRequestURI);
             tokenRequest.Method = "POST";
             tokenRequest.ContentType = "application/x-www-form-urlencoded";
@@ -120,19 +109,17 @@ namespace MicrosoftEduImportFromGoogle
 
             try
             {
-                // gets the response
+                // Gets the response
                 WebResponse tokenResponse = await tokenRequest.GetResponseAsync();
                 using (StreamReader reader = new StreamReader(tokenResponse.GetResponseStream()))
                 {
-                    // reads response body
+                    // Reads response body
                     string responseText = await reader.ReadToEndAsync();
-                    //output(responseText);
 
-                    // converts to dictionary
+                    // Converts to dictionary
                     Dictionary<string, string> tokenEndpointDecoded = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseText);
 
                     return tokenEndpointDecoded["access_token"];
-                    //await userinfoCall(access_token);
                 }
             }
             catch (WebException ex)
@@ -142,10 +129,9 @@ namespace MicrosoftEduImportFromGoogle
                     var response = ex.Response as HttpWebResponse;
                     if (response != null)
                     {
-                        //output("HTTP: " + response.StatusCode);
                         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                         {
-                            // reads response body
+                            // Reads response body
                             string errorResponse = await reader.ReadToEndAsync();
                             Console.WriteLine(errorResponse);
                         }

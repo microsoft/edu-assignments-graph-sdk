@@ -24,11 +24,15 @@ namespace MicrosoftEduImportFromGoogle
         /// <returns></returns>
         public void AuthorizeApp()
         {
-            // App-only scenario
-            this.graphServiceClient = GraphClient.GetApplicationClient(_config["microsoftTenantId"], _config["microsoftClientId"], _config["microsoftSecret"]);
-
-            // Use the line below for App+user scenario
-            // this.graphServiceClient = GraphClient.GetDelegateClient(_config["microsoftClientId"]);
+            if (_config["microsoftAuthMethod"] == "delegated")
+            {
+                // App+user scenario
+                this.graphServiceClient = GraphClient.GetDelegateClient(_config["microsoftClientId"]);
+            }
+            else {
+                // App-only scenario
+                this.graphServiceClient = GraphClient.GetApplicationClient(_config["microsoftTenantId"], _config["microsoftClientId"], _config["microsoftSecret"]);
+            }
         }
 
         /// <summary>
@@ -67,8 +71,8 @@ namespace MicrosoftEduImportFromGoogle
         /// <returns>List<string></returns>
         public async Task<List<string>> MapAndCreateAssignments(CourseWork[] courseWorks, string classId, Export exporterInstance)
         {
-			Console.WriteLine("* Importing coursework from Google Classroom into Microsoft Teams...");
-			List<string> assignmentsCreated = new List<string>();
+            Console.WriteLine("* Importing coursework from Google Classroom into Microsoft Teams...");
+            List<string> assignmentsCreated = new List<string>();
             foreach(var courseWork in courseWorks)
             {
                 var createdAssignment = await Assignment.CreateAsync(graphServiceClient, classId,
