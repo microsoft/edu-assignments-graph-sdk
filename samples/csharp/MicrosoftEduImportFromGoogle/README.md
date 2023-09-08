@@ -4,7 +4,13 @@ This project has a whole sample to guide partners to import assignments and clas
 
 ## Prerequisites
 
+### Google
+* [Follow these steps](https://developers.google.com/classroom/quickstart/go) to create a project in the Google Cloud Console and enable the __Classroom API__ for your project.
+* [Create an OAuth 2.0 client ID](https://developers.google.com/classroom/guides/auth) for your project and specify the scopes that the application needs. This will allow your application to authenticate with Google and request access to the Classroom data.
+
+### Microsoft
 * An EDU tenant for Azure Active Directoy authentication. Follow [these instructions](https://learn.microsoft.com/graph/msgraph-onboarding-overview) to get set up. You will need some info from the tenant created when filling the `appsettings.json` file in the samples.
+* Create a new [app registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app) or take any existing in your Azure portal.
 * [Visual Studio 2022](https://visualstudio.microsoft.com/downloads) or [Visual Studio Code](https://code.visualstudio.com/download).
 
 ## Usage
@@ -33,6 +39,8 @@ This project has a whole sample to guide partners to import assignments and clas
         }
     }
     ```
+
+## Application settings
 
 | Setting | Description | Sample value |
 |---------|-------------|--------------|
