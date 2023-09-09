@@ -63,13 +63,13 @@ namespace MicrosoftEduImportFromGoogle
         }
 
         /// <summary>
-        /// Maps Google entities to create assignments
+        /// Maps Google courseWorks to create assignments
         /// </summary>
         /// <param name="courseWorks">Array of courseWorks to import</param>
         /// <param name="classId">User class id</param>
         /// <param name="exporterInstance">Instance of the Export class</param>
         /// <returns>List<string></returns>
-        public async Task<List<string>> MapAndCreateAssignments(CourseWork[] courseWorks, string classId, Export exporterInstance)
+        public async Task<List<string>> MapCourseWorksToAssignments(CourseWork[] courseWorks, string classId, Export exporterInstance)
         {
             Console.WriteLine("* Importing coursework from Google Classroom into Microsoft Teams...");
             List<string> assignmentsCreated = new List<string>();
@@ -86,20 +86,20 @@ namespace MicrosoftEduImportFromGoogle
                 assignmentsCreated.Add(createdAssignment.DisplayName);
                 if (courseWork.Materials?.Any() == true)
                 {
-                    await MapAndCreateResources(courseWork.Materials, createdAssignment, exporterInstance);
+                    await MapMaterialToResources(courseWork.Materials, createdAssignment, exporterInstance);
                 }
             }
             return assignmentsCreated;
         }
 
         /// <summary>
-        /// Maps Google entities to create modules
+        /// Maps Google courseWorkMaterials to create modules
         /// </summary>
         /// <param name="courseWorks">Array of courseWorkMaterials to import</param>
         /// <param name="classId">User class id</param>
         /// <param name="exporterInstance">Instance of the Export class</param>
         /// <returns>List<string></returns>
-        public async Task<List<string>> MapAndCreateModules(CourseWorkMaterials[] courseWorkMaterials, string classId, Export exporterInstance)
+        public async Task<List<string>> MapCourseWorkMaterialsToModules(CourseWorkMaterials[] courseWorkMaterials, string classId, Export exporterInstance)
         {
             Console.WriteLine("* Importing coursework materials from Google Classroom into Microsoft Teams classwork...");
             List<string> modulesCreated = new List<string>();
@@ -116,20 +116,20 @@ namespace MicrosoftEduImportFromGoogle
 
                 if (courseWork.Materials.Any() == true)
                 {
-                    await MapAndCreateModuleResources(courseWork.Materials,classId, createdModule, exporterInstance);
+                    await MapCourseWorkMaterialsToModuleResources(courseWork.Materials,classId, createdModule, exporterInstance);
                 }
             }
             return modulesCreated;
         }
 
         /// <summary>
-        /// Maps Google entities to create assignments resources
+        /// Maps Google materials to create assignments resources
         /// </summary>
         /// <param name="courseWorks">List of Materials to import</param>
         /// <param name="createdAssignment">EducationAssignment</param>
         /// <param name="exporterInstance">Instance of the Export class</param>
-        /// <returns>List<string></returns>
-        private async Task MapAndCreateResources(List<Material> materials, EducationAssignment createdAssignment, Export exporterInstance)
+        /// <returns></returns>
+        private async Task MapMaterialToResources(List<Material> materials, EducationAssignment createdAssignment, Export exporterInstance)
         {
             foreach (var material in materials)
             {
@@ -198,14 +198,14 @@ namespace MicrosoftEduImportFromGoogle
         }
 
         /// <summary>
-        /// Maps Google entities to create module resources
+        /// Maps Google courseWork materials to create module resources
         /// </summary>
         /// <param name="courseWorks">List of Materials to import</param>
         /// <param name="classId">User class id</param>
         /// <param name="createdModule">EducationModule</param>
         /// <param name="exporterInstance">Instance of the Export class</param>
-        /// <returns>List<string></returns>
-        private async Task MapAndCreateModuleResources(List<Material> materials, string classId, EducationModule createdModule, Export exporterInstance)
+        /// <returns></returns>
+        private async Task MapCourseWorkMaterialsToModuleResources(List<Material> materials, string classId, EducationModule createdModule, Export exporterInstance)
         {
             foreach (var material in materials)
             {

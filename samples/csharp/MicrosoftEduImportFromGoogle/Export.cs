@@ -11,6 +11,8 @@ namespace MicrosoftEduImportFromGoogle
     {
         private readonly IConfiguration _config;
         public string accessToken;
+        public const string BASE_GOOGLEAPI_URL = "https://classroom.googleapis.com/v1";
+        public const string BASE_GOOGLDRIVE_URL = "https://www.googleapis.com/drive";
         public Export(IConfiguration configuration)
         {
             this._config = configuration;
@@ -32,7 +34,7 @@ namespace MicrosoftEduImportFromGoogle
         public async Task<Course[]> GetCourses()
         {
             List<string> courseIds= new List<string>();
-            string content = await Utilities.MakeHttpGetRequest(accessToken, "https://classroom.googleapis.com/v1/courses");
+            string content = await Utilities.MakeHttpGetRequest(accessToken, $"{BASE_GOOGLEAPI_URL}/courses");
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
@@ -49,7 +51,7 @@ namespace MicrosoftEduImportFromGoogle
         public async Task<CourseWork[]> GetCourseWork(Course course)
         {
             Console.WriteLine("* Getting coursework for course [{0}] from Google Classroom...", course.Name);
-            string url = $"https://classroom.googleapis.com/v1/courses/{course.Id}/courseWork?courseWorkStates=DRAFT&courseWorkStates=PUBLISHED";
+            string url = $"{BASE_GOOGLEAPI_URL}/courses/{course.Id}/courseWork?courseWorkStates=DRAFT&courseWorkStates=PUBLISHED";
             string content = await Utilities.MakeHttpGetRequest(accessToken, url);
             var options = new JsonSerializerOptions
             {
@@ -68,7 +70,7 @@ namespace MicrosoftEduImportFromGoogle
         {
             Console.WriteLine("Course Materials");
             Console.WriteLine("________________________________________");
-            string url = $"https://classroom.googleapis.com/v1/courses/{courseId}/courseWorkMaterials";
+            string url = $"{BASE_GOOGLEAPI_URL}/courses/{courseId}/courseWorkMaterials";
             string content = await Utilities.MakeHttpGetRequest(accessToken, url);
             var options = new JsonSerializerOptions
             {
@@ -85,7 +87,7 @@ namespace MicrosoftEduImportFromGoogle
         /// <returns>Dictionary<string, string></returns>
         public async Task<Dictionary<string, string>> GetGoogleDriveFileMetadata(string fileId)
         {
-            string url = $"https://www.googleapis.com/drive/v3/files/{fileId}";
+            string url = $"{BASE_GOOGLDRIVE_URL}/v3/files/{fileId}";
             Dictionary<string, string> fileDetails = JsonSerializer.Deserialize<Dictionary<string, string>>(await Utilities.MakeHttpGetRequest(accessToken, url));
             return fileDetails;
         }
@@ -100,7 +102,7 @@ namespace MicrosoftEduImportFromGoogle
         public async Task<Byte[]> GetGoogleDoc(string fileId, string targetMimeType, bool export = false)
         {
             string query = export ? $"/export?mimeType={targetMimeType}" : "?alt=media";
-            string url = $"https://www.googleapis.com/drive/v3/files/{fileId}{query}";
+            string url = $"{BASE_GOOGLDRIVE_URL}/v3/files/{fileId}{query}";
             return await Utilities.MakeHttpGetByteArrayRequest(accessToken, url);
         }
     }
