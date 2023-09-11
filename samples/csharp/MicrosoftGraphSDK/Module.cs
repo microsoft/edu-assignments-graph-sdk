@@ -145,5 +145,57 @@ namespace MicrosoftGraphSDK
             }
         }
 
+        /// <summary>
+        /// Patch the module
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="moduleId">User module id</param>
+        /// <param name="requestBody">Request body</param>
+        /// <returns>EducationModule</returns>
+        public static async Task<EducationModule> PatchAsync(
+            GraphServiceClient client,
+            string classId,
+            string moduleId,
+            EducationModule requestBody)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Modules[moduleId]
+                    .PatchAsync(requestBody);
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"PatchAsync call: {ex.Message}", ex, classId, moduleId, requestBody);
+            }
+        }
+
+        /// <summary>
+        /// Delete a module
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="moduleId">User module id</param>
+        /// <returns></returns>
+        public static async Task DeleteAsync(
+            GraphServiceClient client,
+            string classId,
+            string moduleId)
+        {
+            try
+            {
+                await client.Education
+                     .Classes[classId]
+                     .Modules[moduleId]
+                     .DeleteAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"DeleteAsync call: {ex.Message}", ex, classId, moduleId);
+            }
+        }
+
     }
 }

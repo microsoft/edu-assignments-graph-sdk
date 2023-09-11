@@ -86,7 +86,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Iterate over all the assignments
                 foreach (var assignment in finalList)
                 {
-                    // Print all the assignments from meAssignments.
+                    // Print all the assignments from meAssignments
                     Console.WriteLine($"Assignment {assignment.Id} added to collection. Status: {assignment.Status} Display name: {assignment.DisplayName} ClassId: {assignment.ClassId}");
                 }
 

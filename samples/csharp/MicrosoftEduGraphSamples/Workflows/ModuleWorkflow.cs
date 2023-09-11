@@ -68,12 +68,14 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Get a Graph client using delegated permissions
                 var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
-                // Create a draft module.
+                // Create a draft module
                 var module = await MicrosoftGraphSDK.Module.CreateAsync(graphClient, _config["classId"], "Sample Module " + DateTime.Now.ToString("dd/MM/yyyy HHmm"), "This Classwork module was created with Microsoft Graph SDK.");
                 Console.WriteLine($"New module has been created: {module.Id} - {module.DisplayName} - {module.Status}");
+
+                // Setting up the ResourcesFolder
                 await MicrosoftGraphSDK.Module.SetupResourcesFolder(graphClient, _config["classId"], module.Id);
 
-                // Add a link resource.
+                // Add a link resource
                 EducationModuleResource requestBody = new EducationModuleResource
                 {
                     Resource = new EducationLinkResource
@@ -83,11 +85,9 @@ namespace MicrosoftEduGraphSamples.Workflows
                         Link = "https://www.bing.com",
                     },
                 };
-
-                // Adding a link resource
                 var newResource = await MicrosoftGraphSDK.Module.PostResourceAsync(graphClient, _config["classId"], module.Id.ToString(), requestBody);
 
-                // Add a new word document resource.
+                // Add a new word document resource
                 requestBody = new EducationModuleResource
                 {
                     Resource = new EducationWordResource
@@ -131,13 +131,22 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Added an assignment resource
                 newResource = await MicrosoftGraphSDK.Module.PostResourceAsync(graphClient, _config["classId"], module.Id.ToString(), requestBody);
 
-                // Publish the module.
+                // Patch a module
+                var updateBody = new EducationModule
+                {
+                    DisplayName = module.DisplayName + " Updated",
+                    Description = module.Description + " updated",
+                };
+                module = await MicrosoftGraphSDK.Module.PatchAsync(graphClient, _config["classId"], module.Id.ToString(), updateBody);
+                Console.WriteLine($"Module has been Patched: {module.DisplayName}");
+
+                // Publish the module
                 module = await MicrosoftGraphSDK.Module.PublishAsync(graphClient, _config["classId"], module.Id.ToString());
 
                 // Switch to student account
                 graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["password"]);
 
-                // Student - Get module resources.
+                // Student - Get module resources
                 var resources = await MicrosoftGraphSDK.Module.GetModuleResourcesAsync(graphClient, _config["classId"], module.Id.ToString());
 
                 // Iterate over the resources
@@ -145,6 +154,13 @@ namespace MicrosoftEduGraphSamples.Workflows
                 {
                     Console.WriteLine($"Resource: {resource.Resource.DisplayName}");
                 }
+
+                // Switch to Teacher account
+                graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+
+                // Delete a module
+                await MicrosoftGraphSDK.Module.DeleteAsync(graphClient, _config["classId"], module.Id.ToString());
+                Console.WriteLine($"Module has been Deleted: {module.DisplayName}");
             }
             catch (Exception ex)
             {
