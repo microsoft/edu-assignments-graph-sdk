@@ -322,6 +322,5 @@ namespace MicrosoftEduImportFromGoogle
             }
             return educationResource;
         }
-
     }
 }

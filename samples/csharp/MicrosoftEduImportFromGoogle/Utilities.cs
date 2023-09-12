@@ -1,13 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -20,7 +15,6 @@ namespace MicrosoftEduImportFromGoogle
     }
     public class Utilities
     {
-       
         public static FileTypeDetails GetFileDetails(string sourceMimeType) => sourceMimeType switch
         {
             "application/vnd.google-apps.document" => new FileTypeDetails { FileExtension = ".docx", FileMimeType = WebUtility.UrlEncode("application/vnd.openxmlformats-officedocument.wordprocessingml.document") },
@@ -40,10 +34,10 @@ namespace MicrosoftEduImportFromGoogle
                 {
                     var content = await response.Content.ReadAsStringAsync();
                     return content;
-
                 }
             }
         }
+
         public static async Task<Byte[]> MakeHttpGetByteArrayRequest(string access_token, string url)
         {
             using (HttpClient client = new HttpClient())
@@ -105,7 +99,6 @@ namespace MicrosoftEduImportFromGoogle
             return base64;
         }
 
-        // ref http://stackoverflow.com/a/3978040
         public static int GetRandomUnusedPort()
         {
             var listener = new TcpListener(IPAddress.Loopback, 0);
@@ -115,7 +108,6 @@ namespace MicrosoftEduImportFromGoogle
             return port;
         }
 
-        //copied from https://brockallen.com/2016/09/24/process-start-for-urls-on-net-core/
         public static void OpenBrowser(string url)
         {
             try
@@ -124,7 +116,6 @@ namespace MicrosoftEduImportFromGoogle
             }
             catch
             {
-                // hack because of this: https://github.com/dotnet/corefx/issues/10361
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
                     url = url.Replace("&", "^&");

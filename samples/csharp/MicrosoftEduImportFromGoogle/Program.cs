@@ -196,7 +196,6 @@ if (string.IsNullOrEmpty(microsoftClassId))
 }
 
 // -- Do the actual migration
-
 await import.MapCourseWorksToAssignments(selectedCourseWorkList.ToArray(), microsoftClassId, export);
 await import.MapCourseWorkMaterialsToModules(selectedCourseWorkMaterialsList.ToArray(), microsoftClassId, export);
 

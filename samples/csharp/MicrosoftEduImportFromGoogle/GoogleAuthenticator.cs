@@ -42,7 +42,6 @@ namespace MicrosoftEduImportFromGoogle
             // Opens request in the browser.
             Utilities.OpenBrowser(authorizationRequest);
 
-
             // Waits for the OAuth authorization response.
             var context = await http.GetContextAsync();
 
