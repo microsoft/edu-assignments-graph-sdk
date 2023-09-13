@@ -9,7 +9,8 @@ using MicrosoftEduGraphSamples.Utilities;
 namespace MicrosoftEduGraphSamples.Workflows
 {
     /// <summary>
-    /// Contains all the workflows related to Submissions
+    /// Contains all the workflows related to Submissions, the process from assignment creation to reassignment to the student
+    /// with feedback for review, including creating a batch request and getting the responses
     /// </summary>
     internal class SubmissionWorkflow
     {

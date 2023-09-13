@@ -52,7 +52,7 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// Returns channels information for a team
+        /// Returns list of channels information for a team
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">Class id</param>

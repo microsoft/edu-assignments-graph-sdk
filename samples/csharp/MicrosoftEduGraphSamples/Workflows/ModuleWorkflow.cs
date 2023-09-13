@@ -11,7 +11,8 @@ using System.Resources;
 namespace MicrosoftEduGraphSamples.Workflows
 {
     /// <summary>
-    /// Contains all the workflows related to Modules
+    /// The Workflow related to modules include creating a draft, publishing, setting up resources, adding link resources, 
+    /// Word document resources, channel resources, assignment resources, patching, and deleting as a teacher.
     /// </summary>
     internal class ModuleWorkflow
     {

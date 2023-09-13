@@ -43,7 +43,7 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// Post the Resources of Module
+        /// Post the resource under a given module
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
@@ -95,7 +95,7 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// Gets the Resource Collection Response of Module
+        /// Gets the list of resources belonging to the given module
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
