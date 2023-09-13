@@ -3,12 +3,14 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
-using Microsoft.Graph.Models;
+using Microsoft.Graph.Beta.Models;
+using MicrosoftEduGraphSamples.Utilities;
 
 namespace MicrosoftEduGraphSamples.Workflows
 {
     /// <summary>
-    /// Contains all the workflows related to Submissions
+    /// Contains all the workflows related to Submissions, the process from assignment creation to reassignment to the student
+    /// with feedback for review, including creating a batch request and getting the responses
     /// </summary>
     internal class SubmissionWorkflow
     {
@@ -18,43 +20,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         public SubmissionWorkflow(IConfiguration configuration)
         {
             this._config = configuration;
-
-            // Verify and throw exception for input values if null or empty
-            try
-            {
-                if (string.IsNullOrEmpty(_config["classId"]))
-                {
-                    throw new Exception("Missing classId please check appconfig.json file.");
-                }
-                else if (string.IsNullOrEmpty(_config["tenantId"]))
-                {
-                    throw new Exception("Missing tenantId please check appconfig.json file.");
-                }
-                else if (string.IsNullOrEmpty(_config["secret"]))
-                {
-                    throw new Exception("Missing secret please check appconfig.json file.");
-                }
-                else if (string.IsNullOrEmpty(_config["appId"]))
-                {
-                    throw new Exception("Missing appId please check appconfig.json file.");
-                }
-                else if (string.IsNullOrEmpty(_config["teacherAccount"]))
-                {
-                    throw new Exception("Missing teacherAccount please check appconfig.json file.");
-                }
-                else if (string.IsNullOrEmpty(_config["studentAccount"]))
-                {
-                    throw new Exception("Missing studentAccount please check appconfig.json file.");
-                }
-                else if (string.IsNullOrEmpty(_config["password"]))
-                {
-                    throw new Exception("Missing password please check appconfig.json file.");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            GlobalMethods.ValidateConfiguration(_config);
         }
 
         /// <summary>

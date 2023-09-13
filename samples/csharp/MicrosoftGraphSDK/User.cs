@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.Graph;
-using Microsoft.Graph.Models;
+using Microsoft.Graph.Beta;
+using Microsoft.Graph.Beta.Models;
 
 namespace MicrosoftGraphSDK
 {
@@ -16,7 +16,7 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <returns>Microsoft.Graph.Models.User</returns>
-        public static async Task<Microsoft.Graph.Models.User> GetUserInfoAsync(
+        public static async Task<Microsoft.Graph.Beta.Models.User> GetUserInfoAsync(
             GraphServiceClient client)
         {
             try

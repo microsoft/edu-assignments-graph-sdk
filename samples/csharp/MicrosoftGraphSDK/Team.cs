@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.Graph;
-using Microsoft.Graph.Models;
+using Microsoft.Graph.Beta;
+using Microsoft.Graph.Beta.Models;
 
 namespace MicrosoftGraphSDK
 {
@@ -48,6 +48,26 @@ namespace MicrosoftGraphSDK
             catch (Exception ex)
             {
                 throw new GraphException($"GetUserJoinedTeamsAsync call: {ex.Message}", ex);
+            }
+        }
+
+        /// <summary>
+        /// Returns list of channels information for a team
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">Class id</param>
+        /// <returns>ChannelCollectionResponse</returns>
+        public static async Task<ChannelCollectionResponse> GetChannelsAsync(
+             this GraphServiceClient client,
+             string classId)
+        {
+            try
+            {
+                return await client.Teams[classId].Channels.GetAsync(requestConfig => {requestConfig.QueryParameters.Filter = "displayName eq 'General'"; });
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetChannelsAsync call: {ex.Message}", ex, classId);
             }
         }
     }
