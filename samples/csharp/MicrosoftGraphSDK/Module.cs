@@ -16,27 +16,34 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
-        /// <param name="educationModule">EducationModule object</param>
+        /// <param name="displayName">Display Name</param>
+        /// <param name="description">Description</param>
         /// <returns>EducationModule</returns>
         public static async Task<EducationModule> CreateAsync(
             GraphServiceClient client,
             string classId,
-            EducationModule educationModule)
+            string displayName,
+            string description)
         {
             try
             {
+                var requestBody = new EducationModule
+                {
+                    DisplayName = displayName,
+                    Description = description,
+                };
+
                 return await client.Education
                     .Classes[classId]
-                    .Modules.PostAsync(educationModule);
+                    .Modules.PostAsync(requestBody);
             }
-            catch (Exception ex)
-            {
-                throw new GraphException($"CreateAsync call: {ex.Message}", ex, classId, educationModule);
+            catch (Exception ex) {
+                throw new GraphException($"CreateAsync call: {ex.Message}", ex, classId, displayName, description);
             }
         }
 
         /// <summary>
-        /// Post the Resources of Module
+        /// Post the resource under a given module
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
@@ -58,6 +65,57 @@ namespace MicrosoftGraphSDK
             catch (Exception ex)
             {
                 throw new GraphException($"PostResourceAsync call: {ex.Message}", ex, classId, moduleId);
+            }
+        }
+
+        /// <summary>
+        /// Publishes a Module, changes the state of an educationModule from its original draft status to the published status
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="moduleId">User module id</param>
+        /// <returns>EducationModule</returns>
+        public static async Task<EducationModule> PublishAsync(
+            GraphServiceClient client,
+            string classId,
+            string moduleId)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Modules[moduleId]
+                    .Publish
+                    .PostAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"PublishAsync call: {ex.Message}", ex, classId, moduleId);
+            }
+        }
+
+        /// <summary>
+        /// Gets the list of resources belonging to the given module
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="moduleId">User module id</param>
+        /// <returns>EducationModuleResourceCollectionResponse</returns>
+        public static async Task<EducationModuleResourceCollectionResponse> GetModuleResourcesAsync(
+            GraphServiceClient client,
+            string classId,
+            string moduleId)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Modules[moduleId]
+                    .Resources.GetAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetModuleResourcesAsync call: {ex.Message}", ex, classId, moduleId);
             }
         }
 
@@ -84,6 +142,58 @@ namespace MicrosoftGraphSDK
             catch (Exception ex)
             {
                 throw new GraphException($"SetupResourcesFolder call: {ex.Message}", ex, classId, moduleId);
+            }
+        }
+
+        /// <summary>
+        /// Patch the module
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="moduleId">User module id</param>
+        /// <param name="requestBody">Request body</param>
+        /// <returns>EducationModule</returns>
+        public static async Task<EducationModule> PatchAsync(
+            GraphServiceClient client,
+            string classId,
+            string moduleId,
+            EducationModule requestBody)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Modules[moduleId]
+                    .PatchAsync(requestBody);
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"PatchAsync call: {ex.Message}", ex, classId, moduleId, requestBody);
+            }
+        }
+
+        /// <summary>
+        /// Delete a module
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="moduleId">User module id</param>
+        /// <returns></returns>
+        public static async Task DeleteAsync(
+            GraphServiceClient client,
+            string classId,
+            string moduleId)
+        {
+            try
+            {
+                await client.Education
+                     .Classes[classId]
+                     .Modules[moduleId]
+                     .DeleteAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"DeleteAsync call: {ex.Message}", ex, classId, moduleId);
             }
         }
 

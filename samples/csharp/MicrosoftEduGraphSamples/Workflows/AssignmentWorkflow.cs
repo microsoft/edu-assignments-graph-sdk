@@ -3,12 +3,14 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Graph.Beta.Models;
+using MicrosoftEduGraphSamples.Utilities;
 using MicrosoftGraphSDK;
 
 namespace MicrosoftEduGraphSamples.Workflows
 {
     /// <summary>
-    /// Contains all the workflows related to Assignments
+    /// Contains all the workflows related to Assignments, include getting assignments from all classes, 
+    /// checking user details for assignments, getting user classes, and excluding assignments from archived and deleted classes.
     /// </summary>
     internal class AssignmentWorkflow
     {
@@ -17,43 +19,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         public AssignmentWorkflow(IConfiguration configuration)
         {
             this._config = configuration;
-
-            // Verify and throw exception for input values if null or empty
-            try
-            {
-                if (string.IsNullOrEmpty(_config["classId"]))
-                {
-                    throw new Exception("Missing classId please check appconfig.json file.");
-                }
-                else if (string.IsNullOrEmpty(_config["tenantId"]))
-                {
-                    throw new Exception("Missing tenantId please check appconfig.json file.");
-                }
-                else if (string.IsNullOrEmpty(_config["secret"]))
-                {
-                    throw new Exception("Missing secret please check appconfig.json file.");
-                }
-                else if (string.IsNullOrEmpty(_config["appId"]))
-                {
-                    throw new Exception("Missing appId please check appconfig.json file.");
-                }
-                else if (string.IsNullOrEmpty(_config["teacherAccount"]))
-                {
-                    throw new Exception("Missing teacherAccount please check appconfig.json file.");
-                }
-                else if (string.IsNullOrEmpty(_config["studentAccount"]))
-                {
-                    throw new Exception("Missing studentAccount please check appconfig.json file.");
-                }
-                else if (string.IsNullOrEmpty(_config["password"]))
-                {
-                    throw new Exception("Missing password please check appconfig.json file.");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            GlobalMethods.ValidateConfiguration(_config);
         }
 
         /// <summary>
@@ -64,7 +30,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         {
             try
             {
-                //Check user details for assignments
+                // Check user details for assignments
                 string userAccount = isTeacher ? _config["teacherAccount"] : _config["studentAccount"];
 
                 // Get a Graph client using delegated permissions
@@ -86,7 +52,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Iterate over all the assignments
                 foreach (var assignment in finalList)
                 {
-                    // Print all the assignments from meAssignments.
+                    // Print all the assignments from meAssignments
                     Console.WriteLine($"Assignment {assignment.Id} added to collection. Status: {assignment.Status} Display name: {assignment.DisplayName} ClassId: {assignment.ClassId}");
                 }
 
