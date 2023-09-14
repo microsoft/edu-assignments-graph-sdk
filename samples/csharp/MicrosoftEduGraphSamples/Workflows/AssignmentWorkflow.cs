@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.Extensions.Configuration;
-using Microsoft.Graph.Beta.Models;
+using Microsoft.Graph.Models;
 using MicrosoftEduGraphSamples.Utilities;
 using MicrosoftGraphSDK;
 
@@ -15,7 +15,8 @@ namespace MicrosoftEduGraphSamples.Workflows
     internal class AssignmentWorkflow
     {
         private readonly IConfiguration _config;
-
+        private const int MAX_RETRIES = 10; // Maximum number of retries for long running operations
+        
         public AssignmentWorkflow(IConfiguration configuration)
         {
             this._config = configuration;
@@ -62,6 +63,104 @@ namespace MicrosoftEduGraphSamples.Workflows
             {
                 Console.WriteLine($"AssignmentsFromNotArchivedClasses: {ex.ToString()}");
                 return null;
+            }
+        }
+        /// <summary>
+        /// Workflow to get assignments evolvable enums
+        /// </summary>
+        /// <param name></param> 
+        public async Task AssignmentsEvolvableEnums()
+        {
+            try
+            {
+                int retries = 0;
+                string assignmentId = string.Empty;
+                string submissionId = string.Empty;
+
+                // Get a Graph client using delegated permissions
+                var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+
+                //**** create a draft assignment: displayName = "Verify assignments states [inactive]".
+                var assignmentInactive = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
+                assignmentId = assignmentInactive.Id;
+                Console.WriteLine($"Assignment created successfully {assignmentInactive.Id} in state {assignmentInactive.Status}");
+
+                //**** 3 - create a draft assignment: displayName = "Verify assignments states [assigned]".
+                var assignmentAssigned = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
+                Console.WriteLine($"Assignment created successfully {assignmentAssigned.Id} in state {assignmentAssigned.Status}");
+
+                //**** 4 - create a draft assignment: displayName = "Verify assignments states [draft]".
+                var assignmentDraft = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
+                Console.WriteLine($"Assignment created successfully {assignmentDraft.Id} in state {assignmentDraft.Status}");
+
+                //2.**** operations to do for assignment created at step 2.
+                //2.1 publish assignment. -> similar to this line
+                // Teacher publishes the assignment to make it appears in the student's list
+                assignmentInactive = await MicrosoftGraphSDK.Assignment.PublishAsync(graphClient, _config["classId"], assignmentId);
+                Console.WriteLine($"Assignment {assignmentInactive.Id} publish in process");
+
+                //2.2**** verify publish status -> similar to this line
+                // Verify assignment state, publish is completed until state equals "Assigned"
+                while (assignmentInactive.Status != EducationAssignmentStatus.Assigned && retries <= MAX_RETRIES)
+                {
+                    // Print . in the log to show that the call is being retried.
+                    Console.WriteLine(".");
+
+                    assignmentInactive = await MicrosoftGraphSDK.Assignment.GetAssignmentAsync(graphClient, _config["classId"], assignmentId);
+
+                    // If you are calling this code pattern in Backend agent of your service, then you want to retry the work after some time. The sleep here is just an example to emulate the delay.
+                    Thread.Sleep(2000);
+                    retries++;
+                }
+                Console.WriteLine($"Assignment {assignmentInactive.Id} publish is completed. Status: {assignmentInactive.Status}");
+
+                // Deactivate Assignment
+                assignmentInactive = await MicrosoftGraphSDK.Assignment.DeactivateAsync(graphClient, _config["classId"], assignmentId);
+                Console.WriteLine($"Assignment {assignmentInactive.Id} Deactivated");
+
+                // ****operations to do for assignment created at step 3.
+                // 3.1 publish assignment. ->similar to this line
+                // Teacher publishes the assignment to make it appears in the student's list
+                assignmentId = assignmentAssigned.Id;
+                assignmentAssigned = await MicrosoftGraphSDK.Assignment.PublishAsync(graphClient, _config["classId"], assignmentId);
+                Console.WriteLine($"Assignment {assignmentAssigned.Id} publish in process");
+
+                //3.2**** verify publish status. ->similar to this line
+
+                // Verify assignment state, publish is completed until state equals "Assigned"
+                while (assignmentAssigned.Status != EducationAssignmentStatus.Assigned && retries <= MAX_RETRIES)
+                {
+                    // Print . in the log to show that the call is being retried.
+                    Console.WriteLine(".");
+
+                    assignmentAssigned = await MicrosoftGraphSDK.Assignment.GetAssignmentAsync(graphClient, _config["classId"], assignmentId);
+
+                    // If you are calling this code pattern in Backend agent of your service, then you want to retry the work after some time. The sleep here is just an example to emulate the delay.
+                    Thread.Sleep(2000);
+                    retries++;
+                }
+                Console.WriteLine($"Assignment {assignmentAssigned.Id} publish is completed. Status: {assignmentAssigned.Status}");
+
+                if (assignmentInactive.Status == EducationAssignmentStatus.Inactive)
+                {
+                    Console.WriteLine($"Inactive Assignment Found: {assignmentId}");
+                }
+
+                if (assignmentAssigned.Status == EducationAssignmentStatus.Assigned)
+                {
+                    Console.WriteLine($"Assigned Assignment Found: {assignmentId}");
+                }
+
+                if (assignmentDraft.Status == EducationAssignmentStatus.Draft)
+                {
+                    Console.WriteLine($"Draft Assignment Found: {assignmentId}");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"AssignmentsEvolvableEnums: {ex.ToString()}");
             }
         }
     }

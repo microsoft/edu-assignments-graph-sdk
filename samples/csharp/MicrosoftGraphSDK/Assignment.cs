@@ -133,5 +133,59 @@ namespace MicrosoftGraphSDK
                 throw new GraphException($"PublishAsync call: {ex.Message}", ex, classId, assignmentId);
             }
         }
+
+        //2.3**** inactive assignment ->
+        public static async Task<EducationAssignment> DeactivateAsync(
+            GraphServiceClient client,
+            string classId,
+            string assignmentId)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .Deactivate.PostAsync(requestConfig =>
+                    {
+                        requestConfig.Headers.Add(
+                            "Prefer", "include-unknown-enum-members");
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"DeactivateAsync call: {ex.Message}", ex, classId, assignmentId);
+            }
+        }
+
+        //5-**** get the class assignments -> similar to this method, but make sure you pass the header Prefer: include-unknown-enum-members
+        /// <summary>
+        /// Get all the assignments from the class
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <returns>EducationAssignmentCollectionResponse</returns>
+        public static async Task<EducationAssignmentCollectionResponse> GetAssignmentsAsync(
+            GraphServiceClient client,
+            string classId,
+            string headerName,
+            string headerValue)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments
+                    .GetAsync(requestConfig => {
+                        requestConfig.Headers.Add(
+                            headerName, headerValue);
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetAssignmentsAsync call: {ex.Message}", ex, classId);
+            }
+        }
+
+
     }
 }
