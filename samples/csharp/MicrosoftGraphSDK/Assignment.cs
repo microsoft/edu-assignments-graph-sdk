@@ -134,7 +134,13 @@ namespace MicrosoftGraphSDK
             }
         }
 
-        //2.3**** inactive assignment ->
+        /// <summary>
+        /// Deactivate an assignment, changes the state of an educationAssignment from its original draft status to the Inactive status
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
+        /// <returns>EducationAssignment</returns>
         public static async Task<EducationAssignment> DeactivateAsync(
             GraphServiceClient client,
             string classId,
@@ -157,12 +163,13 @@ namespace MicrosoftGraphSDK
             }
         }
 
-        //5-**** get the class assignments -> similar to this method, but make sure you pass the header Prefer: include-unknown-enum-members
         /// <summary>
         /// Get all the assignments from the class
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
+        /// <param name="headerName">Header Name</param>
+        /// <param name="headerValue">Header Value</param>
         /// <returns>EducationAssignmentCollectionResponse</returns>
         public static async Task<EducationAssignmentCollectionResponse> GetAssignmentsAsync(
             GraphServiceClient client,
@@ -185,7 +192,5 @@ namespace MicrosoftGraphSDK
                 throw new GraphException($"GetAssignmentsAsync call: {ex.Message}", ex, classId);
             }
         }
-
-
     }
 }
