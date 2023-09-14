@@ -43,6 +43,29 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
+        /// Creates a Graph Service Client using Delegated permissions
+        /// </summary>
+        /// <param name="clientId">Identifier for the application</param>
+        /// <returns>GraphServiceClient</returns>
+        public static GraphServiceClient GetDelegateClient(string clientId)
+        {
+            try
+            {
+                var credential = new InteractiveBrowserCredential(
+                new InteractiveBrowserCredentialOptions
+                {
+                    ClientId = clientId,
+                });
+
+                return new GraphServiceClient(credential, new[] { "EduAssignments.ReadWrite", "EduCurricula.ReadWrite" });
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetDelegateClient call: {ex.Message}", ex, clientId);
+            }
+        }
+
+        /// <summary>
         /// Creates a Graph Service Client using Application permissions
         /// </summary>
         /// <param name="tenantId">The Azure Directory tenant identifier</param>

@@ -62,6 +62,30 @@ namespace MicrosoftGraphSDK
         /// <summary>
         /// Creates a new assignment
         /// </summary>
+        /// <param name="classId">User class id</param>
+        /// <param name="educationAssignment">EducationAssignment object</param>
+        /// <returns>EducationAssignment</returns>
+        public static async Task<EducationAssignment> CreateAsync(
+            GraphServiceClient client,
+            string classId,
+            EducationAssignment educationAssignment)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments
+                    .PostAsync(educationAssignment);
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"CreateAsync call: {ex.Message}", ex, classId);
+            }
+        }
+
+        /// <summary>
+        /// Creates a new assignment
+        /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
         /// <returns>EducationAssignment</returns>
@@ -131,6 +155,58 @@ namespace MicrosoftGraphSDK
             catch (Exception ex)
             {
                 throw new GraphException($"PublishAsync call: {ex.Message}", ex, classId, assignmentId);
+            }
+        }
+
+        /// <summary>
+        /// Post an assignment resource
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id</param>
+        /// <returns>EducationAssignmentResource</returns>
+        public static async Task<EducationAssignmentResource> PostResourceAsync(
+            GraphServiceClient client,
+            string classId,
+            string assignmentId,
+            EducationAssignmentResource resource)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .Resources.PostAsync(resource);
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"PostResourceAsync call: {ex.Message}", ex, classId, assignmentId);
+            }
+        }
+
+        /// <summary>
+        /// Sets up the assignment resources folder
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id</param>
+        /// <returns>EducationAssignment</returns>
+        public static async Task<EducationAssignment> SetupResourcesFolder(
+            GraphServiceClient client,
+            string classId,
+            string assignmentId)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .SetUpResourcesFolder
+                    .PostAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"SetupResourcesFolder call: {ex.Message}", ex, classId, assignmentId);
             }
         }
     }
