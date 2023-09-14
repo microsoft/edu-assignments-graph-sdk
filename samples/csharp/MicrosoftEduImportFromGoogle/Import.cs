@@ -105,13 +105,7 @@ namespace MicrosoftEduImportFromGoogle
             List<string> modulesCreated = new List<string>();
             foreach (var courseWork in courseWorkMaterials)
             {
-                var createdModule = await Module.CreateAsync(graphServiceClient, classId,
-                    new EducationModule
-                    {
-                        DisplayName = courseWork.Title,
-                        Description = courseWork.Description
-                    }
-                );
+                var createdModule = await Module.CreateAsync(graphServiceClient, classId, courseWork.Title, courseWork.Description);
                 modulesCreated.Add(createdModule.DisplayName);
 
                 if (courseWork.Materials.Any() == true)
