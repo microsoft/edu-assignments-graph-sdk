@@ -7,10 +7,34 @@ This project has a whole sample to guide partners to import assignments and clas
 ### Google
 * [Follow these steps](https://developers.google.com/classroom/quickstart/go) to create a project in the Google Cloud Console and enable the __Classroom API__ for your project.
 * [Create an OAuth 2.0 client ID](https://developers.google.com/classroom/guides/auth) for your project and specify the scopes that the application needs. This will allow your application to authenticate with Google and request access to the Classroom data.
+* Make sure to add the scopes below to your Google application.
+    ```
+    https://www.googleapis.com/auth/classroom.courses.readonly
+    https://www.googleapis.com/auth/classroom.coursework.students.readonly
+    https://www.googleapis.com/auth/classroom.courseworkmaterials.readonly
+    https://www.googleapis.com/auth/drive.readonly
+    ```
 
 ### Microsoft
 * An EDU tenant for Azure Active Directoy authentication. Follow [these instructions](https://learn.microsoft.com/graph/msgraph-onboarding-overview) to get set up. You will need some info from the tenant created when filling the `appsettings.json` file in the samples.
 * Create a new [app registration](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app) or take any existing in your Azure portal.
+* Make sure to add the API permissions below to your app registration.
+    * Delegated
+    ```
+    EduAssignments.ReadWrite
+    EduCurricula.ReadWrite
+    EduRoster.ReadBasic
+    Files.ReadWrite.All
+    Team.ReadBasic.All
+    ```
+    * Application
+    ```
+    EduAssignments.ReadWrite.All
+    EduCurricula.ReadWrite.All
+    EduRoster.Read.All
+    Files.ReadWrite.All
+    Team.ReadBasic.All
+    ```
 * [Visual Studio 2022](https://visualstudio.microsoft.com/downloads) or [Visual Studio Code](https://code.visualstudio.com/download).
 
 ## Usage
