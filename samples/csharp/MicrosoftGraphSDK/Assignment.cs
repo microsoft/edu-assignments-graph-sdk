@@ -162,35 +162,5 @@ namespace MicrosoftGraphSDK
                 throw new GraphException($"DeactivateAsync call: {ex.Message}", ex, classId, assignmentId);
             }
         }
-
-        /// <summary>
-        /// Get all the assignments from the class
-        /// </summary>
-        /// <param name="client">Microsoft Graph service client</param>
-        /// <param name="classId">User class id</param>
-        /// <param name="headerName">Header Name</param>
-        /// <param name="headerValue">Header Value</param>
-        /// <returns>EducationAssignmentCollectionResponse</returns>
-        public static async Task<EducationAssignmentCollectionResponse> GetAssignmentsAsync(
-            GraphServiceClient client,
-            string classId,
-            string headerName,
-            string headerValue)
-        {
-            try
-            {
-                return await client.Education
-                    .Classes[classId]
-                    .Assignments
-                    .GetAsync(requestConfig => {
-                        requestConfig.Headers.Add(
-                            headerName, headerValue);
-                    });
-            }
-            catch (Exception ex)
-            {
-                throw new GraphException($"GetAssignmentsAsync call: {ex.Message}", ex, classId);
-            }
-        }
     }
 }

@@ -82,36 +82,21 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Get a Graph client using delegated permissions
                 var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
-                // Create a draft assignment with displayName = "Verify assignments states [inactive]"
+                // Create assignment to verify inactive state
                 var assignmentInactive = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
                 assignmentId = assignmentInactive.Id;
                 Console.WriteLine($"Assignment created successfully {assignmentInactive.Id} in state {assignmentInactive.Status}");
 
-                // Create a draft assignment with displayName = "Verify assignments states [assigned]"
+                // Create assignment to verify assigned state
                 var assignmentAssigned = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
                 Console.WriteLine($"Assignment created successfully {assignmentAssigned.Id} in state {assignmentAssigned.Status}");
 
-                // Create a draft assignment with displayName = "Verify assignments states [draft]"
+                // Create assignment to verify draft state
                 var assignmentDraft = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
                 Console.WriteLine($"Assignment created successfully {assignmentDraft.Id} in state {assignmentDraft.Status}");
-
-                // Teacher publishes the assignment to make it appears in the student's list
-                assignmentInactive = await MicrosoftGraphSDK.Assignment.PublishAsync(graphClient, _config["classId"], assignmentId);
-                Console.WriteLine($"Assignment {assignmentInactive.Id} publish in process");
-
-                // Verify assignment state, publish is completed until state equals "Assigned"
-                while (assignmentInactive.Status != EducationAssignmentStatus.Assigned && retries <= MAX_RETRIES)
-                {
-                    // Print . in the log to show that the call is being retried
-                    Console.WriteLine(".");
-
-                    assignmentInactive = await MicrosoftGraphSDK.Assignment.GetAssignmentAsync(graphClient, _config["classId"], assignmentId);
-
-                    // If you are calling this code pattern in Backend agent of your service, then you want to retry the work after some time. The sleep here is just an example to emulate the delay
-                    Thread.Sleep(2000);
-                    retries++;
-                }
-                Console.WriteLine($"Assignment {assignmentInactive.Id} publish is completed. Status: {assignmentInactive.Status}");
+               
+                //---------------------------------------------------------
+                await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentInactive.Id);
 
                 // Deactivate the Assignment
                 assignmentInactive = await MicrosoftGraphSDK.Assignment.DeactivateAsync(graphClient, _config["classId"], assignmentId);
