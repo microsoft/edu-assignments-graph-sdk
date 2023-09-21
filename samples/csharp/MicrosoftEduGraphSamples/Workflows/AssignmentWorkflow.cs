@@ -94,8 +94,8 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Create assignment to verify draft state
                 var assignmentDraft = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
                 Console.WriteLine($"Assignment created successfully {assignmentDraft.Id} in state {assignmentDraft.Status}");
-               
-                //---------------------------------------------------------
+
+                // Publishing an Assignment
                 await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentInactive.Id);
 
                 // Deactivate the Assignment
@@ -103,24 +103,8 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"Assignment {assignmentInactive.Id} Deactivated");
 
                 // Publishing an Assignment
-                assignmentId = assignmentAssigned.Id;
-                assignmentAssigned = await MicrosoftGraphSDK.Assignment.PublishAsync(graphClient, _config["classId"], assignmentId);
-                Console.WriteLine($"Assignment {assignmentAssigned.Id} publish in process");
-
-                // Verify assignment state, publish is completed until state equals "Assigned"
-                while (assignmentAssigned.Status != EducationAssignmentStatus.Assigned && retries <= MAX_RETRIES)
-                {
-                    // Print . in the log to show that the call is being retried
-                    Console.WriteLine(".");
-
-                    assignmentAssigned = await MicrosoftGraphSDK.Assignment.GetAssignmentAsync(graphClient, _config["classId"], assignmentId);
-
-                    // If you are calling this code pattern in Backend agent of your service, then you want to retry the work after some time. The sleep here is just an example to emulate the delay
-                    Thread.Sleep(2000);
-                    retries++;
-                }
-                Console.WriteLine($"Assignment {assignmentAssigned.Id} publish is completed. Status: {assignmentAssigned.Status}");
-
+                await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentAssigned.Id);
+               
                 // Verifying that you have an Inactive, Assigned and Draft assignments
                 if (assignmentInactive.Status == EducationAssignmentStatus.Inactive)
                 {
