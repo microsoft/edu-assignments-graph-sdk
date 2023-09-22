@@ -183,5 +183,65 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"BatchRequestWorkflow: {ex.ToString()}");
             }
         }
+
+        /// <summary>
+        /// Workflow to get Submissions evolvable enums
+        /// </summary>
+        /// <param name></param> 
+        public async Task AssignmentsEvolvableEnums()
+        {
+            try
+            {
+                int retries = 0;
+                string assignmentId = string.Empty;
+                string submissionId = string.Empty;
+
+                // Get a Graph client using delegated permissions
+                var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+
+                // Create assignment to verify inactive state
+                var assignmentInactive = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
+                assignmentId = assignmentInactive.Id;
+                Console.WriteLine($"Assignment created successfully {assignmentInactive.Id} in state {assignmentInactive.Status}");
+
+                // Create assignment to verify assigned state
+                var assignmentAssigned = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
+                Console.WriteLine($"Assignment created successfully {assignmentAssigned.Id} in state {assignmentAssigned.Status}");
+
+                // Create assignment to verify draft state
+                var assignmentDraft = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
+                Console.WriteLine($"Assignment created successfully {assignmentDraft.Id} in state {assignmentDraft.Status}");
+
+                // Publishing an Assignment
+                await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentInactive.Id);
+
+                // Deactivate the Assignment
+                assignmentInactive = await MicrosoftGraphSDK.Assignment.DeactivateAsync(graphClient, _config["classId"], assignmentId);
+                Console.WriteLine($"Assignment {assignmentInactive.Id} Deactivated");
+
+                // Publishing an Assignment
+                await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentAssigned.Id);
+
+                // Verifying that you have an Inactive, Assigned and Draft assignments
+                if (assignmentInactive.Status == EducationAssignmentStatus.Inactive)
+                {
+                    Console.WriteLine($"Inactive Assignment Found: {assignmentId}");
+                }
+
+                if (assignmentAssigned.Status == EducationAssignmentStatus.Assigned)
+                {
+                    Console.WriteLine($"Assigned Assignment Found: {assignmentId}");
+                }
+
+                if (assignmentDraft.Status == EducationAssignmentStatus.Draft)
+                {
+                    Console.WriteLine($"Draft Assignment Found: {assignmentId}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"AssignmentsEvolvableEnums: {ex.ToString()}");
+            }
+        }
     }
 }
