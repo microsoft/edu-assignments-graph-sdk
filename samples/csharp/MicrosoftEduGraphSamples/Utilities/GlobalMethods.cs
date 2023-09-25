@@ -6,11 +6,17 @@ using MicrosoftGraphSDK;
 
 namespace MicrosoftEduGraphSamples.Utilities
 {
+    /// <summary>
+    /// Contains all the reusuable methods for workflows related to Assignments,Modules and Submissions.
+    /// </summary>
     internal class GlobalMethods
     {
         private static IConfiguration _config;
         private const int MAX_RETRIES = 10;
 
+        /// <summary>
+        ///Verifies and throw exception for input values if null or empty
+        /// </summary>
         public static void ValidateConfiguration(IConfiguration configuration)
         {
             _config = configuration;
@@ -46,6 +52,10 @@ namespace MicrosoftEduGraphSamples.Utilities
             }
         }
 
+        /// <summary>
+        /// Workflow to Publish Assignments
+        /// </summary>
+        /// <param name="assignmentId">Assignment id</param>
         public static async Task PublishAssignmentsAsync(Microsoft.Graph.Beta.GraphServiceClient graphClient, string assignmentId)
         {
             int retries = 0;

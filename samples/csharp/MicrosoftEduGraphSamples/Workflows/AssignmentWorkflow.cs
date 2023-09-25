@@ -17,7 +17,6 @@ namespace MicrosoftEduGraphSamples.Workflows
     internal class AssignmentWorkflow
     {
         private readonly IConfiguration _config;
-        private const int MAX_RETRIES = 10; // Maximum number of retries for long running operations
         
         public AssignmentWorkflow(IConfiguration configuration)
         {
