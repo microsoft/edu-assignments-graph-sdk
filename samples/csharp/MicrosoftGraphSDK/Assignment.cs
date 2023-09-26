@@ -37,7 +37,7 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// Get all the assignments from the class
+        /// Get all the assignments for the given class
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>

@@ -70,7 +70,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         /// Workflow to get assignments evolvable enums
         /// </summary>
         /// <param name></param> 
-        public async Task AssignmentsEvolvableEnums()
+        public async Task AssignmentsEvolvableEnumsAsync()
         {
             try
             {
@@ -122,7 +122,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"AssignmentsEvolvableEnums: {ex.ToString()}");
+                Console.WriteLine($"Assignments Evolvable Enums: {ex.ToString()}");
             }
         }
     }
