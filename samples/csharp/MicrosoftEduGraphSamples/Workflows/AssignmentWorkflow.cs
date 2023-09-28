@@ -67,7 +67,8 @@ namespace MicrosoftEduGraphSamples.Workflows
             }
         }
         /// <summary>
-        /// Workflow to get assignments evolvable enums
+        /// Workflow to get assignments evolvable enums, Evolvable enums is a mechanism that Microsoft Graph API uses to add new members to existing enumerations without causing a breaking change for applications.
+        /// Reference :: https://learn.microsoft.com/en-us/graph/best-practices-concept#handling-future-members-in-evolvable-enumerations
         /// </summary>
         /// <param name></param> 
         public async Task AssignmentsEvolvableEnumsAsync()

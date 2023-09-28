@@ -136,6 +136,7 @@ namespace MicrosoftGraphSDK
 
         /// <summary>
         /// Deactivate an assignment, changes the state of an educationAssignment from its original draft status to the Inactive status
+        /// Reference :: https://learn.microsoft.com/en-us/graph/assignments-states-transition
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
