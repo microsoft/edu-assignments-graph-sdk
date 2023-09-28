@@ -4,7 +4,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
 using Microsoft.Graph.Beta.Models;
+using Microsoft.Graph.Models;
 using MicrosoftEduGraphSamples.Utilities;
+using MicrosoftGraphSDK;
 
 namespace MicrosoftEduGraphSamples.Workflows
 {
@@ -198,16 +200,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                 // Get a Graph client using delegated permissions
                 var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
-
-                // Create assignment to verify inactive state
-                var assignmentInactive = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
-                assignmentId = assignmentInactive.Id;
-                Console.WriteLine($"Assignment created successfully {assignmentInactive.Id} in state {assignmentInactive.Status}");
-
-                // Create assignment to verify assigned state
-                var assignmentAssigned = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
-                Console.WriteLine($"Assignment created successfully {assignmentAssigned.Id} in state {assignmentAssigned.Status}");
-
+ 
                 // Create assignment to verify draft state
                 var assignmentDraft = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
                 Console.WriteLine($"Assignment created successfully {assignmentDraft.Id} in state {assignmentDraft.Status}");
@@ -215,32 +208,52 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Publishing an Assignment
                 await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentInactive.Id);
 
-                // Deactivate the Assignment
-                assignmentInactive = await MicrosoftGraphSDK.Assignment.DeactivateAsync(graphClient, _config["classId"], assignmentId);
-                Console.WriteLine($"Assignment {assignmentInactive.Id} Deactivated");
+                // Change to student account
+                graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["password"]);
 
-                // Publishing an Assignment
-                await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentAssigned.Id);
+                // Student submits his submission
+                var submission = await MicrosoftGraphSDK.Submission.SubmitAsync(graphClient, _config["classId"], assignmentId, submissionId);
+                Console.WriteLine($"Submission {submission.Id} in state {submission.Status}");
 
-                // Verifying that you have an Inactive, Assigned and Draft assignments
-                if (assignmentInactive.Status == EducationAssignmentStatus.Inactive)
+                // Change to student 2 account
+                graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["password"]);
+
+                // Student submits his submission
+                var submission = await MicrosoftGraphSDK.Submission.SubmitAsync(graphClient, _config["classId"], assignmentId, submissionId);
+                Console.WriteLine($"Submission {submission.Id} in state {submission.Status}");
+
+                // Change to teacher account
+                graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+
+
+                // 9 - excuse submission for first student
+
+                //10 - reassign submission for second student.
+                // Check reassign is completed, must reach the "Reassigned" state.
+                retries = 0;
+                while (submission.Status != EducationSubmissionStatus.Reassigned && retries <= MAX_RETRIES)
                 {
-                    Console.WriteLine($"Inactive Assignment Found: {assignmentId}");
+                    submission = await MicrosoftGraphSDK.Submission
+                        .GetSubmissionWithHeaderAsync(graphClient, _config["classId"], assignmentId, submissionId, "Prefer", "include-unknown-enum-members");
+
+                    Thread.Sleep(2000); // Wait two seconds between calls
+                    retries++;
                 }
 
-                if (assignmentAssigned.Status == EducationAssignmentStatus.Assigned)
-                {
-                    Console.WriteLine($"Assigned Assignment Found: {assignmentId}");
-                }
+                Console.WriteLine($"Submission {submissionId} reached {submission.Status} state");
 
-                if (assignmentDraft.Status == EducationAssignmentStatus.Draft)
-                {
-                    Console.WriteLine($"Draft Assignment Found: {assignmentId}");
-                }
+                // 11 - Get assignment submissions
+
+                //12 - check that submission status for student 1 is "excused".
+
+                //13 - check that submission status for student 2 is "reassigned".
+
+
+
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"AssignmentsEvolvableEnums: {ex.ToString()}");
+                Console.WriteLine($"Submissions Evolvable Enums: {ex.ToString()}");
             }
         }
     }
