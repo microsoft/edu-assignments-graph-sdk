@@ -206,27 +206,28 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"Assignment created successfully {assignmentDraft.Id} in state {assignmentDraft.Status}");
 
                 // Publishing an Assignment
-                await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentInactive.Id);
+                await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentDraft.Id);
 
                 // Change to student account
                 graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["password"]);
 
                 // Student submits his submission
-                var submission = await MicrosoftGraphSDK.Submission.SubmitAsync(graphClient, _config["classId"], assignmentId, submissionId);
-                Console.WriteLine($"Submission {submission.Id} in state {submission.Status}");
+                var submissionStudent1 = await MicrosoftGraphSDK.Submission.SubmitAsync(graphClient, _config["classId"], assignmentId, submissionId);
+                Console.WriteLine($"Submission {submissionStudent1.Id} in state {submissionStudent1.Status}");
 
                 // Change to student 2 account
-                graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["password"]);
+                graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount2"], _config["password"]);
 
                 // Student submits his submission
-                var submission = await MicrosoftGraphSDK.Submission.SubmitAsync(graphClient, _config["classId"], assignmentId, submissionId);
-                Console.WriteLine($"Submission {submission.Id} in state {submission.Status}");
+                var submissionStudent2 = await MicrosoftGraphSDK.Submission.SubmitAsync(graphClient, _config["classId"], assignmentId, submissionId);
+                Console.WriteLine($"Submission {submissionStudent2.Id} in state {submissionStudent2.Status}");
 
                 // Change to teacher account
                 graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
-
                 // 9 - excuse submission for first student
+                await graphClient.Education.Classes["{educationClass-id}"].Assignments["{educationAssignment-id}"].Submissions["{educationSubmission-id}"].Reassign.PostAsync();
+
 
                 //10 - reassign submission for second student.
                 // Check reassign is completed, must reach the "Reassigned" state.
