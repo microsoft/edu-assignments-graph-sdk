@@ -158,33 +158,5 @@ namespace MicrosoftGraphSDK
             }
         }
 
-        /// <summary>
-        /// Excuse the submission to the student
-        /// </summary>
-        /// <param name="client">Microsoft Graph service client</param>
-        /// <param name="classId">User class id</param>
-        /// <param name="assignmentId">Assignment id in the class</param>
-        /// <param name="submissionId">Student submission id</param>
-        /// <returns>EducationSubmission</returns>
-        public static async Task<EducationSubmission> ExcuseAsync(
-            GraphServiceClient client,
-            string classId,
-            string assignmentId,
-            string submissionId)
-        {
-            try
-            {
-                return await client.Education
-                    .Classes[classId]
-                    .Assignments[assignmentId]
-                    .Submissions[submissionId]
-                    .Excuse
-                    .PostAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new GraphException($"ExcuseAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
-            }
-        }
     }
 }

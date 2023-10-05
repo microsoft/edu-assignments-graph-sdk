@@ -225,10 +225,6 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Change to teacher account
                 graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
-                // 9 - excuse submission for first student
-                await graphClient.Education.Classes["{educationClass-id}"].Assignments["{educationAssignment-id}"].Submissions["{educationSubmission-id}"].Reassign.PostAsync();
-
-
                 //10 - reassign submission for second student.
                 // Check reassign is completed, must reach the "Reassigned" state.
                 retries = 0;
