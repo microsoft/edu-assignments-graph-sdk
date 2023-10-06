@@ -157,5 +157,65 @@ namespace MicrosoftGraphSDK
                 throw new GraphException($"ReassignAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
             }
         }
+
+        /// <summary>
+        /// Creates a feedback resource for a given submission
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
+        /// <param name="submissionId">Student submission id</param>
+        /// <param name="educationOutcome">Education outcome object</param>
+        /// <returns>EducationOutcome</returns>
+        public static async Task<EducationOutcome> CreateFeedbackResourceOutcomeAsync(
+            GraphServiceClient client,
+            string classId,
+            string assignmentId,
+            string submissionId,
+            EducationFeedbackResourceOutcome educationOutcome)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .Submissions[submissionId]
+                    .Outcomes
+                    .PostAsync(educationOutcome);
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"CreateFeedbackResourceOutcomeAsync call: {ex.Message}", ex, classId, assignmentId, submissionId, educationOutcome);
+            }
+        }
+
+        /// <summary>
+        /// List all the outcomes associated with a submission
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
+        /// <param name="submissionId">Student submission id</param>
+        /// <returns>EducationOutcomeCollectionResponse</returns>
+        public static async Task<EducationOutcomeCollectionResponse> GetSubmissionOutcomesAsync(
+            GraphServiceClient client,
+            string classId,
+            string assignmentId,
+            string submissionId)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .Submissions[submissionId]
+                    .Outcomes
+                    .GetAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetSubmissionOutcomesAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
+            }
+        }
     }
 }

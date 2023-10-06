@@ -68,7 +68,28 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetMeAssignmentsWithTopAsync call: {ex.Message}", ex);
+                throw new GraphException($"GetMeAssignmentsWithTopAsync call: {ex.Message}", ex, top);
+            }
+        }
+
+        // <summary>
+        /// Lists assignments assigned to a user for all classes
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="userId">User Id</param>
+        /// <returns>EducationAssignmentCollectionResponse</returns>
+        public static async Task<EducationAssignmentCollectionResponse> GetUserAssignmentsAsync(
+            GraphServiceClient client,
+            string userId)
+        {
+            try {
+                return await client.Education
+                    .Users[userId]
+                    .Assignments
+                    .GetAsync();
+            }
+            catch (Exception ex) {
+                throw new GraphException($"GetUserAssignmentsAsync call: {ex.Message}", userId, ex);
             }
         }
     }
