@@ -43,7 +43,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
 
                 // Teacher publishes the assignment to make it appears in the student's list
-                await GlobalMethods.PublishAssignmentsAsync(graphClient, assignment.Id);
+                assignment = await GlobalMethods.PublishAssignmentsAsync(graphClient, assignment.Id);
 
                 // Change to student account
                 graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["password"]);

@@ -96,29 +96,29 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"Assignment created successfully {assignmentDraft.Id} in state {assignmentDraft.Status}");
 
                 // Publishing an Assignment
-                await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentInactive.Id);
+                assignmentInactive = await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentInactive.Id);
 
                 // Deactivate the Assignment
                 assignmentInactive = await MicrosoftGraphSDK.Assignment.DeactivateAsync(graphClient, _config["classId"], assignmentId);
                 Console.WriteLine($"Assignment {assignmentInactive.Id} Deactivated");
 
                 // Publishing an Assignment
-                await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentAssigned.Id);
+                assignmentAssigned = await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentAssigned.Id);
                
                 // Verifying that you have an Inactive, Assigned and Draft assignments
                 if (assignmentInactive.Status == EducationAssignmentStatus.Inactive)
                 {
-                    Console.WriteLine($"Inactive Assignment Found: {assignmentId}");
+                    Console.WriteLine($"Inactive Assignment Found: {assignmentInactive.Id}");
                 }
 
                 if (assignmentAssigned.Status == EducationAssignmentStatus.Assigned)
                 {
-                    Console.WriteLine($"Assigned Assignment Found: {assignmentId}");
+                    Console.WriteLine($"Assigned Assignment Found: {assignmentAssigned.Id}");
                 }
 
                 if (assignmentDraft.Status == EducationAssignmentStatus.Draft)
                 {
-                    Console.WriteLine($"Draft Assignment Found: {assignmentId}");
+                    Console.WriteLine($"Draft Assignment Found: {assignmentDraft.Id}");
                 }
             }
             catch (Exception ex)
