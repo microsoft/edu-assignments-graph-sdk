@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Graph;
 using Microsoft.Graph.Beta.Models;
-using Microsoft.Graph.Beta.Models.Networkaccess;
-using Microsoft.Identity.Client;
-using MicrosoftGraphSDK;
+using Microsoft.Graph.Beta;
 
 namespace MicrosoftEduGraphSamples.Utilities
 {
@@ -57,7 +54,7 @@ namespace MicrosoftEduGraphSamples.Utilities
         /// Workflow to Publish Assignments
         /// </summary>
         /// <param name="assignmentId">Assignment id</param>
-        public static async Task PublishAssignmentsAsync(Microsoft.Graph.Beta.GraphServiceClient graphClient, string assignmentId)
+        public static async Task<EducationAssignment> PublishAssignmentsAsync(GraphServiceClient graphClient, string assignmentId)
         {
             int retries = 0;
 
@@ -78,6 +75,7 @@ namespace MicrosoftEduGraphSamples.Utilities
                 retries++;
             }
             Console.WriteLine($"Assignment {assignment.Id} publish is completed. Status: {assignment.Status}");
+            return assignment;
         }
     }
 }
