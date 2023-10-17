@@ -223,6 +223,34 @@ namespace E2ETests
                 assignmentId,
                 submissionId);
 
+            var pointsOutcomeId = submissionFeedbackResources.Value.Where(x => x.OdataType == "#microsoft.graph.educationPointsOutcome").Select(x => x.Id).FirstOrDefault();
+
+            var points = new EducationPointsOutcome
+            {
+                OdataType = "#microsoft.graph.educationPointsOutcome",
+                Points = new EducationAssignmentPointsGrade
+                {
+                    OdataType = "#microsoft.graph.educationAssignmentPointsGrade",
+                    Points = 90
+                }
+            };
+
+            var returned = await Submission.PatchOutcomeAsync(
+                client,
+                classId,
+                assignmentId,
+                submissionId,
+                pointsOutcomeId,
+                points);
+            Thread.Sleep(2000);
+            //_log.Info($"Feedback resource created: {feedbackResource.Id}");
+
+            submissionFeedbackResources = await Submission.GetSubmissionOutcomesAsync(
+                client,
+                classId,
+                assignmentId,
+                submissionId);
+
             // Verify the new feedback resource is found
             bool resourceFound = false;
             foreach (var submissionResource in submissionFeedbackResources.Value)

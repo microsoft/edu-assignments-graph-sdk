@@ -189,6 +189,29 @@ namespace MicrosoftGraphSDK
             }
         }
 
+        public static async Task<EducationOutcome> PatchOutcomeAsync(
+            GraphServiceClient client,
+            string classId,
+            string assignmentId,
+            string submissionId,
+            string outcomeId,
+            EducationPointsOutcome educationOutcome)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .Submissions[submissionId]
+                    .Outcomes[outcomeId]
+                    .PatchAsync(educationOutcome);
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"CreatePointsOutcomeAsync call: {ex.Message}", ex, classId, assignmentId, submissionId, educationOutcome);
+            }
+        }
+
         /// <summary>
         /// List all the outcomes associated with a submission
         /// </summary>
