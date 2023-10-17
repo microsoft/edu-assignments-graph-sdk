@@ -5,8 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Graph.Beta.Models;
 using MicrosoftEduGraphSamples.Utilities;
 using MicrosoftGraphSDK;
-using Microsoft.Graph.Beta;
-
 
 namespace MicrosoftEduGraphSamples.Workflows
 {
@@ -17,7 +15,7 @@ namespace MicrosoftEduGraphSamples.Workflows
     internal class AssignmentWorkflow
     {
         private readonly IConfiguration _config;
-        
+
         public AssignmentWorkflow(IConfiguration configuration)
         {
             this._config = configuration;
@@ -75,31 +73,30 @@ namespace MicrosoftEduGraphSamples.Workflows
         {
             try
             {
-                int retries = 0;
                 string assignmentId = string.Empty;
                 string submissionId = string.Empty;
 
                 // Get a Graph client using delegated permissions
-                var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+                var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Create assignment to verify inactive state
-                var assignmentInactive = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
+                var assignmentInactive = await Assignment.CreateAsync(graphClient, _config["classId"]);
                 assignmentId = assignmentInactive.Id;
                 Console.WriteLine($"Assignment created successfully {assignmentInactive.Id} in state {assignmentInactive.Status}");
 
                 // Create assignment to verify assigned state
-                var assignmentAssigned = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
+                var assignmentAssigned = await Assignment.CreateAsync(graphClient, _config["classId"]);
                 Console.WriteLine($"Assignment created successfully {assignmentAssigned.Id} in state {assignmentAssigned.Status}");
 
                 // Create assignment to verify draft state
-                var assignmentDraft = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
+                var assignmentDraft = await Assignment.CreateAsync(graphClient, _config["classId"]);
                 Console.WriteLine($"Assignment created successfully {assignmentDraft.Id} in state {assignmentDraft.Status}");
 
                 // Publishing an Assignment
                 assignmentInactive = await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentInactive.Id);
 
                 // Deactivate the Assignment
-                assignmentInactive = await MicrosoftGraphSDK.Assignment.DeactivateAsync(graphClient, _config["classId"], assignmentId);
+                assignmentInactive = await Assignment.DeactivateAsync(graphClient, _config["classId"], assignmentId);
                 Console.WriteLine($"Assignment {assignmentInactive.Id} Deactivated");
 
                 // Publishing an Assignment
@@ -123,7 +120,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Assignments Evolvable Enums: {ex.ToString()}");
+                Console.WriteLine($"AssignmentsEvolvableEnumsAsync: {ex.ToString()}");
             }
         }
     }
