@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 using Microsoft.Graph.Beta;
@@ -37,7 +37,7 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// Get all the assignments from the class
+        /// Get all the assignments for the given class
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
@@ -122,9 +122,9 @@ namespace MicrosoftGraphSDK
                     .Classes[classId]
                     .Assignments
                     .PostAsync(assignment, requestConfig => {
-                            requestConfig.Headers.Add(
-                                "Prefer", "include-unknown-enum-members");
-                        });
+                        requestConfig.Headers.Add(
+                            "Prefer", "include-unknown-enum-members");
+                    });
             }
             catch (Exception ex)
             {
@@ -207,6 +207,36 @@ namespace MicrosoftGraphSDK
             catch (Exception ex)
             {
                 throw new GraphException($"SetupResourcesFolder call: {ex.Message}", ex, classId, assignmentId);
+            }
+        }
+
+        /// <summary>
+        /// Deactivate an assignment, changes the state of an educationAssignment from its original draft status to the Inactive status
+        /// Reference :: https://learn.microsoft.com/en-us/graph/assignments-states-transition
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
+        /// <returns>EducationAssignment</returns>
+        public static async Task<EducationAssignment> DeactivateAsync(
+            GraphServiceClient client,
+            string classId,
+            string assignmentId)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .Deactivate.PostAsync(requestConfig =>
+                    {
+                        requestConfig.Headers.Add(
+                            "Prefer", "include-unknown-enum-members");
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"DeactivateAsync call: {ex.Message}", ex, classId, assignmentId);
             }
         }
     }
