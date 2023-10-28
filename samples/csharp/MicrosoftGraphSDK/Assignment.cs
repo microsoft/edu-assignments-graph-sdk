@@ -244,6 +244,36 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
+        /// Deactivate an assignment, changes the state of an educationAssignment from its original draft status to the Inactive status
+        /// Reference :: https://learn.microsoft.com/en-us/graph/assignments-states-transition
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
+        /// <returns>EducationAssignment</returns>
+        public static async Task<EducationAssignment> DeactivateAsync(
+            GraphServiceClient client,
+            string classId,
+            string assignmentId)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .Deactivate.PostAsync(requestConfig =>
+                    {
+                        requestConfig.Headers.Add(
+                            "Prefer", "include-unknown-enum-members");
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"DeactivateAsync call: {ex.Message}", ex, classId, assignmentId);
+            }
+        }
+
+        /// <summary>
         /// Creates a SharePoint folder to upload feedback resources
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
