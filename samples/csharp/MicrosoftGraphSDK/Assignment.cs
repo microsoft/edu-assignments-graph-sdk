@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 using Microsoft.Graph.Beta;
@@ -155,9 +155,9 @@ namespace MicrosoftGraphSDK
                     .Classes[classId]
                     .Assignments
                     .PostAsync(assignment, requestConfig => {
-                            requestConfig.Headers.Add(
-                                "Prefer", "include-unknown-enum-members");
-                        });
+                        requestConfig.Headers.Add(
+                            "Prefer", "include-unknown-enum-members");
+                    });
             }
             catch (Exception ex)
             {

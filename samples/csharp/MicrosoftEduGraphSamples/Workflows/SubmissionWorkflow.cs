@@ -43,22 +43,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
 
                 // Teacher publishes the assignment to make it appears in the student's list
-                assignment = await MicrosoftGraphSDK.Assignment.PublishAsync(graphClient, _config["classId"], assignmentId);
-                Console.WriteLine($"Assignment {assignment.Id} publish in process");
-
-                // Verify assignment state, publish is completed until state equals "Assigned"
-                while (assignment.Status != EducationAssignmentStatus.Assigned && retries <= MAX_RETRIES)
-                {
-                    // Print . in the log to show that the call is being retried.
-                    Console.WriteLine(".");
-
-                    assignment = await MicrosoftGraphSDK.Assignment.GetAssignmentAsync(graphClient, _config["classId"], assignmentId);
-
-                    // If you are calling this code pattern in Backend agent of your service, then you want to retry the work after some time. The sleep here is just an example to emulate the delay.
-                    Thread.Sleep(2000);
-                    retries++;
-                }
-                Console.WriteLine($"Assignment {assignment.Id} publish is completed. Status: {assignment.Status}");
+                assignment = await GlobalMethods.PublishAssignmentsAsync(graphClient, assignment.Id);
 
                 // Change to student account
                 graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["password"]);

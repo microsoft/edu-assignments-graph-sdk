@@ -64,5 +64,65 @@ namespace MicrosoftEduGraphSamples.Workflows
                 return null;
             }
         }
+
+        /// <summary>
+        /// Workflow to get assignments evolvable enums, Evolvable enums is a mechanism that Microsoft Graph API uses to add new members to existing enumerations without causing a breaking change for applications.
+        /// Reference :: https://learn.microsoft.com/en-us/graph/best-practices-concept#handling-future-members-in-evolvable-enumerations
+        /// </summary>
+        /// <param name></param> 
+        public async Task AssignmentsEvolvableEnumsAsync()
+        {
+            try
+            {
+                string assignmentId = string.Empty;
+                string submissionId = string.Empty;
+
+                // Get a Graph client using delegated permissions
+                var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+
+                // Create assignment to verify inactive state
+                var assignmentInactive = await Assignment.CreateAsync(graphClient, _config["classId"]);
+                assignmentId = assignmentInactive.Id;
+                Console.WriteLine($"Assignment created successfully {assignmentInactive.Id} in state {assignmentInactive.Status}");
+
+                // Create assignment to verify assigned state
+                var assignmentAssigned = await Assignment.CreateAsync(graphClient, _config["classId"]);
+                Console.WriteLine($"Assignment created successfully {assignmentAssigned.Id} in state {assignmentAssigned.Status}");
+
+                // Create assignment to verify draft state
+                var assignmentDraft = await Assignment.CreateAsync(graphClient, _config["classId"]);
+                Console.WriteLine($"Assignment created successfully {assignmentDraft.Id} in state {assignmentDraft.Status}");
+
+                // Publishing an Assignment
+                assignmentInactive = await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentInactive.Id);
+
+                // Deactivate the Assignment
+                assignmentInactive = await Assignment.DeactivateAsync(graphClient, _config["classId"], assignmentId);
+                Console.WriteLine($"Assignment {assignmentInactive.Id} Deactivated");
+
+                // Publishing an Assignment
+                assignmentAssigned = await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentAssigned.Id);
+               
+                // Verifying that you have an Inactive, Assigned and Draft assignments
+                if (assignmentInactive.Status == EducationAssignmentStatus.Inactive)
+                {
+                    Console.WriteLine($"Inactive Assignment Found: {assignmentInactive.Id}");
+                }
+
+                if (assignmentAssigned.Status == EducationAssignmentStatus.Assigned)
+                {
+                    Console.WriteLine($"Assigned Assignment Found: {assignmentAssigned.Id}");
+                }
+
+                if (assignmentDraft.Status == EducationAssignmentStatus.Draft)
+                {
+                    Console.WriteLine($"Draft Assignment Found: {assignmentDraft.Id}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"AssignmentsEvolvableEnumsAsync: {ex.ToString()}");
+            }
+        }
     }
 }
