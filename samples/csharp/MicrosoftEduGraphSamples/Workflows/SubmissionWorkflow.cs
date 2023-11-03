@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
 using Microsoft.Graph.Beta.Models;
 using MicrosoftEduGraphSamples.Utilities;
+using MicrosoftGraphSDK;
 
 namespace MicrosoftEduGraphSamples.Workflows
 {
@@ -146,6 +147,80 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var returnedResponse = await graphClient.Batch.PostAsync(batchRequestContent);
 
                 foreach (var assignment in meAssignments.Value)
+                {
+                    Console.WriteLine($"Getting assignment {assignment.Id} submissions");
+
+                    // De-serialize the response based on return type
+                    var submissionsResponse = await returnedResponse.GetResponseByIdAsync<EducationSubmissionCollectionResponse>(assignment.Id);
+
+                    // Get and print submissions (if any)
+                    if (submissionsResponse == null) continue;
+
+                    // "Value" contains the request response
+                    var submissions = submissionsResponse.Value;
+                    foreach (var submission in submissions)
+                    {
+                        Console.WriteLine($"Assignment {assignment.Id}, submission: {submission.Id}, status: {submission.Status}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"BatchRequestWorkflow: {ex.ToString()}");
+            }
+        }
+
+        /// <summary>
+        /// Workflow to create a batch request and get the outcomes responses
+        /// </summary>
+        public async Task BatchRequestWorkflow_outcomes(string StartDateTime, string EndDateTime)
+        {
+            try
+            {
+                // Get a Graph client using delegated permissions
+                var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+
+                Console.WriteLine($"Getting top 20 assignments from MeAssignments Endpoint");
+
+                // Batch is limited to 20 requests
+                var classAssignments = await Assignment.GetAssignmentsAsync(graphClient, _config["classId"]);
+
+                // Build the batch
+                var batchRequestContent = new BatchRequestContent(graphClient);
+
+                Console.WriteLine($"Iterating over me assignments");
+                foreach (var assignment in classAssignments.Value)
+                {
+                    // Use the request builder to generate a regular request to get the assignment submissions
+                    var asgSubmissionsRequest = graphClient.Education
+                                    .Classes[assignment.ClassId]
+                                    .Assignments[assignment.Id]
+                                    .Submissions
+                                    .ToGetRequestInformation(requestConfig =>
+                                    {
+                                        requestConfig.QueryParameters.Filter =
+                                        "submittedDateTime gt " + StartDateTime + "and submittedDateTime le" + EndDateTime;
+                                    });
+
+                    // Create HttpRequestMessage for the regular request
+                    var eventsRequestMessage = await graphClient.RequestAdapter.ConvertToNativeRequestAsync<HttpRequestMessage>(
+                        asgSubmissionsRequest
+                     );
+
+                    // Adds each request to the batch
+                    batchRequestContent.AddBatchRequestStep(
+                        new BatchRequestStep(
+                            // Use the current assignment as id for this step
+                            assignment.Id,
+                            // The step takes the HttpRequestMessage from the request
+                            eventsRequestMessage)
+                    );
+                }
+
+                // Build a return response object for our batch
+                var returnedResponse = await graphClient.Batch.PostAsync(batchRequestContent);
+
+                foreach (var assignment in classAssignments.Value)
                 {
                     Console.WriteLine($"Getting assignment {assignment.Id} submissions");
 
