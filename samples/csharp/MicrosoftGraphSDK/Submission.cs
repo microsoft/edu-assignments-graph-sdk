@@ -157,34 +157,5 @@ namespace MicrosoftGraphSDK
                 throw new GraphException($"ReassignAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
             }
         }
-
-        /// <summary>
-        /// Get all outcomes
-        /// </summary>
-        /// <param name="client">Microsoft Graph service client</param>
-        /// <param name="classId">User class id</param>
-        /// <param name="assignmentId">Assignment id in the class</param>
-        /// <param name="submissionId">Student submission id</param>
-        /// <returns>EducationSubmission</returns>
-        public static async Task<EducationOutcome> OutcomesAsync(
-            GraphServiceClient client,
-            string classId,
-            string assignmentId,
-            string submissionId)
-        {
-            try
-            {
-                return await client.Education
-                    .Classes[classId]
-                    .Assignments[assignmentId]
-                    .Submissions[submissionId]
-                    .Outcomes
-                    .GetAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new GraphException($"OutcomesAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
-            }
-        }
     }
 }

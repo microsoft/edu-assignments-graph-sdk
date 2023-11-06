@@ -199,7 +199,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                                     .ToGetRequestInformation(requestConfig =>
                                     {
                                         requestConfig.QueryParameters.Filter =
-                                        "submittedDateTime gt " + StartDateTime + "and submittedDateTime le" + EndDateTime;
+                                        "submittedDateTime gt '" + StartDateTime + "' and submittedDateTime le '" + EndDateTime +"'";
                                     });
 
                     // Create HttpRequestMessage for the regular request
@@ -235,12 +235,49 @@ namespace MicrosoftEduGraphSamples.Workflows
                     foreach (var submission in submissions)
                     {
                         Console.WriteLine($"Assignment {assignment.Id}, submission: {submission.Id}, status: {submission.Status}");
+                        var submissionsOutcomes = graphClient.Education.Classes[_config["classId"]].Assignments[assignment.Id].Submissions[submission.Id]
+                        .Outcomes
+                        .ToGetRequestInformation();
+
+                        // Create HttpRequestMessage for the regular request
+                        var eventsRequestMessage = await graphClient.RequestAdapter.ConvertToNativeRequestAsync<HttpRequestMessage>(
+                            submissionsOutcomes
+                         );
+
+                        // Adds each request to the batch
+                        batchRequestContent.AddBatchRequestStep(
+                            new BatchRequestStep(
+                                // Use the current assignment as id for this step
+                                submission.Id,
+                                // The step takes the HttpRequestMessage from the request
+                                eventsRequestMessage)
+                        );
+                    }
+
+                    foreach (var submission in submissions)
+                    {
+                        Console.WriteLine($"Getting submission {submission.Id} outcomes");
+
+                        // De-serialize the response based on return type
+                        var submissionsOutcomesResponse = await returnedResponse.GetResponseByIdAsync<EducationOutcomeCollectionResponse>(submission.Id);
+
+                        // Get and print submissions (if any)
+                        if (submissionsOutcomesResponse == null) continue;
+
+                        // "Value" contains the request response
+                        var submissionsOutcomes = submissionsOutcomesResponse.Value;
+
+                        //Iterate and print outcomes
+                        foreach (var outcome in submissionsOutcomes)
+                        {
+                            Console.WriteLine($"Submission {submission.Id}, outcome: {outcome.Id}");
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"BatchRequestWorkflow: {ex.ToString()}");
+                Console.WriteLine($"BatchRequestWorkflow_outcomes: {ex.ToString()}");
             }
         }
     }
