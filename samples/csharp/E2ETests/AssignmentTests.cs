@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using FluentAssertions;
 using log4net;
-using System.Threading.Tasks;
+using MicrosoftEduGraphSamples;
 
 namespace E2ETests
 {
@@ -129,5 +129,18 @@ namespace E2ETests
 
             assignment.Should().NotBeNull("because the assignment already exists");
         }
+
+        //[Test]
+        //public async Task MeAssignmentsFromActiveClasses()
+        //{
+        //    var classId = config._classId;
+        //    var assignmentId = config._assignmentId;
+
+        //    _log.Info($"Publish assignment({assignmentId}) from class({classId})");
+
+        //    var assignment = await MicrosoftEduGraphSamples
+
+        //    assignment.Should().NotBeNull("because the assignment already exists");
+        //}
     }
 }

@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MicrosoftEduGraphSamples\MicrosoftEduGraphSamples.csproj" />
     <ProjectReference Include="..\MicrosoftGraphSDK\MicrosoftGraphSDK.csproj" />
   </ItemGroup>
 

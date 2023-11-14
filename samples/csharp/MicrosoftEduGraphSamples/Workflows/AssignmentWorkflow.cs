@@ -12,7 +12,7 @@ namespace MicrosoftEduGraphSamples.Workflows
     /// Contains all the workflows related to Assignments, include getting assignments from all classes, 
     /// checking user details for assignments, getting user classes, and excluding assignments from archived and deleted classes.
     /// </summary>
-    internal class AssignmentWorkflow
+    public class AssignmentWorkflow
     {
         private readonly IConfiguration _config;
 
