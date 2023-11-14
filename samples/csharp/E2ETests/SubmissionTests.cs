@@ -203,10 +203,11 @@ namespace E2ETests
                 FeedbackResource = new EducationWordResource
                 {
                     OdataType = "#microsoft.graph.educationWordResource",
-                    DisplayName = "Document134.docx"
+                    DisplayName = "FeedbackResourceDoc.docx"
                 },
             };
 
+            // Attach the new submission feedback resource
             var feedbackResource = await Submission.CreateFeedbackResourceOutcomeAsync(
                 client,
                 classId,
@@ -217,15 +218,17 @@ namespace E2ETests
             _log.Info($"Feedback resource created: {feedbackResource.Id}");
 
             // Get submission outcomes
-            var submissionFeedbackResources = await Submission.GetSubmissionOutcomesAsync(
+            var submissionOutcomes = await Submission.GetSubmissionOutcomesAsync(
                 client,
                 classId,
                 assignmentId,
                 submissionId);
 
-            var pointsOutcomeId = submissionFeedbackResources.Value.Where(x => x.OdataType == "#microsoft.graph.educationPointsOutcome").Select(x => x.Id).FirstOrDefault();
+            // Take the points outcome id
+            var pointsOutcomeId = submissionOutcomes.Value.Where(x => x.OdataType == "#microsoft.graph.educationPointsOutcome").Select(x => x.Id).FirstOrDefault();
 
-            var points = new EducationPointsOutcome
+            // Create the points outcome body
+            var pointsOutcome = new EducationPointsOutcome
             {
                 OdataType = "#microsoft.graph.educationPointsOutcome",
                 Points = new EducationAssignmentPointsGrade
@@ -235,17 +238,19 @@ namespace E2ETests
                 }
             };
 
+            // Update the submission points outcome
             var returned = await Submission.PatchOutcomeAsync(
                 client,
                 classId,
                 assignmentId,
                 submissionId,
                 pointsOutcomeId,
-                points);
+                pointsOutcome);
             Thread.Sleep(2000);
-            //_log.Info($"Feedback resource created: {feedbackResource.Id}");
+            _log.Info($"Points outcome updated: {pointsOutcome.Points.Points}");
 
-            submissionFeedbackResources = await Submission.GetSubmissionOutcomesAsync(
+            // Refresh list of submission outcomes
+            submissionOutcomes = await Submission.GetSubmissionOutcomesAsync(
                 client,
                 classId,
                 assignmentId,
@@ -253,7 +258,7 @@ namespace E2ETests
 
             // Verify the new feedback resource is found
             bool resourceFound = false;
-            foreach (var submissionResource in submissionFeedbackResources.Value)
+            foreach (var submissionResource in submissionOutcomes.Value)
             {
                 _log.Info($"Submission resource: {submissionResource.Id}");
                 if (feedbackResource.Id == submissionResource.Id)
