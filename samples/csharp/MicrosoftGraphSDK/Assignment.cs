@@ -60,6 +60,33 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
+        /// Get the top N assignments for the given class
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="top">Number of assignments</param>
+        /// <returns>EducationAssignmentCollectionResponse</returns>
+        public static async Task<EducationAssignmentCollectionResponse> GetAssignmentsTopAsync(
+            GraphServiceClient client,
+            string classId,
+            int top)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments
+                    .GetAsync(requestConfiguration => {
+                        requestConfiguration.QueryParameters.Top = top;
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetAssignmentsTopAsync call: {ex.Message}", ex, classId, top);
+            }
+        }
+
+        /// <summary>
         /// Creates a new assignment
         /// </summary>
         /// <param name="classId">User class id</param>

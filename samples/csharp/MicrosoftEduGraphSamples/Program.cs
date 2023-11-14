@@ -17,4 +17,4 @@ IConfiguration config = new ConfigurationBuilder()
 //ModuleWorkflow workflow = new ModuleWorkflow(config);
 //await workflow.ClassworkAsync();
 SubmissionWorkflow workflow = new SubmissionWorkflow(config);
-await workflow.BatchRequestWorkflow_outcomes("11/03/2023", "11/06/2023");
+await workflow.SubmissionOutcomesWorkflow("2023-11-10T00:00:00Z", "2023-11-13T00:00:00Z");

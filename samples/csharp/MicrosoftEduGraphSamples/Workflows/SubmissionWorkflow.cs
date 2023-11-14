@@ -171,19 +171,19 @@ namespace MicrosoftEduGraphSamples.Workflows
         }
 
         /// <summary>
-        /// Workflow to create a batch request and get the outcomes responses
+        /// Use batch requests to get submissions outcomes
         /// </summary>
-        public async Task BatchRequestWorkflow_outcomes(string StartDateTime, string EndDateTime)
+        public async Task SubmissionOutcomesWorkflow(string StartDateTime, string EndDateTime)
         {
             try
             {
                 // Get a Graph client using delegated permissions
                 var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
-                Console.WriteLine($"Getting top 20 assignments from MeAssignments Endpoint");
+                Console.WriteLine($"Getting top 20 assignments in the class");
 
                 // Batch is limited to 20 requests
-                var classAssignments = await Assignment.GetAssignmentsAsync(graphClient, _config["classId"]);
+                var classAssignments = await Assignment.GetAssignmentsTopAsync(graphClient, _config["classId"], 20);
 
                 // Build the batch
                 var batchRequestContent = new BatchRequestContent(graphClient);
@@ -199,7 +199,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                                     .ToGetRequestInformation(requestConfig =>
                                     {
                                         requestConfig.QueryParameters.Filter =
-                                        "submittedDateTime gt '" + StartDateTime + "' and submittedDateTime le '" + EndDateTime +"'";
+                                        "submittedDateTime gt " + StartDateTime + " and submittedDateTime le " + EndDateTime;
                                     });
 
                     // Create HttpRequestMessage for the regular request
@@ -277,7 +277,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"BatchRequestWorkflow_outcomes: {ex.ToString()}");
+                Console.WriteLine($"SubmissionOutcomesWorkflow: {ex.ToString()}");
             }
         }
     }
