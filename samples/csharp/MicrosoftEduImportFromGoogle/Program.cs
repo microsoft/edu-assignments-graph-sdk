@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using MicrosoftEduImportFromGoogle;
 using MicrosoftEduImportFromGoogle.Models;
+using System.Transactions;
 
 // See https://aka.ms/new-console-template for more information
 Console.WriteLine("--- Google Classroom Migrator (v0.1) ---");
@@ -25,6 +26,7 @@ await export.AuthorizeApp();
 var googleClassId = config.GetSection("googleSourceClass:id").Value;
 Course selectedCourse = null;
 
+bool showSelectedCourse = true;
 if (string.IsNullOrEmpty(googleClassId))
 {
     // Choose a course
@@ -35,16 +37,51 @@ if (string.IsNullOrEmpty(googleClassId))
         goto lastStep;
     }
 
+    void DisplaySelectedCourses()
+    {
+        //Thread keeps running until showSelectedCourse is set to false, which happens  
+        //when the user moves to the next step in the console menu
+        while (showSelectedCourse)
+        {
+            Task.WaitAll(Task.Delay(500));
+
+            if (selectedCourse != null)
+            {
+                int i = 0;
+                foreach (var course in courses)
+                {
+                    if (course.Id == selectedCourse.Id)
+                    {
+                        using (TransactionScope scope = new TransactionScope())
+                        {
+                            Console.SetCursorPosition(4, i + 1);
+                            Console.Write("X");
+                            Console.SetCursorPosition(0, 0);
+                            break;
+                        }
+                    }
+                    i++;
+                }
+            }
+            Task.WaitAll(Task.Delay(500));
+        }
+    }
+    ThreadStart work = DisplaySelectedCourses;
+    Thread thread = new Thread(work);
+    thread.Start();
+    Console.Write("Choose a course: ");
+    
     ConsoleMenu courseMenu = new ConsoleMenu()
     .AddRange(courses.Select(x => new Tuple<string, Action>(x.Name, () => { selectedCourse = x; })))
     .Add("DONE CHOOSING", ConsoleMenu.Close)
     .Configure(config =>
     {
-        config.WriteHeaderAction = () => Console.WriteLine("** Choose a Google Classroom course to export coursework from:");
+        config.WriteHeaderAction = () => Console.WriteLine("** Choose a Google Classroom course to export coursework from:");        
+        config.WriteItemAction = item => Console.Write("[ ][{0}] {1}", item.Index, item.Name);
     });
-
     courseMenu.Show();
     courseMenu.CloseMenu();
+    showSelectedCourse = false;
 
     if (selectedCourse == null)
     {
@@ -62,6 +99,40 @@ int materialsFoundCount = config.GetSection("googleSourceClass:courseWorkMateria
 CourseWorkMaterials[] courseWorkMaterials = await export.GetCourseWorkMaterials(selectedCourse.Id);
 bool importAll = Convert.ToBoolean(config["importAll"]);
 
+bool showSelectedCourseWorkMaterials = true;
+void DisplaySelectedCourseWorkMaterials()
+{
+    //Thread keeps running until showSelectedCourseWorkMaterials is set to false, which happens  
+    //when the user moves to the next step in the console menu
+    while (showSelectedCourseWorkMaterials)
+    {
+        Task.WaitAll(Task.Delay(500));
+        if (selectedCourseWorkMaterialsList != null)
+        {
+            int i = 0;
+            foreach (var courseWorkMaterial in courseWorkMaterials)
+            {
+                foreach (var selectedMaterial in selectedCourseWorkMaterialsList)
+                {
+                    if (selectedMaterial.Id == courseWorkMaterial.Id)
+                    {
+                        using (TransactionScope scope = new TransactionScope())
+                        {
+                            Console.SetCursorPosition(4, i + 2);
+                            Console.Write("X");
+                            Console.SetCursorPosition(0, 0);
+                        }
+                        break;
+                    }
+                }
+                i++;
+            }
+        }
+        Task.WaitAll(Task.Delay(500));
+    }
+}
+
+
 if (importAll)
 {
     // Pass all courseWorkMaterials to the selected list
@@ -75,6 +146,9 @@ else if (materialsFoundCount == 0)
         Console.WriteLine("!! No coursework materials found in Google Classroom for course [{0}] !!", selectedCourse.Name);
         goto lastStep;
     }
+    ThreadStart work2 = DisplaySelectedCourseWorkMaterials;
+    Thread thread2 = new Thread(work2);
+    thread2.Start();
 
     ConsoleMenu courseMaterialsWorkMenu = new ConsoleMenu()
     .Add("ADD ALL COURSEWORK MATERIALS", () => { selectedCourseWorkMaterialsList = courseWorkMaterials.ToList(); })
@@ -83,14 +157,16 @@ else if (materialsFoundCount == 0)
     .Configure(config =>
     {
         config.WriteHeaderAction = () => Console.WriteLine("** Choose one or more coursework materials to export from Google Classroom course [{0}]:", selectedCourse.Name);
+        config.WriteItemAction = item => Console.Write("[ ][{0}] {1}", item.Index, item.Name);
     });
     courseMaterialsWorkMenu.Show();
     courseMaterialsWorkMenu.CloseMenu();
+    showSelectedCourseWorkMaterials = false;
     selectedCourseWorkMaterialsList = selectedCourseWorkMaterialsList.DistinctBy(x => x.Id).ToList();
     if (!selectedCourseWorkMaterialsList.Any())
     {
         Console.WriteLine("!! No coursework materials selected from course [{0}] !!", selectedCourse.Name);
-        goto lastStep;
+        //goto lastStep;
     }
 }
 else {
@@ -119,7 +195,42 @@ else if (courseworkFoundCount == 0)
         Console.WriteLine("!! No coursework found in Google Classroom for course [{0}] !!", selectedCourse.Name);
         goto lastStep;
     }
+    bool showSelectedCourseworks = true;
+    void DisplaySelectedCourseworks()
+    {
+        //Thread keeps running until showSelectedCourseworks is set to false, which happens
+        //when the user moves to the next step in the console menu
+        while (showSelectedCourseworks)
+        {
+            Task.WaitAll(Task.Delay(500));
+            if (selectedCourseWorkMaterialsList != null)
+            {
+                int i = 0;
+                foreach (var courseWork in courseWorkList)
+                {
+                    foreach (var selectedCoursework in selectedCourseWorkList)
+                    {
+                        if (selectedCoursework.Id == courseWork.Id)
+                        {
+                            using (TransactionScope scope = new TransactionScope())
+                            {
+                                Console.SetCursorPosition(4, i + 2);
+                                Console.Write("X");
+                                Console.SetCursorPosition(0, 0);
+                            }
+                            break;
+                        }
+                    }
+                    i++;
+                }
+            }
+            Task.WaitAll(Task.Delay(500));
+        }
 
+    }
+    ThreadStart work3 = DisplaySelectedCourseworks;
+    Thread thread3 = new Thread(work3);
+    thread3.Start();
     ConsoleMenu courseWorkMenu = new ConsoleMenu()
     .Add("ADD ALL COURSEWORK", () => { selectedCourseWorkList = courseWorkList.ToList(); })
     .AddRange(courseWorkList.Select(x => new Tuple<string, Action>(x.Title, () => { selectedCourseWorkList.Add(x); })))
@@ -127,14 +238,16 @@ else if (courseworkFoundCount == 0)
     .Configure(config =>
     {
         config.WriteHeaderAction = () => Console.WriteLine("** Choose one or more coursework to export from Google Classroom course [{0}]:", selectedCourse.Name);
+        config.WriteItemAction = item => Console.Write("[ ][{0}] {1}", item.Index, item.Name);
     });
     courseWorkMenu.Show();
     courseWorkMenu.CloseMenu();
+    showSelectedCourseworks = false;
     selectedCourseWorkList = selectedCourseWorkList.DistinctBy(x => x.Id).ToList();
     if (!selectedCourseWorkList.Any())
     {
         Console.WriteLine("!! No coursework selected from course [{0}] !!", selectedCourse.Name);
-        goto lastStep;
+        //goto lastStep;
     }
 }
 else {
@@ -169,7 +282,8 @@ if (string.IsNullOrEmpty(microsoftClassId))
     }
     else
     {
-        var allClasses = import.GetClasses();
+        bool delegated = config.GetSection("microsoftAuthMethod").Value == "delegated";
+        var allClasses = import.GetClasses(delegated);
         classes = allClasses.Select(c => (c.Id, c.DisplayName)).ToList();
     }
 
@@ -178,16 +292,51 @@ if (string.IsNullOrEmpty(microsoftClassId))
         Console.WriteLine("!! No classes found in Microsoft Teams !!");
         goto lastStep;
     }
+    bool showSelectedClassTeam = true;
+    void DisplaySelectedClassTeam()
+    {
+        while (showSelectedClassTeam)
+        {
+            Task.WaitAll(Task.Delay(500));
 
+            if (microsoftClassId != null)
+            {
+                int i = 0;
+                foreach (var classTeam in classes)
+                {
+                    if (classTeam.Item1 == microsoftClassId)
+                    {
+                        using (TransactionScope scope = new TransactionScope())
+                        {
+                            Console.SetCursorPosition(4, i + 1);
+                            Console.Write("X");
+                            Console.SetCursorPosition(0, 0);
+                            break;
+                        }
+                    }
+                    i++;
+                }
+            }
+            Task.WaitAll(Task.Delay(500));
+
+        }
+
+    }
+    ThreadStart work4 = DisplaySelectedClassTeam;
+    Thread thread4 = new Thread(work4);
+    thread4.Start();
     ConsoleMenu classMenu = new ConsoleMenu()
     .AddRange(classes.Select(x => new Tuple<string, Action>(x.Item2, () => { microsoftClassId = x.Item1; })))
     .Add("DONE CHOOSING", ConsoleMenu.Close)
     .Configure(config =>
     {
         config.WriteHeaderAction = () => Console.WriteLine("** Choose a Microsoft Teams class team to import Google Classroom coursework to:");
+        config.WriteItemAction = item => Console.Write("[ ][{0}] {1}", item.Index, item.Name);
     });
     classMenu.Show();
     classMenu.CloseMenu();
+    showSelectedClassTeam = false;
+    Console.Clear();
     if (microsoftClassId == null)
     {
         Console.WriteLine("!! No class selected !!");

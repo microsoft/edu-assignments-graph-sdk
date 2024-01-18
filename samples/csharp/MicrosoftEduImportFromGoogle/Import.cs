@@ -54,14 +54,23 @@ namespace MicrosoftEduImportFromGoogle
         /// Returns a list of classes that the requesting application is permitted to view
         /// </summary>
         /// <returns>List<EducationClass></returns>
-        public List<EducationClass> GetClasses()
+        public List<EducationClass> GetClasses(bool delegated)
         {
             Console.WriteLine("* Fetching classes from Microsoft Teams...");
-            return graphServiceClient.Education.Classes
+            if (delegated)
+            {
+                return graphServiceClient.Education.Me.Classes
                     .GetAsync()
                     .Result.Value.ToList();
+            }
+            else
+            {
+                return graphServiceClient.Education.Classes
+                    .GetAsync()
+                    .Result.Value.ToList();
+            }
+            
         }
-
         /// <summary>
         /// Maps Google courseWorks to create assignments
         /// </summary>

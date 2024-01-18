@@ -7,6 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\MicrosoftGraphSDK\MicrosoftGraphSDK.csproj" />
+    <PackageReference Include="Azure.Identity" Version="1.10.4" />
     <PackageReference Include="ConsoleMenu-simple" Version="2.4.3" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
   </ItemGroup>
