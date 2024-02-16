@@ -25,7 +25,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         /// <summary>
         /// Workflow to create and publish the module
         /// </summary>
-        /// <param name="appOnly">True value authenticates the graph client with application permissions only, otherwise it will be created with delegated permissions</param> 
+        /// <param name="appOnly">True value authenticates the graph client with application permissions only, otherwise it will be created with delegated permissions.</param> 
         public async Task ClassworkAsync(bool appOnly = false)
         {
             try
