@@ -16,4 +16,4 @@ IConfiguration config = new ConfigurationBuilder()
 // Each flow represents a common entire process that can be tested using Microsoft Graph SDK, all the sample flows are located in the "workflows" folder.
 
  ModuleWorkflow workflow = new ModuleWorkflow(config);
- await workflow.ClassworkAsync(true);
+ await workflow.ClassworkAsync(appOnly:true);
