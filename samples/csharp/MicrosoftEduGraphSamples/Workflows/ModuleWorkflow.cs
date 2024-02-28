@@ -122,6 +122,6 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"ClassworkAsync: {ex.ToString()}");
                 return;
             }
-        }
+        }        
     }
 }
