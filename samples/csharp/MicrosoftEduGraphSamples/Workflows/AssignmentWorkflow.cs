@@ -151,12 +151,58 @@ namespace MicrosoftEduGraphSamples.Workflows
                 {
                 Console.WriteLine($"DisplayName updated successfully {assignment.Id} DisplayName {assignment.DisplayName}");
                 }
+
+                //Deleting the created assignment
                 await Assignment.DeleteAsync(graphClient, _config["classId"], assignmentId);
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"AssignmentsEvolvableEnumsAsync: {ex.ToString()}");
+                Console.WriteLine($"CreateAndPatchAssignment: {ex.ToString()}");
+            }
+        }
+
+        public async Task AssignmentResource(bool appOnly = false)
+        {
+            try
+            {
+                string assignmentId = string.Empty;
+
+                // Get a Graph client using delegated permissions
+                var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+
+                // Create assignment
+                var assignment = await Assignment.CreateAsync(graphClient, _config["classId"]);
+                assignmentId = assignment.Id;
+                Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
+
+                //AO Set Up Assignment Resources Folder
+                await Assignment.SetupResourcesFolder(graphClient, _config["classId"], assignmentId);
+                Console.WriteLine("SetupResourceFolder creation successful");
+
+                //Adding AO Word Resource to assignment with distribute to student
+                var requestBody = new EducationAssignmentResource
+                {
+                    DistributeForStudentWork = false,
+                    Resource = new EducationWordResource
+                    {
+                        OdataType = "microsoft.graph.educationWordResource",
+                        DisplayName = "New Word Document.docx",                        
+                    },
+                };
+
+                var resource = await Assignment.PostResourceAsync(graphClient, _config["classId"], assignmentId, requestBody);
+
+                Console.WriteLine($"Resource created successfully {resource.Id} Display Name {resource.Resource.DisplayName}");
+
+                //Deleting the created assignment
+                await Assignment.DeleteAsync(graphClient, _config["classId"], assignmentId);
+                Console.WriteLine("Assignment deleted successfully");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"AssignmentResource: {ex.ToString()}");
             }
         }
     }    

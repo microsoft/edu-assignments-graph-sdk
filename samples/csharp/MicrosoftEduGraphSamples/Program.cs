@@ -17,4 +17,4 @@ IConfiguration config = new ConfigurationBuilder()
 
 AssignmentWorkflow workflow = new AssignmentWorkflow(config);
 // await workflow.ClassworkAsync(appOnly:true);
-await workflow.CreateAndPatchAssignment(appOnly: false); 
+await workflow.AssignmentResource(appOnly: true); 
