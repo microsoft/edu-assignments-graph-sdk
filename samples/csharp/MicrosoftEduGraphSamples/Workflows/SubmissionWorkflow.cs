@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
 using Microsoft.Graph.Beta.Models;
 using MicrosoftEduGraphSamples.Utilities;
+using MicrosoftGraphSDK;
 
 namespace MicrosoftEduGraphSamples.Workflows
 {
@@ -35,10 +36,10 @@ namespace MicrosoftEduGraphSamples.Workflows
                 string submissionId = string.Empty;
 
                 // Get a Graph client using delegated permissions
-                var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+                var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Teacher creates a new assignment
-                var assignment = await MicrosoftGraphSDK.Assignment.CreateAsync(graphClient, _config["classId"]);
+                var assignment = await Assignment.CreateAsync(graphClient, _config["classId"]);
                 assignmentId = assignment.Id;
                 Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
 
@@ -46,10 +47,10 @@ namespace MicrosoftEduGraphSamples.Workflows
                 assignment = await GlobalMethods.PublishAssignmentsAsync(graphClient, assignment.Id);
 
                 // Change to student account
-                graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["password"]);
+                graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["password"]);
 
                 // Get the student submission
-                var submissions = await MicrosoftGraphSDK.Submission.GetSubmissionsAsync(graphClient, _config["classId"], assignmentId);
+                var submissions = await Submission.GetSubmissionsWithExpandAsync(graphClient, _config["classId"], assignmentId, "outcomes");
                 if (submissions.Value.Count > 0)
                 {
                     submissionId = submissions.Value[0].Id;
@@ -60,32 +61,65 @@ namespace MicrosoftEduGraphSamples.Workflows
                     throw new Exception($"No submission found for {_config["studentAccount"]} in {assignmentId} for class {_config["classId"]}");
                 }
 
+                // Get submission outcomes
+                var submissionOutcomes = await Submission.GetSubmissionOutcomes(
+                    graphClient,
+                    _config["classId"],
+                    assignmentId,
+                    submissionId);
+
+                // Take the points outcome id
+                var pointsOutcomeId = submissionOutcomes.Value.Where(x => x.OdataType == "#microsoft.graph.educationPointsOutcome").Select(x => x.Id).FirstOrDefault();
+
+                // Create the points outcome body
+                var pointsOutcome = new EducationPointsOutcome
+                {
+                    OdataType = "#microsoft.graph.educationPointsOutcome",
+                    Points = new EducationAssignmentPointsGrade
+                    {
+                        OdataType = "#microsoft.graph.educationAssignmentPointsGrade",
+                        Points = 90
+                    }
+                };
+
+                // Update the submission points outcome
+                var returned = await Submission.PatchOutcomeAsync(
+                    graphClient,
+                    _config["classId"],
+                    assignmentId,
+                    submissionId,
+                    pointsOutcomeId,
+                    pointsOutcome);
+                Thread.Sleep(2000);
+                Console.WriteLine($"Points outcome updated: {pointsOutcome.Points.Points}");
+
+
                 // Student submits his submission
-                var submission = await MicrosoftGraphSDK.Submission.SubmitAsync(graphClient, _config["classId"], assignmentId, submissionId);
+                var submission = await Submission.SubmitAsync(graphClient, _config["classId"], assignmentId, submissionId);
                 Console.WriteLine($"Submission {submission.Id} in state {submission.Status}");
 
                 // Check submit is completed, must reach the "Submitted" state.
                 retries = 0;
                 while (submission.Status != EducationSubmissionStatus.Submitted && retries <= MAX_RETRIES)
                 {
-                    submission = await MicrosoftGraphSDK.Submission.GetSubmissionAsync(graphClient, _config["classId"], assignmentId, submissionId);
+                    submission = await Submission.GetSubmissionAsync(graphClient, _config["classId"], assignmentId, submissionId);
 
                     Thread.Sleep(2000); // Wait two seconds between calls
                     retries++;
                 }
 
                 // Change to teacher account
-                graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+                graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Teacher reassigns the submission back to the student
-                submission = await MicrosoftGraphSDK.Submission.ReassignAsync(graphClient, _config["classId"], assignmentId, submissionId);
+                submission = await Submission.ReassignAsync(graphClient, _config["classId"], assignmentId, submissionId);
                 Console.WriteLine($"Submission {submission.Id} in state {submission.Status}");
 
                 // Check reassign is completed, must reach the "Reassigned" state.
                 retries = 0;
                 while (submission.Status != EducationSubmissionStatus.Reassigned && retries <= MAX_RETRIES)
                 {
-                    submission = await MicrosoftGraphSDK.Submission
+                    submission = await Submission
                         .GetSubmissionWithHeaderAsync(graphClient, _config["classId"], assignmentId, submissionId, "Prefer", "include-unknown-enum-members");
 
                     Thread.Sleep(2000); // Wait two seconds between calls
@@ -107,7 +141,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             try
             {
                 // Get a Graph client using delegated permissions
-                var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+                var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 Console.WriteLine($"Getting top 20 assignments from MeAssignments Endpoint");
 
@@ -168,5 +202,108 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"BatchRequestWorkflow: {ex.ToString()}");
             }
         }
+        public async Task SubmissionFeedbackResource(bool appOnly = false)
+        {
+            const int MAX_RETRIES = 10;
+
+            Console.WriteLine($"Create submission feedback resource");
+            // Get a Graph client using delegated permissions
+            var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+
+            //Create new assigment
+            var assignment = await Assignment.CreateAsync(graphClient, _config["classId"]);
+            var assignmentId = assignment.Id;
+            Console.WriteLine($"Assignment created {assignmentId}");
+
+            await Assignment.SetUpAssignmentFeedbackResourcesFolder(graphClient, _config["classId"], assignmentId);
+            Console.WriteLine("SetupResourceFolder creation successful");
+
+            // Check feedback resource folder
+            int retryNum = 0;
+            while (assignment.FeedbackResourcesFolderUrl == null && retryNum <= MAX_RETRIES)
+            {
+                assignment = await Assignment.GetAssignmentAsync(graphClient, _config["classId"], assignmentId);
+                retryNum++;
+            }
+            Console.WriteLine($"Feedback resources folder: {assignment.FeedbackResourcesFolderUrl}");
+
+            //Publish assignment
+            assignment = await GlobalMethods.PublishAssignmentsAsync(graphClient, assignment.Id);
+            Thread.Sleep(7000);
+
+            //Get assignment submissions
+            var submissions = await Submission.GetSubmissionsAsync(
+                graphClient,
+                _config["classId"],
+                assignmentId);
+            var submissionId = submissions.Value[0].Id;
+
+            // Create a new submission feedback resource
+            var feedbackResource = await Submission.CreateFeedbackResourceOutcome(
+                graphClient,
+                _config["classId"],
+                assignmentId,
+                submissionId);
+            Thread.Sleep(2000);
+            Console.WriteLine($"Feedback resource created: {feedbackResource.Id}");
+
+            // Get submission outcomes
+            var submissionOutcomes = await Submission.GetSubmissionOutcomes(
+                graphClient,
+                _config["classId"],
+                assignmentId,
+                submissionId);
+
+            // Take the points outcome id
+            var pointsOutcomeId = submissionOutcomes.Value.Where(x => x.OdataType == "#microsoft.graph.educationPointsOutcome").Select(x => x.Id).FirstOrDefault();
+
+            // Create the points outcome body
+            var pointsOutcome = new EducationPointsOutcome
+            {
+                OdataType = "#microsoft.graph.educationPointsOutcome",
+                Points = new EducationAssignmentPointsGrade
+                {
+                    OdataType = "#microsoft.graph.educationAssignmentPointsGrade",
+                    Points = 90
+                }
+            };
+
+            // Update the submission points outcome
+            var returned = await Submission.PatchOutcomeAsync(
+                graphClient,
+                _config["classId"],
+                assignmentId,
+                submissionId,
+                pointsOutcomeId,
+                pointsOutcome);
+            Thread.Sleep(2000);
+            Console.WriteLine($"Points outcome updated: {pointsOutcome.Points.Points}");
+
+            // Refresh list of submission outcomes
+            submissionOutcomes = await Submission.GetSubmissionOutcomes(
+                graphClient,
+                _config["classId"],
+                assignmentId,
+                submissionId);
+
+
+            // Verify the new feedback resource is found
+            bool resourceFound = false;
+            foreach (var submissionResource in submissionOutcomes.Value)
+            {
+                Console.WriteLine($"Submission resource: {submissionResource.Id}");
+                if (feedbackResource.Id == submissionResource.Id)
+                {
+                    resourceFound = true;
+                    break;
+                }
+            }
+
+            //Deleting the created assignment
+            await Assignment.DeleteAsync(graphClient, _config["classId"], assignmentId);
+            Console.WriteLine("Assignment deleted successfully");
+        }
+
+
     }
 }
