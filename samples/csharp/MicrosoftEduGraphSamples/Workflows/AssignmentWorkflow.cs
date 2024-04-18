@@ -162,13 +162,17 @@ namespace MicrosoftEduGraphSamples.Workflows
             }
         }
 
+        /// <summary>
+        /// Workflow to create Assignment resources in resource folder
+        /// </summary>
+        /// <param name="appOnly">True value accepts Teacher account and false for Student account</param> 
         public async Task AssignmentResource(bool appOnly = false)
         {
             try
             {
                 string assignmentId = string.Empty;
 
-                // Get a Graph client using delegated permissions
+                // Get a Graph client based on the appOnly parameter
                 var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Create assignment
@@ -176,11 +180,11 @@ namespace MicrosoftEduGraphSamples.Workflows
                 assignmentId = assignment.Id;
                 Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
 
-                //AO Set Up Assignment Resources Folder
+                // Set Up Assignment Resources Folder
                 await Assignment.SetupResourcesFolder(graphClient, _config["classId"], assignmentId);
                 Console.WriteLine("SetupResourceFolder creation successful");
 
-                //Adding AO Word Resource to assignment with distribute to student
+                // Adding new Word resource to assignment
                 var requestBody = new EducationAssignmentResource
                 {
                     DistributeForStudentWork = false,
@@ -202,7 +206,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"AssignmentResource: {ex.ToString()}");
+                Console.WriteLine($"AssignmentResourceAsync: {ex.ToString()}");
             }
         }
     }    
