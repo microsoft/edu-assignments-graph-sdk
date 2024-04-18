@@ -240,7 +240,14 @@ namespace MicrosoftGraphSDK
             }
         }
 
-        //Create a update of assignment 
+        /// <summary>
+        /// Create an update of Assignment
+        /// Reference :: https://learn.microsoft.com/en-us/graph/assignments-states-transition
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
+        /// <returns>EducationAssignment</returns>
         public static async Task<EducationAssignment> PatchAsync(
             GraphServiceClient client,
             string classId,
@@ -264,7 +271,15 @@ namespace MicrosoftGraphSDK
             }
         }
 
-        //Delete the created assignment
+        /// <summary>
+        /// Delete the ncreated assignment
+        /// Reference :: https://learn.microsoft.com/en-us/graph/assignments-states-transition
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
+        /// <returns>EducationAssignment</returns>
+       
         public static async Task DeleteAsync(
             GraphServiceClient client,
             string classId,

@@ -127,7 +127,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         /// <summary>
         /// Workflow to get create and Patch Assignment
         /// </summary>
-        /// <param name="appOnly">True value accepts Teacher account and false for Student account</param> 
+        /// <param name="appOnly">True value authenticates the graph client with application permissions only, otherwise it will be created with delegated permissions.</param> 
         public async Task CreateAndPatchAssignmentAsync(bool appOnly = false)
         {
             try
