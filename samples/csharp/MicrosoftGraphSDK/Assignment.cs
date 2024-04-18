@@ -240,26 +240,23 @@ namespace MicrosoftGraphSDK
             }
         }
 
-        //Create a draft assignment 
+        //Create a update of assignment 
         public static async Task<EducationAssignment> PatchAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId)
         {
             try
-            {
-              
+            {              
                 var requestBody = new EducationAssignment
                 {
                     DisplayName = "Reading and review test updated",                    
                 };
 
-                // Get a Graph client using delegated permissions
                 return await client.Education
                     .Classes[classId]
                     .Assignments[assignmentId]
                     .PatchAsync(requestBody);
-
             }
             catch (Exception ex)
             {

@@ -30,7 +30,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         {
             try
             {
-                // Get a Graph client using delegated permissions
+                // Get a Graph client based on the appOnly parameter
                 var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Create a draft module

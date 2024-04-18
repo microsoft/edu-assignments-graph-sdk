@@ -34,7 +34,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 string userAccount = isTeacher ? _config["teacherAccount"] : _config["studentAccount"];
 
                 // Get a Graph client using delegated permissions
-                var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], userAccount, _config["password"]);
+                var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], userAccount, _config["password"]);
 
                 // Call to get user classes
                 var joinedTeams = await graphClient.GetJoinedTeamsAsync();
@@ -125,16 +125,16 @@ namespace MicrosoftEduGraphSamples.Workflows
         }
 
         /// <summary>
-        /// Workflow to get assignments from all the classes which are not archived
+        /// Workflow to get create and Patch Assignment
         /// </summary>
-        /// <param name="isTeacher">True value accepts Teacher account and false for Student account</param> 
-        public async Task CreateAndPatchAssignment(bool appOnly = false)
+        /// <param name="appOnly">True value accepts Teacher account and false for Student account</param> 
+        public async Task CreateAndPatchAssignmentAsync(bool appOnly = false)
         {
             try
             {
                 string assignmentId = string.Empty;
 
-                // Get a Graph client using delegated permissions
+                // Get a Graph client using appOnly Parameter
                 var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Create assignment
@@ -142,21 +142,23 @@ namespace MicrosoftEduGraphSamples.Workflows
                 assignmentId = assignment.Id;
                 Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
 
-                //Creating a draft assignment
+                //Updating a draft assignment
                 assignment = await Assignment.PatchAsync(graphClient, _config["classId"], assignmentId);
                 
                 //Verifying whether the DisplayName parameter is updated for the draft assignment.
                 assignment = await Assignment.GetAssignmentAsync(graphClient, _config["classId"], assignmentId);
-                if(assignment.DisplayName.Contains("updated"))
-                {
-                Console.WriteLine($"DisplayName updated successfully {assignment.Id} DisplayName {assignment.DisplayName}");
-                }
+
+                    if(assignment.DisplayName.Contains("updated"))
+                    {
+                    Console.WriteLine($"DisplayName updated successfully {assignment.Id} DisplayName {assignment.DisplayName}");
+                    }
+
                 await Assignment.DeleteAsync(graphClient, _config["classId"], assignmentId);
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"AssignmentsEvolvableEnumsAsync: {ex.ToString()}");
+                Console.WriteLine($"CreateAndPatchAssignmentAsync: {ex.ToString()}");
             }
         }
     }    
