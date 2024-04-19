@@ -134,7 +134,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             {
                 string assignmentId = string.Empty;
 
-                // Get a Graph client using appOnly Parameter
+                // Get a Graph client based on the appOnly parameter
                 var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Create assignment
