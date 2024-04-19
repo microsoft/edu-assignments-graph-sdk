@@ -271,8 +271,7 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// Delete the ncreated assignment
-        /// Reference :: https://learn.microsoft.com/en-us/graph/assignments-states-transition
+        /// Delete an assignment
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
