@@ -25,13 +25,12 @@ namespace MicrosoftEduGraphSamples.Workflows
         /// <summary>
         /// Workflow to create and publish the module
         /// </summary>
-        /// <param name="appOnly">True value authenticates the graph client with application permissions only, otherwise it will be created with delegated permissions.</param> 
-        public async Task ClassworkAsync(bool appOnly = false)
+        public async Task ClassworkAsync()
         {
             try
             {
                 // Get a Graph client using delegated permissions
-                var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+                var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Create a draft module
                 var module = await Module.CreateAsync(graphClient, _config["classId"], "Sample Module " + DateTime.Now.ToString("dd/MM/yyyy HHmm"), "This Classwork module was created with Microsoft Graph SDK.");
@@ -122,6 +121,6 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"ClassworkAsync: {ex.ToString()}");
                 return;
             }
-        }        
+        }
     }
 }
