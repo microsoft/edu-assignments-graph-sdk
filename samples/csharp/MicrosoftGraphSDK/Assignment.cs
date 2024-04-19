@@ -239,48 +239,5 @@ namespace MicrosoftGraphSDK
                 throw new GraphException($"DeactivateAsync call: {ex.Message}", ex, classId, assignmentId);
             }
         }
-
-        //Create a draft assignment 
-        public static async Task<EducationAssignment> PatchAsync(
-            GraphServiceClient client,
-            string classId,
-            string assignmentId)
-        {
-            try
-            {
-              
-                var requestBody = new EducationAssignment
-                {
-                    DisplayName = "Reading and review test updated",                    
-                };
-
-                // Get a Graph client using delegated permissions
-                return await client.Education
-                    .Classes[classId]
-                    .Assignments[assignmentId]
-                    .PatchAsync(requestBody);
-
-            }
-            catch (Exception ex)
-            {
-                throw new GraphException($"PatchAsync call: {ex.Message}", ex, classId, assignmentId);
-            }
-        }
-
-        //Delete the created assignment
-        public static async Task DeleteAsync(
-            GraphServiceClient client,
-            string classId,
-            string assignmentId)
-        {
-            try
-            {               
-                await client.Education.Classes[classId].Assignments[assignmentId].DeleteAsync();          
-            }
-            catch (Exception ex)
-            {
-                throw new GraphException($"DeleteAsync call: {ex.Message}", ex, classId, assignmentId);
-            }
-        }
     }
 }
