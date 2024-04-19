@@ -148,10 +148,10 @@ namespace MicrosoftEduGraphSamples.Workflows
                 //Verifying whether the DisplayName parameter is updated for the draft assignment.
                 assignment = await Assignment.GetAssignmentAsync(graphClient, _config["classId"], assignmentId);
 
-                    if(assignment.DisplayName.Contains("updated"))
-                    {
+                if(assignment.DisplayName.Contains("updated"))
+                {
                     Console.WriteLine($"DisplayName updated successfully {assignment.Id} DisplayName {assignment.DisplayName}");
-                    }
+                }
 
                 await Assignment.DeleteAsync(graphClient, _config["classId"], assignmentId);
 
