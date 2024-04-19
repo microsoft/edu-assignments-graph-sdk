@@ -261,7 +261,7 @@ namespace MicrosoftGraphSDK
                 try
                 {
                     var requestInformation = client.Education.Classes[classId].Assignments[assignmentId].SetUpFeedbackResourcesFolder.ToPostRequestInformation();
-                    var requestBody = new Entity();//create a dummy request body
+                    var requestBody = new Entity(); // create an empty request body
                     requestInformation.SetContentFromParsable(client.RequestAdapter, "application/json", requestBody);
                     var errorMapping = new Dictionary<string, ParsableFactory<IParsable>> {
                     { "XXX", ODataError.CreateFromDiscriminatorValue }
