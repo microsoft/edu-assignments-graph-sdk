@@ -92,7 +92,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetSubmissionsWithExpandAsync call: {ex.Message}", ex, classId, assignmentId);
+                throw new GraphException($"GetSubmissionsWithExpandAsync call: {ex.Message}", ex, classId, assignmentId, expand);
             }
         }
 
