@@ -137,7 +137,6 @@ namespace MicrosoftGraphSDK
             }
         }
 
-
             /// <summary>
             /// Publishes an assignment, changes the state of an educationAssignment from its original draft status to the published status
             /// </summary>
@@ -246,50 +245,15 @@ namespace MicrosoftGraphSDK
                 }
             }
 
-            //Create a draft assignment 
-            public static async Task<EducationAssignment> PatchAsync(
-                GraphServiceClient client,
-                string classId,
-                string assignmentId)
-            {
-                try
-                {
-
-                    var requestBody = new EducationAssignment
-                    {
-                        DisplayName = "Reading and review test updated",
-                    };
-
-                    // Get a Graph client using delegated permissions
-                    return await client.Education
-                        .Classes[classId]
-                        .Assignments[assignmentId]
-                        .PatchAsync(requestBody);
-
-                }
-                catch (Exception ex)
-                {
-                    throw new GraphException($"PatchAsync call: {ex.Message}", ex, classId, assignmentId);
-                }
-            }
-
-            //Delete the created assignment
-            public static async Task DeleteAsync(
-                GraphServiceClient client,
-                string classId,
-                string assignmentId)
-            {
-                try
-                {
-                    await client.Education.Classes[classId].Assignments[assignmentId].DeleteAsync();
-                }
-                catch (Exception ex)
-                {
-                    throw new GraphException($"DeleteAsync call: {ex.Message}", ex, classId, assignmentId);
-                }
-            }
-
-            public static async Task<EducationAssignment> SetUpAssignmentFeedbackResourcesFolder(
+        /// <summary>
+        /// Create Assignment Feedback resources folder
+        /// Reference :: https://learn.microsoft.com/en-us/graph/assignments-states-transition
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
+        /// <returns>EducationAssignment</returns>
+        public static async Task<EducationAssignment> SetUpAssignmentFeedbackResourcesFolder(
                 GraphServiceClient client,
                 string classId,
                 string assignmentId)
@@ -310,36 +274,6 @@ namespace MicrosoftGraphSDK
                     throw new GraphException($"SetUpAssignmentFeedbackResourcesFolder call: {ex.Message}", ex, classId, assignmentId);
                 }
             }
-        /// <summary>
-        /// List all the submissions associated with an assignment using expand
-        /// </summary>
-        /// <param name="client">Microsoft Graph service client</param>
-        /// <param name="classId">User class id</param>
-        /// <param name="assignmentId">Assignment id in the class</param>
-        /// <param name="expand">OData query parameter to help customize the response</param>
-        /// <returns>EducationSubmissionCollectionResponse</returns>
-        public static async Task<EducationSubmissionCollectionResponse> GetAssignmentsWithExpandAsync(
-            GraphServiceClient client,
-            string classId,
-            string assignmentId,
-            string expand)
-        {
-            try
-            {
-                return await client.Education
-                    .Classes[classId]
-                    .Assignments[assignmentId]
-                    .Submissions //To check with Cristobal
-                    .GetAsync((requestConfiguration) =>
-                    {
-                        requestConfiguration.QueryParameters.Expand = new string[] { expand };
-                    });
-            }
-            catch (Exception ex)
-            {
-                throw new GraphException($"GetAssignmentsWithExpandAsync call: {ex.Message}", ex, classId, assignmentId);
-            }
-        }
 
     }
 }

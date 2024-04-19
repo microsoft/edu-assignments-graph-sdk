@@ -198,10 +198,10 @@ namespace MicrosoftGraphSDK
         /// <param name="submissionId">Student submission id</param>
         /// <returns>EducationSubmission</returns>
         public static async Task<EducationOutcome> CreateFeedbackResourceOutcome(
-    GraphServiceClient client,
-    string classId,
-    string assignmentId,
-    string submissionId)
+            GraphServiceClient client,
+            string classId,
+            string assignmentId,
+            string submissionId)
         {
             var educationOutcome = new EducationFeedbackResourceOutcome
             {
@@ -222,12 +222,13 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// Creates a feedback resource for a given submission
+        /// Update the properties of an educationOutcome object
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="submissionId">Student submission id</param>
+        /// <param name="outcomeId">Outcome id</param>
         /// <param name="educationOutcome">Education outcome object</param>
         /// <returns>EducationOutcome</returns>
 

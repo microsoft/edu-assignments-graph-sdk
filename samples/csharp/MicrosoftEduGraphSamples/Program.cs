@@ -15,11 +15,5 @@ IConfiguration config = new ConfigurationBuilder()
 // Create an instance of the class you want to test and call the desired workflow method.
 // Each flow represents a common entire process that can be tested using Microsoft Graph SDK, all the sample flows are located in the "workflows" folder.
 
-// AssignmentWorkflow workflow = new AssignmentWorkflow(config);
-// await workflow.ClassworkAsync(appOnly:true);
-// await workflow.AssignmentResource(appOnly: true); 
-
 SubmissionWorkflow workflow2 = new SubmissionWorkflow(config);
 await workflow2.SubmissionFeedbackResource();
-
-
