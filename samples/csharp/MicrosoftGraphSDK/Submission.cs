@@ -277,6 +277,14 @@ namespace MicrosoftGraphSDK
                 .GetAsync();
         }
 
+        /// <summary>
+        /// Creating Resources folder for Submission
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
+        /// <param name="submissionId">Student submission id</param>
+        /// <returns>EducationOutcomeCollectionResponse</returns>
         public static async Task<EducationSubmission> SetUpSubmissionResourcesFolder(
             GraphServiceClient client,
             string classId,
