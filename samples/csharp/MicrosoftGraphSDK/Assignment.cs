@@ -276,7 +276,7 @@ namespace MicrosoftGraphSDK
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
-        /// <returns>EducationAssignment</returns>
+        /// <returns></returns>
        
         public static async Task DeleteAsync(
             GraphServiceClient client,
