@@ -241,8 +241,7 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// Create an update of Assignment
-        /// Reference :: https://learn.microsoft.com/en-us/graph/assignments-states-transition
+        /// Update an assignment
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
