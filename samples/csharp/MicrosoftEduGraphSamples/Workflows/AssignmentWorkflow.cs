@@ -166,7 +166,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         /// Workflow to create Assignment resources in resource folder
         /// </summary>
         /// <param name="appOnly">True value authenticates the graph client with application permissions only, otherwise it will be created with delegated permissions.</param> 
-        public async Task AssignmentResource(bool appOnly = false)
+        public async Task AssignmentResourceAsync(bool appOnly = false)
         {
             try
             {
