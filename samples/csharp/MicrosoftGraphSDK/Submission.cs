@@ -3,7 +3,6 @@
 
 using Microsoft.Graph.Beta;
 using Microsoft.Graph.Beta.Models;
-using Microsoft.Graph.Models;
 
 namespace MicrosoftGraphSDK
 {

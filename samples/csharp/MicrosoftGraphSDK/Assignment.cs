@@ -247,7 +247,6 @@ namespace MicrosoftGraphSDK
 
         /// <summary>
         /// Create Assignment Feedback resources folder
-        /// Reference :: https://learn.microsoft.com/en-us/graph/assignments-states-transition
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
