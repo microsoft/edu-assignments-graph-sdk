@@ -202,6 +202,10 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"BatchRequestWorkflow: {ex.ToString()}");
             }
         }
+
+        /// <summary>
+        /// Workflow to create a submission feedback resource
+        /// </summary>
         public async Task SubmissionFeedbackResource(bool appOnly = false)
         {
             const int MAX_RETRIES = 10;
