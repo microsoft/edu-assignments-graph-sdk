@@ -123,5 +123,5 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"AssignmentsEvolvableEnumsAsync: {ex.ToString()}");
             }
         }
-    }    
+    }
 }

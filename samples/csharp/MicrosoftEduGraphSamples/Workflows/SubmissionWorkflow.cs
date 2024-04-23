@@ -290,7 +290,6 @@ namespace MicrosoftEduGraphSamples.Workflows
                 assignmentId,
                 submissionId);
 
-
             // Verify the new feedback resource is found
             bool resourceFound = false;
             foreach (var submissionResource in submissionOutcomes.Value)
@@ -307,7 +306,5 @@ namespace MicrosoftEduGraphSamples.Workflows
             await Assignment.DeleteAsync(graphClient, _config["classId"], assignmentId);
             Console.WriteLine("Assignment deleted successfully");
         }
-
-
     }
 }
