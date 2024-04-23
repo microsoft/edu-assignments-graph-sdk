@@ -119,8 +119,6 @@ Use the `Program.cs` file to test any of the current workflows.
 |4| Assignment evolvable enums   | Evolvable enums is a mechanism that Microsoft Graph API uses to add new members to existing enumerations without causing a breaking change for applications.|[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/AssignmentWorkflow.cs#L68)|
 |5| Classwork Module   | The sample shows how the teacher creates a module and attach resources and assignments. |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/ModuleWorkflow.cs#L26)|
 
-
-
 ## Need help?
 
 * For reference documentation visit the [Microsoft Graph SDK reference](https://learn.microsoft.com/graph/sdks/sdks-overview).
