@@ -211,7 +211,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             const int MAX_RETRIES = 10;
 
             Console.WriteLine($"Create submission feedback resource");
-            // Get a Graph client using delegated permissions
+            // Get a Graph client based on the appOnly parameter
             var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
             //Create new assigment
