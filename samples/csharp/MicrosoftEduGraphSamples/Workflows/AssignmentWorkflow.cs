@@ -80,16 +80,16 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Create assignment to verify inactive state
-                var assignmentInactive = await Assignment.CreateAsync(graphClient, _config["classId"]);
+                var assignmentInactive = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
                 assignmentId = assignmentInactive.Id;
                 Console.WriteLine($"Assignment created successfully {assignmentInactive.Id} in state {assignmentInactive.Status}");
 
                 // Create assignment to verify assigned state
-                var assignmentAssigned = await Assignment.CreateAsync(graphClient, _config["classId"]);
+                var assignmentAssigned = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
                 Console.WriteLine($"Assignment created successfully {assignmentAssigned.Id} in state {assignmentAssigned.Status}");
 
                 // Create assignment to verify draft state
-                var assignmentDraft = await Assignment.CreateAsync(graphClient, _config["classId"]);
+                var assignmentDraft = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
                 Console.WriteLine($"Assignment created successfully {assignmentDraft.Id} in state {assignmentDraft.Status}");
 
                 // Publishing an Assignment
@@ -138,7 +138,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Create assignment
-                var assignment = await Assignment.CreateAsync(graphClient, _config["classId"]);
+                var assignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
                 assignmentId = assignment.Id;
                 Console.WriteLine($"Assignment created successfully with Id: {assignment.Id} in state: {assignment.Status}");
 

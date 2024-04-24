@@ -33,7 +33,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Create a draft module
-                var module = await Module.CreateAsync(graphClient, _config["classId"], "Sample Module " + DateTime.Now.ToString("dd/MM/yyyy HHmm"), "This Classwork module was created with Microsoft Graph SDK.");
+                var module = await Module.CreateSampleAssignmentAsync(graphClient, _config["classId"], "Sample Module " + DateTime.Now.ToString("dd/MM/yyyy HHmm"), "This Classwork module was created with Microsoft Graph SDK.");
                 Console.WriteLine($"New module has been created: {module.Id} - {module.DisplayName} - {module.Status}");
 
                 // Set up a resources folder
@@ -76,7 +76,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 newResource = await Module.PostResourceAsync(graphClient, _config["classId"], module.Id.ToString(), requestBody);
 
                 // Add a Assignment resource
-                var assignment = await Assignment.CreateAsync(graphClient, _config["classId"]);
+                var assignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
                 requestBody = new EducationModuleResource
                 {
                     Resource = new EducationLinkedAssignmentResource

@@ -75,7 +75,7 @@ namespace MicrosoftEduImportFromGoogle
             List<string> assignmentsCreated = new List<string>();
             foreach(var courseWork in courseWorks)
             {
-                var createdAssignment = await Assignment.CreateAsync(graphServiceClient, classId,
+                var createdAssignment = await Assignment.CreateSampleAssignmentAsync(graphServiceClient, classId,
                     new EducationAssignment
                     {
                         DisplayName = courseWork.Title,
@@ -105,7 +105,7 @@ namespace MicrosoftEduImportFromGoogle
             List<string> modulesCreated = new List<string>();
             foreach (var courseWork in courseWorkMaterials)
             {
-                var createdModule = await Module.CreateAsync(graphServiceClient, classId, courseWork.Title, courseWork.Description);
+                var createdModule = await Module.CreateSampleAssignmentAsync(graphServiceClient, classId, courseWork.Title, courseWork.Description);
                 modulesCreated.Add(createdModule.DisplayName);
 
                 if (courseWork.Materials.Any() == true)
