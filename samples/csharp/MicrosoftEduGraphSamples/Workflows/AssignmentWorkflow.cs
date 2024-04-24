@@ -125,7 +125,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         }
 
         /// <summary>
-        /// Workflow to create Assignment resources in resource folder
+        /// Workflow to create Assignment resources under the assignment resource folder
         /// </summary>
         /// <param name="appOnly">True value authenticates the graph client with application permissions only, otherwise it will be created with delegated permissions.</param> 
         public async Task AssignmentResourceAsync(bool appOnly = false)
@@ -140,7 +140,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Create assignment
                 var assignment = await Assignment.CreateAsync(graphClient, _config["classId"]);
                 assignmentId = assignment.Id;
-                Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
+                Console.WriteLine($"Assignment created successfully with Id: {assignment.Id} in state: {assignment.Status}");
 
                 // Set Up Assignment Resources Folder
                 await Assignment.SetupResourcesFolder(graphClient, _config["classId"], assignmentId);
@@ -159,7 +159,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                 var resource = await Assignment.PostResourceAsync(graphClient, _config["classId"], assignmentId, requestBody);
 
-                Console.WriteLine($"Resource created successfully {resource.Id} Display Name {resource.Resource.DisplayName}");
+                Console.WriteLine($"Resource created successfully with id : {resource.Id}, Display Name : {resource.Resource.DisplayName}");
 
                 //Deleting the created assignment
                 await Assignment.DeleteAsync(graphClient, _config["classId"], assignmentId);
