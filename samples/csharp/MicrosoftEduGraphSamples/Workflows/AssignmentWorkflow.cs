@@ -125,7 +125,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         }
 
         /// <summary>
-        /// Workflow to create and patch Assignment
+        /// Workflow to create a new assignment, followed by an update to the assignment display name (aka title)
         /// </summary>
         /// <param name="appOnly">True value authenticates the graph client with application permissions only, otherwise it will be created with delegated permissions.</param> 
         public async Task CreateAndPatchAssignmentAsync(bool appOnly = false)
@@ -143,7 +143,11 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
 
                 //Updating a draft assignment
-                assignment = await Assignment.PatchAsync(graphClient, _config["classId"], assignmentId);
+                var requestBody = new EducationAssignment
+                {
+                    DisplayName = "Reading and review test updated",
+                };
+                assignment = await Assignment.PatchAsync(graphClient, _config["classId"], assignmentId, requestBody);
                 
                 //Verifying whether the DisplayName parameter is updated for the draft assignment.
                 assignment = await Assignment.GetAssignmentAsync(graphClient, _config["classId"], assignmentId);

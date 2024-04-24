@@ -246,19 +246,16 @@ namespace MicrosoftGraphSDK
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
+        /// <param name="requestBody">Education Assignment object</param>
         /// <returns>EducationAssignment</returns>
         public static async Task<EducationAssignment> PatchAsync(
             GraphServiceClient client,
             string classId,
-            string assignmentId)
+            string assignmentId,
+            EducationAssignment requestBody)
         {
             try
-            {              
-                var requestBody = new EducationAssignment
-                {
-                    DisplayName = "Reading and review test updated",                    
-                };
-
+            {  
                 return await client.Education
                     .Classes[classId]
                     .Assignments[assignmentId]
