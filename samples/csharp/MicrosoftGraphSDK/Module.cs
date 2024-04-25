@@ -19,7 +19,7 @@ namespace MicrosoftGraphSDK
         /// <param name="displayName">Display Name</param>
         /// <param name="description">Description</param>
         /// <returns>EducationModule</returns>
-        public static async Task<EducationModule> CreateAsync(
+        public static async Task<EducationModule> CreateSampleAsync(
             GraphServiceClient client,
             string classId,
             string displayName,
@@ -38,7 +38,7 @@ namespace MicrosoftGraphSDK
                     .Modules.PostAsync(requestBody);
             }
             catch (Exception ex) {
-                throw new GraphException($"CreateAsync call: {ex.Message}", ex, classId, displayName, description);
+                throw new GraphException($"CreateSampleAsync call: {ex.Message}", ex, classId, displayName, description);
             }
         }
 

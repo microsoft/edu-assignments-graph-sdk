@@ -51,7 +51,7 @@ namespace MicrosoftEduGraphSamples.Utilities
         }
 
         /// <summary>
-        /// Workflow to Publish Assignments
+        /// A code sample to Publish Assignments
         /// </summary>
         /// <param name="assignmentId">Assignment id</param>
         public static async Task<EducationAssignment> PublishAssignmentsAsync(GraphServiceClient graphClient, string assignmentId)
