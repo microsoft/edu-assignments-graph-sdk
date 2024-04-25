@@ -10,7 +10,7 @@ using MicrosoftGraphSDK;
 namespace MicrosoftEduGraphSamples.Workflows
 {
     /// <summary>
-    /// Contains all the workflows related to Submissions, the process from assignment creation to reassignment to the student
+    /// Contains all the code samples related to Submissions, the process from assignment creation to reassignment to the student
     /// with feedback for review, including creating a batch request and getting the responses
     /// </summary>
     internal class SubmissionWorkflow
@@ -25,7 +25,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         }
 
         /// <summary>
-        /// Workflow to show process since assignment is created until reassign the submission to the student with feedback for review
+        /// A code sample to show process since assignment is created until reassign the submission to the student with feedback for review
         /// </summary>
         public async Task ReassignWorkflow()
         {
@@ -39,7 +39,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Teacher creates a new assignment
-                var assignment = await Assignment.CreateAsync(graphClient, _config["classId"]);
+                var assignment = await Assignment.CreateSampleAsync(graphClient, _config["classId"]);
                 assignmentId = assignment.Id;
                 Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
 
@@ -61,8 +61,25 @@ namespace MicrosoftEduGraphSamples.Workflows
                     throw new Exception($"No submission found for {_config["studentAccount"]} in {assignmentId} for class {_config["classId"]}");
                 }
 
+                // Student submits their submission
+                var submission = await Submission.SubmitAsync(graphClient, _config["classId"], assignmentId, submissionId);
+                Console.WriteLine($"Submission {submission.Id} in state {submission.Status}");
+
+                // Check submit is completed, must reach the "Submitted" state.
+                retries = 0;
+                while (submission.Status != EducationSubmissionStatus.Submitted && retries <= MAX_RETRIES)
+                {
+                    submission = await Submission.GetSubmissionAsync(graphClient, _config["classId"], assignmentId, submissionId);
+
+                    Thread.Sleep(2000); // Wait two seconds between calls
+                    retries++;
+                }
+
+                // Change to teacher account
+                graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+
                 // Get submission outcomes
-                var submissionOutcomes = await Submission.GetSubmissionOutcomes(
+                var submissionOutcomes = await Submission.GetSubmissionOutcomesAsync(
                     graphClient,
                     _config["classId"],
                     assignmentId,
@@ -93,24 +110,6 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Thread.Sleep(2000);
                 Console.WriteLine($"Points outcome updated: {pointsOutcome.Points.Points}");
 
-
-                // Student submits his submission
-                var submission = await Submission.SubmitAsync(graphClient, _config["classId"], assignmentId, submissionId);
-                Console.WriteLine($"Submission {submission.Id} in state {submission.Status}");
-
-                // Check submit is completed, must reach the "Submitted" state.
-                retries = 0;
-                while (submission.Status != EducationSubmissionStatus.Submitted && retries <= MAX_RETRIES)
-                {
-                    submission = await Submission.GetSubmissionAsync(graphClient, _config["classId"], assignmentId, submissionId);
-
-                    Thread.Sleep(2000); // Wait two seconds between calls
-                    retries++;
-                }
-
-                // Change to teacher account
-                graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
-
                 // Teacher reassigns the submission back to the student
                 submission = await Submission.ReassignAsync(graphClient, _config["classId"], assignmentId, submissionId);
                 Console.WriteLine($"Submission {submission.Id} in state {submission.Status}");
@@ -134,7 +133,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         }
 
         /// <summary>
-        /// Workflow to create a batch request and get the responses
+        /// A code sample to create a batch request and get the responses
         /// </summary>
         public async Task BatchRequestWorkflow()
         {
@@ -204,7 +203,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         }
 
         /// <summary>
-        /// Workflow to create a submission feedback resource
+        /// A code sample to create a submission feedback resource
         /// </summary>
         public async Task SubmissionFeedbackResource(bool appOnly = false)
         {
@@ -215,11 +214,11 @@ namespace MicrosoftEduGraphSamples.Workflows
             var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
             //Create new assigment
-            var assignment = await Assignment.CreateAsync(graphClient, _config["classId"]);
+            var assignment = await Assignment.CreateSampleAsync(graphClient, _config["classId"]);
             var assignmentId = assignment.Id;
             Console.WriteLine($"Assignment created {assignmentId}");
 
-            await Assignment.SetUpAssignmentFeedbackResourcesFolder(graphClient, _config["classId"], assignmentId);
+            await Assignment.SetUpAssignmentFeedbackResourcesFolderAsync(graphClient, _config["classId"], assignmentId);
             Console.WriteLine("SetupResourceFolder creation successful");
 
             // Check feedback resource folder
@@ -243,7 +242,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             var submissionId = submissions.Value[0].Id;
 
             // Create a new submission feedback resource
-            var feedbackResource = await Submission.CreateFeedbackResourceOutcome(
+            var feedbackResource = await Submission.CreateFeedbackResourceOutcomeAsync(
                 graphClient,
                 _config["classId"],
                 assignmentId,
@@ -252,7 +251,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             Console.WriteLine($"Feedback resource created: {feedbackResource.Id}");
 
             // Get submission outcomes
-            var submissionOutcomes = await Submission.GetSubmissionOutcomes(
+            var submissionOutcomes = await Submission.GetSubmissionOutcomesAsync(
                 graphClient,
                 _config["classId"],
                 assignmentId,
@@ -284,7 +283,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             Console.WriteLine($"Points outcome updated: {pointsOutcome.Points.Points}");
 
             // Refresh list of submission outcomes
-            submissionOutcomes = await Submission.GetSubmissionOutcomes(
+            submissionOutcomes = await Submission.GetSubmissionOutcomesAsync(
                 graphClient,
                 _config["classId"],
                 assignmentId,

@@ -69,7 +69,7 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="educationAssignment">EducationAssignment object</param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment> CreateAsync(
+        public static async Task<EducationAssignment> CreateSampleAsync(
             GraphServiceClient client,
             string classId,
             EducationAssignment educationAssignment)
@@ -83,7 +83,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"CreateAsync call: {ex.Message}", ex, classId);
+                throw new GraphException($"CreateSampleAsync call: {ex.Message}", ex, classId);
             }
         }
 
@@ -93,7 +93,7 @@ namespace MicrosoftGraphSDK
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment> CreateAsync(
+        public static async Task<EducationAssignment> CreateSampleAsync(
             GraphServiceClient client,
             string classId)
         {
@@ -133,18 +133,18 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"CreateAsync call: {ex.Message}", ex, classId);
+                throw new GraphException($"CreateSampleAsync call: {ex.Message}", ex, classId);
             }
         }
 
-            /// <summary>
-            /// Publishes an assignment, changes the state of an educationAssignment from its original draft status to the published status
-            /// </summary>
-            /// <param name="client">Microsoft Graph service client</param>
-            /// <param name="classId">User class id</param>
-            /// <param name="assignmentId">Assignment id in the class</param>
-            /// <returns>EducationAssignment</returns>
-            public static async Task<EducationAssignment> PublishAsync(
+        /// <summary>
+        /// Publishes an assignment, changes the state of an educationAssignment from its original draft status to the published status
+        /// Reference :: https://learn.microsoft.com/en-us/graph/assignments-states-transition
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
+        /// <returns>EducationAssignment</returns>
+        public static async Task<EducationAssignment> PublishAsync(
                 GraphServiceClient client,
                 string classId,
                 string assignmentId)
@@ -196,7 +196,7 @@ namespace MicrosoftGraphSDK
             /// <param name="classId">User class id</param>
             /// <param name="assignmentId">Assignment id</param>
             /// <returns>EducationAssignment</returns>
-            public static async Task<EducationAssignment> SetupResourcesFolder(
+            public static async Task<EducationAssignment> SetupResourcesFolderAsync(
                 GraphServiceClient client,
                 string classId,
                 string assignmentId)
@@ -211,7 +211,7 @@ namespace MicrosoftGraphSDK
                 }
                 catch (Exception ex)
                 {
-                    throw new GraphException($"SetupResourcesFolder call: {ex.Message}", ex, classId, assignmentId);
+                    throw new GraphException($"SetupResourcesFolderAsync call: {ex.Message}", ex, classId, assignmentId);
                 }
             }
 
@@ -253,7 +253,7 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment> SetUpAssignmentFeedbackResourcesFolder(
+        public static async Task<EducationAssignment> SetUpAssignmentFeedbackResourcesFolderAsync(
                 GraphServiceClient client,
                 string classId,
                 string assignmentId)
@@ -273,7 +273,7 @@ namespace MicrosoftGraphSDK
                 }
                 catch (Exception ex)
                 {
-                    throw new GraphException($"SetUpAssignmentFeedbackResourcesFolder call: {ex.Message}", ex, classId, assignmentId);
+                    throw new GraphException($"SetUpAssignmentFeedbackResourcesFolderAsync call: {ex.Message}", ex, classId, assignmentId);
                 }
             }
 

@@ -197,7 +197,7 @@ namespace MicrosoftGraphSDK
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="submissionId">Student submission id</param>
         /// <returns>EducationOutcome</returns>
-        public static async Task<EducationOutcome> CreateFeedbackResourceOutcome(
+        public static async Task<EducationOutcome> CreateFeedbackResourceOutcomeAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId,
@@ -224,7 +224,7 @@ namespace MicrosoftGraphSDK
             }
             catch(Exception ex)
             {
-                throw new GraphException($"CreateFeedbackResourceOutcome call: {ex.Message}", ex, classId, assignmentId, submissionId);
+                throw new GraphException($"CreateFeedbackResourceOutcomeAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
             }
         }
 
@@ -269,7 +269,7 @@ namespace MicrosoftGraphSDK
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="submissionId">Student submission id</param>
         /// <returns>EducationOutcomeCollectionResponse</returns>
-        public static async Task<EducationOutcomeCollectionResponse> GetSubmissionOutcomes(
+        public static async Task<EducationOutcomeCollectionResponse> GetSubmissionOutcomesAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId,
@@ -286,7 +286,7 @@ namespace MicrosoftGraphSDK
             }
             catch(Exception ex)
             {
-                throw new GraphException($"GetSubmissionOutcomes call: {ex.Message}", ex, classId, assignmentId, submissionId);
+                throw new GraphException($"GetSubmissionOutcomesAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
             }
         }
 
@@ -298,7 +298,7 @@ namespace MicrosoftGraphSDK
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="submissionId">Student submission id</param>
         /// <returns>EducationOutcomeCollectionResponse</returns>
-        public static async Task<EducationSubmission> SetUpSubmissionResourcesFolder(
+        public static async Task<EducationSubmission> SetUpAssignmentFeedbackResourcesFolderAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId,
@@ -315,7 +315,7 @@ namespace MicrosoftGraphSDK
             }
             catch(Exception ex)
             {
-                throw new GraphException($"SetUpSubmissionResourcesFolder call: {ex.Message}", ex, classId, assignmentId, submissionId);
+                throw new GraphException($"SetUpAssignmentFeedbackResourcesFolderAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
             }
         }
     }
