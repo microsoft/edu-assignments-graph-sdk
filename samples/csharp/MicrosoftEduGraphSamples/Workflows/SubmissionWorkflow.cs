@@ -9,7 +9,7 @@ using MicrosoftEduGraphSamples.Utilities;
 namespace MicrosoftEduGraphSamples.Workflows
 {
     /// <summary>
-    /// Contains all the workflows related to Submissions, the process from assignment creation to reassignment to the student
+    /// Contains all the code samples related to Submissions, the process from assignment creation to reassignment to the student
     /// with feedback for review, including creating a batch request and getting the responses
     /// </summary>
     internal class SubmissionWorkflow
@@ -24,7 +24,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         }
 
         /// <summary>
-        /// Workflow to show process since assignment is created until reassign the submission to the student with feedback for review
+        /// A code sample to show process since assignment is created until reassign the submission to the student with feedback for review
         /// </summary>
         public async Task ReassignWorkflow()
         {
@@ -100,7 +100,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         }
 
         /// <summary>
-        /// Workflow to create a batch request and get the responses
+        /// A code sample to create a batch request and get the responses
         /// </summary>
         public async Task BatchRequestWorkflow()
         {

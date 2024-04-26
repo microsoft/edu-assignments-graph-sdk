@@ -9,7 +9,7 @@ using MicrosoftGraphSDK;
 namespace MicrosoftEduGraphSamples.Workflows
 {
     /// <summary>
-    /// The Workflow related to modules include creating a draft, publishing, setting up resources, adding link resources, 
+    /// The code sample related to modules include creating a draft, publishing, setting up resources, adding link resources, 
     /// Word document resources, channel resources, assignment resources, patching, and deleting as a teacher.
     /// </summary>
     internal class ModuleWorkflow
@@ -23,7 +23,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         }
 
         /// <summary>
-        /// Workflow to create and publish the module
+        /// A Code sample to create and publish the module
         /// </summary>
         public async Task ClassworkAsync()
         {
@@ -37,7 +37,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"New module has been created: {module.Id} - {module.DisplayName} - {module.Status}");
 
                 // Set up a resources folder
-                await Module.SetupResourcesFolder(graphClient, _config["classId"], module.Id);
+                await Module.SetupResourcesFolderAsync(graphClient, _config["classId"], module.Id);
 
                 // Add a link resource
                 EducationModuleResource requestBody = new EducationModuleResource

@@ -9,7 +9,7 @@ using MicrosoftGraphSDK;
 namespace MicrosoftEduGraphSamples.Workflows
 {
     /// <summary>
-    /// Contains all the workflows related to Assignments, include getting assignments from all classes, 
+    /// Contains all the code samples related to Assignments, include getting assignments from all classes, 
     /// checking user details for assignments, getting user classes, and excluding assignments from archived and deleted classes.
     /// </summary>
     internal class AssignmentWorkflow
@@ -23,7 +23,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         }
 
         /// <summary>
-        /// Workflow to get assignments from all the classes which are not archived
+        /// A code sample to get assignments from all the classes which are not archived
         /// </summary>
         /// <param name="isTeacher">True value accepts Teacher account and false for Student account</param> 
         public async Task<IEnumerable<EducationAssignment>> GetMeAssignmentsFromNonArchivedClassesAsync(bool isTeacher = true)
@@ -65,7 +65,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             }
         }
         /// <summary>
-        /// Workflow to get assignments evolvable enums, Evolvable enums is a mechanism that Microsoft Graph API uses to add new members to existing enumerations without causing a breaking change for applications.
+        /// A code sample to get assignments evolvable enums, Evolvable enums is a mechanism that Microsoft Graph API uses to add new members to existing enumerations without causing a breaking change for applications.
         /// Reference :: https://learn.microsoft.com/en-us/graph/best-practices-concept#handling-future-members-in-evolvable-enumerations
         /// </summary>
         /// <param name></param> 
@@ -125,7 +125,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         }
 
         /// <summary>
-        /// Workflow to create Assignment resources under the assignment resource folder
+        /// A code sample to create Assignment resources under the assignment resource folder
         /// </summary>
         /// <param name="appOnly">True value authenticates the graph client with application permissions only, otherwise it will be created with delegated permissions.</param> 
         public async Task AssignmentResourceAsync(bool appOnly = false)
@@ -143,7 +143,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"Assignment created successfully with Id: {assignment.Id} in state: {assignment.Status}");
 
                 // Set Up Assignment Resources Folder
-                await Assignment.SetupResourcesFolder(graphClient, _config["classId"], assignmentId);
+                await Assignment.SetupResourcesFolderAsync(graphClient, _config["classId"], assignmentId);
                 Console.WriteLine("SetupResourceFolder creation successful");
 
                 // Adding new Word resource to assignment

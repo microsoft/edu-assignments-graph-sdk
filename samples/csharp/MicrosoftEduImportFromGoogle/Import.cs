@@ -142,7 +142,7 @@ namespace MicrosoftEduImportFromGoogle
                     {
                         if (createdAssignment.ResourcesFolderUrl == null)
                         {
-                            createdAssignment = await Assignment.SetupResourcesFolder(graphServiceClient, createdAssignment.ClassId, createdAssignment.Id);
+                            createdAssignment = await Assignment.SetupResourcesFolderAsync(graphServiceClient, createdAssignment.ClassId, createdAssignment.Id);
                         }
                         string uploadUrl = $"{createdAssignment.ResourcesFolderUrl}:/{fileName}:/content";
                         string[] urlSegments = createdAssignment.ResourcesFolderUrl.Split('/');
@@ -218,7 +218,7 @@ namespace MicrosoftEduImportFromGoogle
                     {
                         if (createdModule.ResourcesFolderUrl == null)
                         {
-                            createdModule = await Module.SetupResourcesFolder(graphServiceClient, classId, createdModule.Id);
+                            createdModule = await Module.SetupResourcesFolderAsync(graphServiceClient, classId, createdModule.Id);
                         }
                         string uploadUrl = $"{createdModule.ResourcesFolderUrl}:/{fileName}:/content";
                         string[] urlSegments = createdModule.ResourcesFolderUrl.Split('/');

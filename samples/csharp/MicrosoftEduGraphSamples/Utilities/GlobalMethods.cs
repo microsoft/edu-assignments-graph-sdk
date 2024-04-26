@@ -5,7 +5,7 @@ using Microsoft.Graph.Beta;
 namespace MicrosoftEduGraphSamples.Utilities
 {
     /// <summary>
-    /// Contains all the reusuable methods for workflows related to Assignments,Modules and Submissions.
+    /// Contains all the reusuable methods for code samples related to Assignments,Modules and Submissions.
     /// </summary>
     internal class GlobalMethods
     {
@@ -51,7 +51,7 @@ namespace MicrosoftEduGraphSamples.Utilities
         }
 
         /// <summary>
-        /// Workflow to Publish Assignments
+        /// A code sample to Publish Assignments
         /// </summary>
         /// <param name="assignmentId">Assignment id</param>
         public static async Task<EducationAssignment> PublishAssignmentsAsync(GraphServiceClient graphClient, string assignmentId)
