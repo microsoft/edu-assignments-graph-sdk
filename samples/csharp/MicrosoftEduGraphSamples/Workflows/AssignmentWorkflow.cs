@@ -9,7 +9,7 @@ using MicrosoftGraphSDK;
 namespace MicrosoftEduGraphSamples.Workflows
 {
     /// <summary>
-    /// Contains all the workflows related to Assignments, include getting assignments from all classes, 
+    /// Contains all the code samples related to Assignments, include getting assignments from all classes, 
     /// checking user details for assignments, getting user classes, and excluding assignments from archived and deleted classes.
     /// </summary>
     internal class AssignmentWorkflow
@@ -23,7 +23,7 @@ namespace MicrosoftEduGraphSamples.Workflows
         }
 
         /// <summary>
-        /// Workflow to get assignments from all the classes which are not archived
+        /// A code sample to get assignments from all the classes which are not archived
         /// </summary>
         /// <param name="isTeacher">True value accepts Teacher account and false for Student account</param> 
         public async Task<IEnumerable<EducationAssignment>> GetMeAssignmentsFromNonArchivedClassesAsync(bool isTeacher = true)
@@ -65,7 +65,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             }
         }
         /// <summary>
-        /// Workflow to get assignments evolvable enums, Evolvable enums is a mechanism that Microsoft Graph API uses to add new members to existing enumerations without causing a breaking change for applications.
+        /// A code sample to get assignments evolvable enums, Evolvable enums is a mechanism that Microsoft Graph API uses to add new members to existing enumerations without causing a breaking change for applications.
         /// Reference :: https://learn.microsoft.com/en-us/graph/best-practices-concept#handling-future-members-in-evolvable-enumerations
         /// </summary>
         /// <param name></param> 
@@ -80,16 +80,16 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Create assignment to verify inactive state
-                var assignmentInactive = await Assignment.CreateAsync(graphClient, _config["classId"]);
+                var assignmentInactive = await Assignment.CreateSampleAsync(graphClient, _config["classId"]);
                 assignmentId = assignmentInactive.Id;
                 Console.WriteLine($"Assignment created successfully {assignmentInactive.Id} in state {assignmentInactive.Status}");
 
                 // Create assignment to verify assigned state
-                var assignmentAssigned = await Assignment.CreateAsync(graphClient, _config["classId"]);
+                var assignmentAssigned = await Assignment.CreateSampleAsync(graphClient, _config["classId"]);
                 Console.WriteLine($"Assignment created successfully {assignmentAssigned.Id} in state {assignmentAssigned.Status}");
 
                 // Create assignment to verify draft state
-                var assignmentDraft = await Assignment.CreateAsync(graphClient, _config["classId"]);
+                var assignmentDraft = await Assignment.CreateSampleAsync(graphClient, _config["classId"]);
                 Console.WriteLine($"Assignment created successfully {assignmentDraft.Id} in state {assignmentDraft.Status}");
 
                 // Publishing an Assignment
@@ -123,5 +123,47 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"AssignmentsEvolvableEnumsAsync: {ex.ToString()}");
             }
         }
-    }
+
+        /// <summary>
+        /// A code sample to create a new assignment, followed by an update to the assignment display name (aka title)
+        /// </summary>
+        /// <param name="appOnly">True value authenticates the graph client with application permissions only, otherwise it will be created with delegated permissions.</param> 
+        public async Task CreateAndPatchAssignmentAsync(bool appOnly = false)
+        {
+            try
+            {
+                string assignmentId = string.Empty;
+
+                // Get a Graph client based on the appOnly parameter
+                var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+
+                // Create assignment
+                var assignment = await Assignment.CreateSampleAsync(graphClient, _config["classId"]);
+                assignmentId = assignment.Id;
+                Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
+
+                //Updating a draft assignment
+                var requestBody = new EducationAssignment
+                {
+                    DisplayName = "Reading and review test updated",
+                };
+                assignment = await Assignment.PatchAsync(graphClient, _config["classId"], assignmentId, requestBody);
+                
+                //Verifying whether the DisplayName parameter is updated for the draft assignment.
+                assignment = await Assignment.GetAssignmentAsync(graphClient, _config["classId"], assignmentId);
+
+                if(assignment.DisplayName.Contains("updated"))
+                {
+                    Console.WriteLine($"DisplayName updated successfully {assignment.Id} DisplayName {assignment.DisplayName}");
+                }
+
+                await Assignment.DeleteAsync(graphClient, _config["classId"], assignmentId);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"CreateAndPatchAssignmentAsync: {ex.ToString()}");
+            }
+        }
+    }    
 }
