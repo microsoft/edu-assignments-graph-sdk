@@ -299,5 +299,54 @@ namespace MicrosoftGraphSDK
             }
         }
 
+        /// <summary>
+        /// Update an assignment
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
+        /// <param name="requestBody">Education Assignment object</param>
+        /// <returns>EducationAssignment</returns>
+        public static async Task<EducationAssignment> PatchAsync(
+            GraphServiceClient client,
+            string classId,
+            string assignmentId,
+            EducationAssignment requestBody)
+        {
+            try
+            {  
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .PatchAsync(requestBody);
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"PatchAsync call: {ex.Message}", ex, classId, assignmentId);
+            }
+        }
+
+        /// <summary>
+        /// Delete an assignment
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
+        /// <returns></returns>
+       
+        public static async Task DeleteAsync(
+            GraphServiceClient client,
+            string classId,
+            string assignmentId)
+        {
+            try
+            {               
+                await client.Education.Classes[classId].Assignments[assignmentId].DeleteAsync();          
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"DeleteAsync call: {ex.Message}", ex, classId, assignmentId);
+            }
+        }
     }
 }
