@@ -138,7 +138,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Create assignment
-                var assignment = await Assignment.CreateSampleAsync(graphClient, _config["classId"]);
+                var assignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
                 assignmentId = assignment.Id;
                 Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
 
