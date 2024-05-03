@@ -75,7 +75,7 @@ namespace MicrosoftEduImportFromGoogle
             List<string> assignmentsCreated = new List<string>();
             foreach(var courseWork in courseWorks)
             {
-                var createdAssignment = await Assignment.CreateSampleAsync(graphServiceClient, classId,
+                var createdAssignment = await Assignment.CreateSampleAssignmentAsync(graphServiceClient, classId,
                     new EducationAssignment
                     {
                         DisplayName = courseWork.Title,

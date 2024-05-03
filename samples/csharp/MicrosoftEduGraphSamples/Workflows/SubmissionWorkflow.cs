@@ -40,7 +40,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var graphClientStudentRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["password"]);
 
                 // Teacher creates a new assignment
-                var assignment = await Assignment.CreateSampleAsync(graphClientTeacherRole, _config["classId"]);
+                var assignment = await Assignment.CreateSampleAssignmentAsync(graphClientTeacherRole, _config["classId"]);
                 assignmentId = assignment.Id;
                 Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
 
@@ -215,7 +215,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
             //Create new assigment
-            var assignment = await Assignment.CreateSampleAsync(graphClient, _config["classId"]);
+            var assignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
             var assignmentId = assignment.Id;
             Console.WriteLine($"Assignment created {assignmentId}");
 
@@ -233,7 +233,6 @@ namespace MicrosoftEduGraphSamples.Workflows
 
             //Publish assignment
             assignment = await GlobalMethods.PublishAssignmentsAsync(graphClient, assignment.Id);
-            Thread.Sleep(7000);
 
             //Get assignment submissions
             var submissions = await Submission.GetSubmissionsAsync(

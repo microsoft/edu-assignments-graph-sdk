@@ -18,4 +18,3 @@ IConfiguration config = new ConfigurationBuilder()
 
 SubmissionWorkflow workflow = new SubmissionWorkflow(config);
 await workflow.SubmissionFeedbackResource();
-
