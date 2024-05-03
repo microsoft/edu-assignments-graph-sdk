@@ -75,7 +75,7 @@ namespace MicrosoftEduImportFromGoogle
             List<string> assignmentsCreated = new List<string>();
             foreach(var courseWork in courseWorks)
             {
-                var createdAssignment = await Assignment.CreateAsync(graphServiceClient, classId,
+                var createdAssignment = await Assignment.CreateSampleAssignmentAsync(graphServiceClient, classId,
                     new EducationAssignment
                     {
                         DisplayName = courseWork.Title,
@@ -105,7 +105,7 @@ namespace MicrosoftEduImportFromGoogle
             List<string> modulesCreated = new List<string>();
             foreach (var courseWork in courseWorkMaterials)
             {
-                var createdModule = await Module.CreateAsync(graphServiceClient, classId, courseWork.Title, courseWork.Description);
+                var createdModule = await Module.CreateSampleAsync(graphServiceClient, classId, courseWork.Title, courseWork.Description);
                 modulesCreated.Add(createdModule.DisplayName);
 
                 if (courseWork.Materials.Any() == true)
@@ -142,7 +142,7 @@ namespace MicrosoftEduImportFromGoogle
                     {
                         if (createdAssignment.ResourcesFolderUrl == null)
                         {
-                            createdAssignment = await Assignment.SetupResourcesFolder(graphServiceClient, createdAssignment.ClassId, createdAssignment.Id);
+                            createdAssignment = await Assignment.SetupResourcesFolderAsync(graphServiceClient, createdAssignment.ClassId, createdAssignment.Id);
                         }
                         string uploadUrl = $"{createdAssignment.ResourcesFolderUrl}:/{fileName}:/content";
                         string[] urlSegments = createdAssignment.ResourcesFolderUrl.Split('/');
@@ -218,7 +218,7 @@ namespace MicrosoftEduImportFromGoogle
                     {
                         if (createdModule.ResourcesFolderUrl == null)
                         {
-                            createdModule = await Module.SetupResourcesFolder(graphServiceClient, classId, createdModule.Id);
+                            createdModule = await Module.SetupResourcesFolderAsync(graphServiceClient, classId, createdModule.Id);
                         }
                         string uploadUrl = $"{createdModule.ResourcesFolderUrl}:/{fileName}:/content";
                         string[] urlSegments = createdModule.ResourcesFolderUrl.Split('/');

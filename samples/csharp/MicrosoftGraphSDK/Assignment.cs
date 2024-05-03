@@ -65,7 +65,7 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="educationAssignment">EducationAssignment object</param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment> CreateSampleAsync(
+        public static async Task<EducationAssignment> CreateSampleAssignmentAsync(
             GraphServiceClient client,
             string classId,
             EducationAssignment educationAssignment)
@@ -79,7 +79,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"CreateSampleAsync call: {ex.Message}", ex, classId);
+                throw new GraphException($"CreateSampleAssignmentAsync call: {ex.Message}", ex, classId);
             }
         }
 
@@ -89,7 +89,7 @@ namespace MicrosoftGraphSDK
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment> CreateSampleAsync(
+        public static async Task<EducationAssignment> CreateSampleAssignmentAsync(
             GraphServiceClient client,
             string classId)
         {
@@ -128,7 +128,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"CreateSampleAsync call: {ex.Message}", ex, classId);
+                throw new GraphException($"CreateSampleAssignmentAsync call: {ex.Message}", ex, classId);
             }
         }
 
@@ -191,7 +191,7 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id</param>
         /// <returns>EducationAssignment</returns>
-        public static async Task<EducationAssignment> SetupResourcesFolder(
+        public static async Task<EducationAssignment> SetupResourcesFolderAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId)
@@ -206,7 +206,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"SetupResourcesFolder call: {ex.Message}", ex, classId, assignmentId);
+                throw new GraphException($"SetupResourcesFolderAsync call: {ex.Message}", ex, classId, assignmentId);
             }
         }
 

@@ -38,7 +38,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var graphClient = MicrosoftGraphSDK.GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Teacher creates a new assignment
-                var assignment = await MicrosoftGraphSDK.Assignment.CreateSampleAsync(graphClient, _config["classId"]);
+                var assignment = await MicrosoftGraphSDK.Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
                 assignmentId = assignment.Id;
                 Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
 

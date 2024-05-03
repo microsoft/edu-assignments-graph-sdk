@@ -126,7 +126,7 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="moduleId">User module id</param>
         /// <returns>EducationModule</returns>
-        public static async Task<EducationModule> SetupResourcesFolder(
+        public static async Task<EducationModule> SetupResourcesFolderAsync(
             GraphServiceClient client,
             string classId,
             string moduleId)
@@ -141,7 +141,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"SetupResourcesFolder call: {ex.Message}", ex, classId, moduleId);
+                throw new GraphException($"SetupResourcesFolderAsync call: {ex.Message}", ex, classId, moduleId);
             }
         }
 

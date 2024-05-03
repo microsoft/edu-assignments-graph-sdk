@@ -9,7 +9,7 @@ using MicrosoftGraphSDK;
 namespace MicrosoftEduGraphSamples.Workflows
 {
     /// <summary>
-    /// Contains all the code samples related to Assignments, include getting assignments from all classes, 
+    /// Contains the code samples related to Assignments, include getting assignments from all classes, 
     /// checking user details for assignments, getting user classes, and excluding assignments from archived and deleted classes.
     /// </summary>
     internal class AssignmentWorkflow
@@ -80,16 +80,16 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Create assignment to verify inactive state
-                var assignmentInactive = await Assignment.CreateSampleAsync(graphClient, _config["classId"]);
+                var assignmentInactive = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
                 assignmentId = assignmentInactive.Id;
                 Console.WriteLine($"Assignment created successfully {assignmentInactive.Id} in state {assignmentInactive.Status}");
 
                 // Create assignment to verify assigned state
-                var assignmentAssigned = await Assignment.CreateSampleAsync(graphClient, _config["classId"]);
+                var assignmentAssigned = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
                 Console.WriteLine($"Assignment created successfully {assignmentAssigned.Id} in state {assignmentAssigned.Status}");
 
                 // Create assignment to verify draft state
-                var assignmentDraft = await Assignment.CreateSampleAsync(graphClient, _config["classId"]);
+                var assignmentDraft = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
                 Console.WriteLine($"Assignment created successfully {assignmentDraft.Id} in state {assignmentDraft.Status}");
 
                 // Publishing an Assignment
@@ -138,7 +138,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
 
                 // Create assignment
-                var assignment = await Assignment.CreateSampleAsync(graphClient, _config["classId"]);
+                var assignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
                 assignmentId = assignment.Id;
                 Console.WriteLine($"Assignment created successfully {assignment.Id} in state {assignment.Status}");
 
@@ -163,6 +163,54 @@ namespace MicrosoftEduGraphSamples.Workflows
             catch (Exception ex)
             {
                 Console.WriteLine($"CreateAndPatchAssignmentAsync: {ex.ToString()}");
+            }
+        }
+ 
+        /// <summary>
+        /// A code sample to create Assignment resources under the assignment resource folder
+        /// </summary>
+        /// <param name="appOnly">True value authenticates the graph client with application permissions only, otherwise it will be created with delegated permissions.</param> 
+        public async Task AssignmentResourceAsync(bool appOnly = false)
+        {
+            try
+            {
+                string assignmentId = string.Empty;
+
+                // Get a Graph client based on the appOnly parameter
+                var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+
+                // Create assignment
+                var assignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
+                assignmentId = assignment.Id;
+                Console.WriteLine($"Assignment created successfully with Id: {assignment.Id} in state: {assignment.Status}");
+
+                // Set Up Assignment Resources Folder
+                await Assignment.SetupResourcesFolderAsync(graphClient, _config["classId"], assignmentId);
+                Console.WriteLine("SetupResourceFolder creation successful");
+
+                // Adding new Word resource to assignment
+                var requestBody = new EducationAssignmentResource
+                {
+                    DistributeForStudentWork = false,
+                    Resource = new EducationWordResource
+                    {
+                        OdataType = "microsoft.graph.educationWordResource",
+                        DisplayName = "New Word Document.docx",                        
+                    },
+                };
+
+                var resource = await Assignment.PostResourceAsync(graphClient, _config["classId"], assignmentId, requestBody);
+
+                Console.WriteLine($"Resource created successfully with id : {resource.Id}, Display Name : {resource.Resource.DisplayName}");
+
+                //Deleting the created assignment
+                await Assignment.DeleteAsync(graphClient, _config["classId"], assignmentId);
+                Console.WriteLine("Assignment deleted successfully");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"AssignmentResourceAsync: {ex.ToString()}");
             }
         }
     }    

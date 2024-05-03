@@ -5,7 +5,7 @@ using Microsoft.Graph.Beta;
 namespace MicrosoftEduGraphSamples.Utilities
 {
     /// <summary>
-    /// Contains all the reusuable methods for workflows related to Assignments,Modules and Submissions.
+    /// Contains all the reusuable methods for code samples related to Assignments,Modules and Submissions.
     /// </summary>
     internal class GlobalMethods
     {

@@ -38,7 +38,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"New module has been created: {module.Id} - {module.DisplayName} - {module.Status}");
 
                 // Set up a resources folder
-                await Module.SetupResourcesFolder(graphClient, _config["classId"], module.Id);
+                await Module.SetupResourcesFolderAsync(graphClient, _config["classId"], module.Id);
 
                 // Add a link resource
                 EducationModuleResource requestBody = new EducationModuleResource
@@ -77,7 +77,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 newResource = await Module.PostResourceAsync(graphClient, _config["classId"], module.Id.ToString(), requestBody);
 
                 // Add a Assignment resource
-                var assignment = await Assignment.CreateSampleAsync(graphClient, _config["classId"]);
+                var assignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
                 requestBody = new EducationModuleResource
                 {
                     Resource = new EducationLinkedAssignmentResource
