@@ -246,7 +246,7 @@ namespace MicrosoftGraphSDK
             }
 
         /// <summary>
-        /// Create Assignment Feedback resources folder
+        /// Sets up the assignment feedback resources folder
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
