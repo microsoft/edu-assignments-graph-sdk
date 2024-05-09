@@ -297,7 +297,7 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="submissionId">Student submission id</param>
-        /// <returns>EducationOutcomeCollectionResponse</returns>
+        /// <returns>EducationSubmission</returns>
         public static async Task<EducationSubmission> SetUpAssignmentFeedbackResourcesFolderAsync(
             GraphServiceClient client,
             string classId,

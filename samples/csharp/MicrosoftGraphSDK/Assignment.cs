@@ -185,7 +185,7 @@ namespace MicrosoftGraphSDK
                 }
                 catch (Exception ex)
                 {
-                    throw new GraphException($"PostResourceAsync call: {ex.Message}", ex, classId, assignmentId);
+                    throw new GraphException($"PostResourceAsync call: {ex.Message}", ex, classId, assignmentId, resource);
                 }
             }
 
@@ -247,7 +247,6 @@ namespace MicrosoftGraphSDK
 
         /// <summary>
         /// Create Assignment Feedback resources folder
-        /// Reference :: https://learn.microsoft.com/en-us/graph/assignments-states-transition
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
@@ -264,7 +263,8 @@ namespace MicrosoftGraphSDK
                     var requestBody = new Entity(); // create an empty request body
                     requestInformation.SetContentFromParsable(client.RequestAdapter, "application/json", requestBody);
 
-                    var errorMapping = new Dictionary<string, ParsableFactory<IParsable>> {
+                // XXX key means its the error mapping to be used incase an error is returned from the API. The ODataError class will be used for 400 to 500 response codes.
+                var errorMapping = new Dictionary<string, ParsableFactory<IParsable>> {
                         { "XXX", ODataError.CreateFromDiscriminatorValue }
                     };
 

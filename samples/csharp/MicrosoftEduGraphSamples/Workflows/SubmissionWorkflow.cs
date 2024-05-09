@@ -47,8 +47,6 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Teacher publishes the assignment to make it appears in the student's list
                 assignment = await GlobalMethods.PublishAssignmentsAsync(graphClientTeacherRole, assignment.Id);
 
-                // Change to student account
-                
 
                 // Get the student submission
                 var submissions = await Submission.GetSubmissionsWithExpandAsync(graphClientStudentRole, _config["classId"], assignmentId, "outcomes");
@@ -74,10 +72,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                     Thread.Sleep(2000); // Wait two seconds between calls
                     retries++;
-                }
-
-                // Change to teacher account
-                graphClientTeacherRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+                }                
 
                 // Get submission outcomes
                 var submissionOutcomes = await Submission.GetSubmissionOutcomesAsync(
@@ -303,7 +298,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
             //Deleting the created assignment
             await Assignment.DeleteAsync(graphClient, _config["classId"], assignmentId);
-            Console.WriteLine("Assignment deleted successfully");
+            Console.WriteLine("Assignment deleted successfully "+ assignmentId);
         }
     }
 }
