@@ -1,0 +1,20 @@
+<div class="material-container">
+  <h2>Select Course Work Material for Migration</h2>
+  <div *ngIf="loading">
+    <app-loader></app-loader>
+  </div>
+  <div *ngIf="!loading">
+    <div class="material-section">
+      <div class="material-section select-all-checkbox">
+        <input type="checkbox" id="selectAll" [checked]="isAllSelected()" (change)="toggleSelectAll()">
+        <label for="selectAll">Select All</label>
+      </div>
+      <div *ngFor="let item of courseMaterials" class="material-section">
+        <input type="checkbox" [id]="item.id" [checked]="isMaterialSelected(item.id)"
+          (change)="toggleCheckbox(item)">
+        <label [for]="item.id">{{ item.title }}</label>
+      </div>
+    </div>
+    <button [disabled]="selectedMaterials.length === 0" (click)="submitSelections()">Next</button>
+  </div>
+</div>

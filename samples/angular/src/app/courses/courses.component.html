@@ -1,0 +1,13 @@
+<div class="course-container">
+  <h2>Select a Google Course for Migration</h2>
+  <div *ngIf="loading" >
+      <app-loader></app-loader>
+  </div>
+  <div *ngIf="!loading && courses.length > 0">
+      <select name="sr-select" (change)="onCourseChange($event)">
+          <option *ngFor="let course of courses" [value]="course.id">{{ course.name }}</option>
+      </select>
+      <br>
+      <button class="continue" (click)="onCourseSelect()">Next</button>
+  </div>
+</div>

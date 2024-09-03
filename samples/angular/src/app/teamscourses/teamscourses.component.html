@@ -1,0 +1,10 @@
+<div *ngIf="classes.length > 0" class="teamscourses-container">
+    <h2>Select a Teams class:</h2>
+    <div *ngFor="let class of classes" class="class-option">
+        <label class="">
+            <input type="radio" name="selectedClass" [value]="class.id" (change)="onClassSelected($event)">
+            {{ class.displayName }}
+        </label>
+    </div>
+    <button (click)="onSelect()">Select Class</button>
+</div>

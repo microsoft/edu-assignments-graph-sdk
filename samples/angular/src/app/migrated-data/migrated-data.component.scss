@@ -1,0 +1,33 @@
+.teamsclasses-container {
+    margin: 50px auto;
+    width: 500px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.teamsclasses-container h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.teamsclasses-items {
+    margin-top: 20px;
+    text-align: left;
+    width: 100%;
+}
+
+.class-option {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+.class-option label {
+    display: block;
+}

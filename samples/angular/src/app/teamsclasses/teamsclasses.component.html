@@ -1,0 +1,18 @@
+<div class="teamsclasses-container">
+    <h2>Select a Teams Class</h2>
+    <div *ngIf="loading" >
+        <app-loader></app-loader>
+    </div>
+    <div *ngIf="classes.length > 0" class="teamsclasses-items">
+        <div *ngFor="let class of classes" class="class-option">
+            <label>
+                <input type="radio" name="selectedClass" [value]="class.id" (change)="onClassSelected($event)">
+                {{ class.displayName }}
+            </label>
+        </div>
+    </div>
+    <button [disabled]="disableFinish" (click)="onSelect()">Finish</button>
+</div>
+<div *ngIf="createdAssignment?.length > 0 && createdModules?.length > 0">
+    <app-migrated-data [createdAssignment]="createdAssignment" [createdModules]="createdModules"></app-migrated-data>
+</div>

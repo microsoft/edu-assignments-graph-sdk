@@ -1,0 +1,19 @@
+<div class="teamsclasses-container">
+    <h2>Assignments Migrated: </h2>
+    <div class="teamsclasses-items">
+        <div *ngFor="let assignment of createdAssignment" class="class-option">
+            <label>
+                {{ assignment }}
+            </label>
+        </div>
+    </div>
+    <h2>Modules Migrated: </h2>
+    <div class="teamsclasses-items">
+        <div *ngFor="let modules of createdModules" class="class-option">
+            <label>
+                {{ modules }}
+            </label>
+        </div>
+    </div>
+    
+</div>
