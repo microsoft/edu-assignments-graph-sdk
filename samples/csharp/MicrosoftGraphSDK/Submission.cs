@@ -97,6 +97,37 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
+        /// List all the submissions associated with an assignment using select
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="assignmentId">Assignment id in the class</param>
+        /// <param name="select">OData query parameter to help customize the response</param>
+        /// <returns>EducationSubmissionCollectionResponse</returns>
+        public static async Task<EducationSubmissionCollectionResponse> GetSubmissionsWithSelectAsync(
+            GraphServiceClient client,
+            string classId,
+            string assignmentId,
+            string select)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .Assignments[assignmentId]
+                    .Submissions
+                    .GetAsync((requestConfiguration) =>
+                    {
+                        requestConfiguration.QueryParameters.Select = new string[] { "status","id" };
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetSubmissionsWithSelectAsync call: {ex.Message}", ex, classId, assignmentId, select);
+            }
+        }
+
+        /// <summary>
         /// Retrieves a particular submission, can specify a header value
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
