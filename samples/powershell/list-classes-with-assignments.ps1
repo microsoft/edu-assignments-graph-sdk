@@ -2,7 +2,7 @@
 
 # Install-Module Microsoft.Graph
 
-#Install-Module Microsoft.Graph -AllowClobber -Force
+# Install-Module Microsoft.Graph -AllowClobber -Force
 
 # PowerShell Script to list Teams (Classes) and their Assignments in Microsoft Graph API
 
@@ -36,6 +36,7 @@ function Get-AccessToken {
         Write-Error "Failed to obtain access token: $_"
     }
 }
+
 # Get the access token
 $token = Get-AccessToken
 
@@ -49,8 +50,8 @@ $outputFile = "ClassAssignmentsList.txt"
 # Loop through each page of the results (handle pagination)
 do {
 	try {
-    # Get list of classes
-    $response = Invoke-RestMethod -Uri $uri -Headers @{Authorization = "Bearer $token"} -Method Get
+		# Get list of classes
+		$response = Invoke-RestMethod -Uri $uri -Headers @{Authorization = "Bearer $token"} -Method Get
 	} catch {
         Write-Error "Failed to retrieve data from Graph API: $_"
         break
@@ -63,7 +64,7 @@ do {
 
         # Get assignments for the current class (with count=true)
         $assignmentsUri = "https://graph.microsoft.com/beta/education/classes/$classId/assignments?$count=true"
-                try {
+        try {
             $assignmentsResponse = Invoke-RestMethod -Uri $assignmentsUri -Headers @{Authorization = "Bearer $token"} -Method Get -ErrorAction Stop
         }
         catch {
