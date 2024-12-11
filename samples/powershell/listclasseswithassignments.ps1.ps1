@@ -36,6 +36,7 @@ function Get-AccessToken {
         Write-Error "Failed to obtain access token: $_"
     }
 }
+
 # Get the access token
 $token = Get-AccessToken
 
