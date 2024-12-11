@@ -5,8 +5,8 @@ This project has a script to list classes with assignments in a tenant
 ## Prerequisites
 
 ### Run the following commands in powershell as administrator
-* Install-Module Microsoft.Graph
-* Install-Module Microsoft.Graph -AllowClobber -Force
+* `Install-Module Microsoft.Graph`
+* `Install-Module Microsoft.Graph -AllowClobber -Force`
 
 ## Steps to run the script
 1. Open the script and give the below details of the client, username, password and save the file.
