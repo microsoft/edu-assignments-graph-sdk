@@ -1,6 +1,6 @@
 # Prerequisite permissions
 
-#Install-Module Microsoft.Graph
+# Install-Module Microsoft.Graph
 
 #Install-Module Microsoft.Graph -AllowClobber -Force
 
