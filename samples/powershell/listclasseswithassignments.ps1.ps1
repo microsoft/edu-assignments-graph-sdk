@@ -2,7 +2,7 @@
 
 # Install-Module Microsoft.Graph
 
-#Install-Module Microsoft.Graph -AllowClobber -Force
+# Install-Module Microsoft.Graph -AllowClobber -Force
 
 # PowerShell Script to list Teams (Classes) and their Assignments in Microsoft Graph API
 
