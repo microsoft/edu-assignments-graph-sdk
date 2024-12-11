@@ -1,4 +1,4 @@
-#prerequisite permissions
+# Prerequisite permissions
 
 #Install-Module Microsoft.Graph
 
