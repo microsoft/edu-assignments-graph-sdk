@@ -16,6 +16,6 @@ This project has a script to list classes with assignments in a tenant
 -	    $password = "YOUR_USER_PASSWORD"
 2. Open PowerShell in administrator mode.	
 2. Navigate to location of drive where the above file is saved.
-3. Run the command – PowerShell -file <filename>.ps1
+3. Run the command `PowerShell -file <filename>.ps1`
 
 A text file with title “ClassAssignmentsList” is created in the drive where the script is executed from with details of class names along with the number of assignments available. 
