@@ -12,8 +12,8 @@ This project has a script to list classes with assignments in a tenant
 1. Open the script and give the below details of the client, username, password and save the file.
 -	    $tenantId = "YOUR_TENANT_ID"
 -	    $clientId = "YOUR_CLIENT_ID"
--	    $username = user@example.com  # User's username (email or username)
--	    $password = "UserPassword123"  # User's password (plaintext, should ideally be securely stored).
+-	    $username = "YOUR_USER_EMAIL"
+-	    $password = "YOUR_USER_PASSWORD"
 2. Open PowerShell in administrator mode.	
 2. Navigate to location of drive where the above file is saved.
 3. Run the command – PowerShell -file <filename>.ps1
