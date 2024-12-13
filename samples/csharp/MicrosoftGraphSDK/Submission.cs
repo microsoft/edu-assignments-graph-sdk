@@ -108,7 +108,7 @@ namespace MicrosoftGraphSDK
             GraphServiceClient client,
             string classId,
             string assignmentId,
-            string select)
+            string[] select)
         {
             try
             {
@@ -118,7 +118,7 @@ namespace MicrosoftGraphSDK
                     .Submissions
                     .GetAsync((requestConfiguration) =>
                     {
-                        requestConfiguration.QueryParameters.Select = new string[] { "status","id" };
+                        requestConfiguration.QueryParameters.Select = select;
                     });
             }
             catch (Exception ex)
