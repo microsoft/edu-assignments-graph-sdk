@@ -62,7 +62,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 }
 
                 // Get the student submission using Select
-                var submissionsSelect = await Submission.GetSubmissionsWithSelectAsync(graphClientStudentRole, _config["classId"], assignmentId, "status");
+                var submissionsSelect = await Submission.GetSubmissionsWithSelectAsync(graphClientStudentRole, _config["classId"], assignmentId, new string[] { "status", "id" });
                 if (submissionsSelect.Value.Count > 0)
                 {
                     submissionIdSelect = submissionsSelect.Value[0].Id;
