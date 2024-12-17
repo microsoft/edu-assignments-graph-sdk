@@ -49,10 +49,10 @@ $outputFile = "ClassAssignmentsList.txt"
 
 # Loop through each page of the results (handle pagination)
 do {
-	try {
-		# Get list of classes
-		$response = Invoke-RestMethod -Uri $uri -Headers @{Authorization = "Bearer $token"} -Method Get
-	} catch {
+    try {
+        # Get list of classes
+        $response = Invoke-RestMethod -Uri $uri -Headers @{Authorization = "Bearer $token"} -Method Get
+    } catch {
         Write-Error "Failed to retrieve data from Graph API: $_"
         break
     }
@@ -71,8 +71,8 @@ do {
             Write-Host "Error retrieving assignments for class $className. Skipping this request."
             continue  # Skip this class and move to the next class
         }
-		
-		# Check if there are any assignments
+        
+        # Check if there are any assignments
         if ($assignmentsResponse.value.Count -gt 0) {
             # Write class and assignment details to the output file
             """$className"" with $($assignmentsResponse.value.Count) assignments." | Out-File -FilePath $outputFile -Append
