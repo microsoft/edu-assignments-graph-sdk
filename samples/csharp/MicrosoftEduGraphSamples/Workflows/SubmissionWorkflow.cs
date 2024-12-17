@@ -37,8 +37,8 @@ namespace MicrosoftEduGraphSamples.Workflows
                 string submissionIdSelect = string.Empty;
 
                 // Get a Graph client using delegated permissions
-                var graphClientTeacherRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherpassword"]);
-                var graphClientStudentRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["studentpassword"]);
+                var graphClientTeacherRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
+                var graphClientStudentRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["studentPassword"]);
 
                 // Teacher creates a new assignment
                 var assignment = await Assignment.CreateSampleAssignmentAsync(graphClientTeacherRole, _config["classId"]);
@@ -149,7 +149,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             try
             {
                 // Get a Graph client using delegated permissions
-                var graphClientTeacherRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherpassword"]);
+                var graphClientTeacherRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
 
                 Console.WriteLine($"Getting top 20 assignments from MeAssignments Endpoint");
 
@@ -220,7 +220,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
             Console.WriteLine($"Create submission feedback resource");
             // Get a Graph client based on the appOnly parameter
-            var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherpassword"]);
+            var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
 
             //Create new assigment
             var assignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);

@@ -34,7 +34,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 string userAccount = isTeacher ? _config["teacherAccount"] : _config["studentAccount"];
 
                 // Get a Graph client using delegated permissions
-                var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], userAccount, _config["teacherpassword"]);
+                var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], userAccount, _config["teacherPassword"]);
 
                 // Call to get user classes
                 var joinedTeams = await graphClient.GetJoinedTeamsAsync();
@@ -78,7 +78,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 string submissionId = string.Empty;
 
                 // Get a Graph client using delegated permissions
-                var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherpassword"]);
+                var graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
 
                 // Create assignment to verify inactive state
                 var assignmentInactive = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
@@ -136,7 +136,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 string assignmentId = string.Empty;
 
                 // Get a Graph client based on the appOnly parameter
-                var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherpassword"]);
+                var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
 
                 // Create assignment
                 var assignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
@@ -178,7 +178,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 string assignmentId = string.Empty;
 
                 // Get a Graph client based on the appOnly parameter
-                var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherpassword"]);
+                var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
 
                 // Create assignment
                 var assignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);

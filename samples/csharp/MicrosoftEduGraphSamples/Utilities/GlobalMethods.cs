@@ -44,11 +44,11 @@ namespace MicrosoftEduGraphSamples.Utilities
             {
                 throw new Exception("Missing studentAccount please check appconfig.json file.");
             }
-            else if (string.IsNullOrEmpty(_config["teacherpassword"]))
+            else if (string.IsNullOrEmpty(_config["teacherPassword"]))
             {
                 throw new Exception("Missing teacher password please check appconfig.json file.");
             }
-            else if (string.IsNullOrEmpty(_config["studentpassword"]))
+            else if (string.IsNullOrEmpty(_config["studentPassword"]))
             {
                 throw new Exception("Missing student password please check appconfig.json file.");
             }

@@ -31,7 +31,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             try
             {
                 // Get a Graph client based on the appOnly parameter
-                var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherpassword"]);
+                var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
 
                 // Create a draft module
                 var module = await Module.CreateSampleAsync(graphClient, _config["classId"], "Sample Module " + DateTime.Now.ToString("dd/MM/yyyy HHmm"), "This Classwork module was created with Microsoft Graph SDK.");
@@ -101,7 +101,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 module = await Module.PublishAsync(graphClient, _config["classId"], module.Id.ToString());
 
                 // Switch to student account
-                graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["studentpassword"]);
+                graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["studentPassword"]);
 
                 // As Student, get module resources
                 var resources = await Module.GetModuleResourcesAsync(graphClient, _config["classId"], module.Id.ToString());
@@ -111,7 +111,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 }
 
                 // Switch to Teacher account
-                graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherpassword"]);
+                graphClient = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
 
                 // As Teacher, delete the module
                 await Module.DeleteAsync(graphClient, _config["classId"], module.Id.ToString());
