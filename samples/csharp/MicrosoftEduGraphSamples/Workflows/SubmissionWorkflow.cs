@@ -34,10 +34,11 @@ namespace MicrosoftEduGraphSamples.Workflows
                 int retries = 0;
                 string assignmentId = string.Empty;
                 string submissionId = string.Empty;
+                string submissionIdSelect = string.Empty;
 
                 // Get a Graph client using delegated permissions
-                var graphClientTeacherRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
-                var graphClientStudentRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["password"]);
+                var graphClientTeacherRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
+                var graphClientStudentRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["studentPassword"]);
 
                 // Teacher creates a new assignment
                 var assignment = await Assignment.CreateSampleAssignmentAsync(graphClientTeacherRole, _config["classId"]);
@@ -48,12 +49,24 @@ namespace MicrosoftEduGraphSamples.Workflows
                 assignment = await GlobalMethods.PublishAssignmentsAsync(graphClientTeacherRole, assignment.Id);
 
 
-                // Get the student submission
+                // Get the student submission using Expand
                 var submissions = await Submission.GetSubmissionsWithExpandAsync(graphClientStudentRole, _config["classId"], assignmentId, "outcomes");
                 if (submissions.Value.Count > 0)
                 {
                     submissionId = submissions.Value[0].Id;
                     Console.WriteLine($"Submission {submissionId} found for {_config["studentAccount"]}");
+                }
+                else
+                {
+                    throw new Exception($"No submission found for {_config["studentAccount"]} in {assignmentId} for class {_config["classId"]}");
+                }
+
+                // Get the student submission using Select
+                var submissionsSelect = await Submission.GetSubmissionsWithSelectAsync(graphClientStudentRole, _config["classId"], assignmentId, new string[] {"status","id"});
+                if (submissionsSelect.Value.Count > 0)
+                {
+                    submissionIdSelect = submissionsSelect.Value[0].Id;
+                    Console.WriteLine($"Submission {submissionIdSelect} found for {_config["studentAccount"]}");
                 }
                 else
                 {
@@ -136,7 +149,7 @@ namespace MicrosoftEduGraphSamples.Workflows
             try
             {
                 // Get a Graph client using delegated permissions
-                var graphClientTeacherRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+                var graphClientTeacherRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
 
                 Console.WriteLine($"Getting top 20 assignments from MeAssignments Endpoint");
 
@@ -207,7 +220,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
             Console.WriteLine($"Create submission feedback resource");
             // Get a Graph client based on the appOnly parameter
-            var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["password"]);
+            var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
 
             //Create new assigment
             var assignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
