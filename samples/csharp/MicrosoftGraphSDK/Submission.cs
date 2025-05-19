@@ -3,6 +3,7 @@
 
 using Microsoft.Graph.Beta;
 using Microsoft.Graph.Beta.Models;
+using Microsoft.Graph.Education.Classes.Item.GetRecentlyModifiedSubmissions;
 
 namespace MicrosoftGraphSDK
 {
