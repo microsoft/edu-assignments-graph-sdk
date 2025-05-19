@@ -349,5 +349,29 @@ namespace MicrosoftGraphSDK
                 throw new GraphException($"SetUpAssignmentFeedbackResourcesFolderAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
             }
         }
+
+        /// <summary>
+        /// Retrieves the recently modified submissions for a given class.
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <returns>A response object containing the recently modified submissions</returns>
+        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsAsync(
+            GraphServiceClient client,
+            string classId)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .GetRecentlyModifiedSubmissions
+                    .GetRecentlyModifiedSubmissionsGetResponseAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetRecentlyModifiedSubmissionsAsync call failed: {ex.Message}", ex, classId);
+            }
+        }
+
     }
 }
