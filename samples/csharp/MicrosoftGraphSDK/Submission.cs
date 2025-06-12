@@ -3,7 +3,7 @@
 
 using Microsoft.Graph.Beta;
 using Microsoft.Graph.Beta.Models;
-using Microsoft.Graph.Education.Classes.Item.GetRecentlyModifiedSubmissions;
+
 
 namespace MicrosoftGraphSDK
 {
@@ -87,9 +87,9 @@ namespace MicrosoftGraphSDK
                     .Assignments[assignmentId]
                     .Submissions
                     .GetAsync((requestConfiguration) =>
-                        {
-                            requestConfiguration.QueryParameters.Expand = new string[] { expand };
-                        });
+                    {
+                        requestConfiguration.QueryParameters.Expand = new string[] { expand };
+                    });
             }
             catch (Exception ex)
             {
@@ -155,7 +155,7 @@ namespace MicrosoftGraphSDK
                     .GetAsync(requestConfig => {
                         requestConfig.Headers.Add(
                             headerName, headerValue);
-                        });
+                    });
             }
             catch (Exception ex)
             {
@@ -254,7 +254,7 @@ namespace MicrosoftGraphSDK
                     .Outcomes
                     .PostAsync(educationOutcome);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new GraphException($"CreateFeedbackResourceOutcomeAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
             }
@@ -316,7 +316,7 @@ namespace MicrosoftGraphSDK
                     .Outcomes
                     .GetAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new GraphException($"GetSubmissionOutcomesAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
             }
@@ -345,7 +345,7 @@ namespace MicrosoftGraphSDK
                     .SetUpResourcesFolder
                     .PostAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new GraphException($"SetUpAssignmentFeedbackResourcesFolderAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
             }
