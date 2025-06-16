@@ -372,8 +372,6 @@ namespace MicrosoftGraphSDK
                     .GetRecentlyModifiedSubmissions
                     .GetAsGetRecentlyModifiedSubmissionsGetResponseAsync();
 
-                //var result = await graphClient.Education.Classes["{educationClass-id}"].GetRecentlyModifiedSubmissions.GetAsGetRecentlyModifiedSubmissionsGetResponseAsync();
-
             }
             catch (Exception ex)
             {
@@ -388,8 +386,8 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="expand">OData query parameter to help customize the response</param>
-        /// <returns>EducationRecentlyModifiedSubmissionCollectionResponse</returns>
-        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyMOdifiedSubmissionsWithExpandAsync(
+        /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
+        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithExpandAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId,
@@ -418,8 +416,8 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="orderby">OData query parameter to help customize the response</param>
-        /// <returns>EducationRecentlyModifiedSubmissionCollectionResponse</returns>
-        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyMOdifiedSubmissionsWithOrderByAsync(
+        /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
+        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithOrderByAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId,
@@ -448,8 +446,8 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="count">OData query parameter to help customize the response</param>
-        /// <returns>EducationRecentlyModifiedSubmissionCollectionResponse</returns>
-        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyMOdifiedSubmissionsWithCountAsync(
+        /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
+        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithCountAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId,
@@ -478,8 +476,8 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="top">OData query parameter to help customize the response</param>
-        /// <returns>EducationRecentlyModifiedSubmissionCollectionResponse</returns>
-        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyMOdifiedSubmissionsWithTopAsync(
+        /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
+        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithTopAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId,
@@ -508,8 +506,8 @@ namespace MicrosoftGraphSDK
         /// <param name="classId">User class id</param>
         /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="filter">OData query parameter to help customize the response</param>
-        /// <returns>EducationRecentlyModifiedSubmissionCollectionResponse</returns>
-        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyMOdifiedSubmissionsWithFilterAsync(
+        /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
+        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithFilterAsync(
             GraphServiceClient client,
             string classId,
             string assignmentId,

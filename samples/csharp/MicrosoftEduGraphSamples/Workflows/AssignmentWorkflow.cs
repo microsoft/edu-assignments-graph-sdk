@@ -183,7 +183,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Create assignment
                 var assignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
                 assignmentId = assignment.Id;
-                Console.WriteLine($"Assignment created successfully with Id: {assignment.Id} in state: {assignment.Status}");
+                Console.WriteLine($"Assignment created successfully with Id: {assignment.Id} with status: {assignment.Status}");
 
                 // Set Up Assignment Resources Folder
                 await Assignment.SetupResourcesFolderAsync(graphClient, _config["classId"], assignmentId);
@@ -247,7 +247,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                     assignmentInactive = await GlobalMethods.PublishAssignmentsAsync(graphClientTeacherRole, assignmentInactive.Id);
                     Console.WriteLine($"Assignment {i + 1} published successfully: ID = {assignmentInactive.Id}, Status = {assignmentInactive.Status}");
 
-                    // Get the student submission using Expand
+                    // Get the student submission using Expand outcomes
                     var submissions = await Submission.GetSubmissionsWithExpandAsync(graphClientStudentRole, _config["classId"], assignmentId, "outcomes");
                     if (submissions.Value.Count > 0)
                     {
@@ -256,7 +256,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                     }
                     else
                     {
-                        throw new Exception($"No submission found for {_config["studentAccount"]} in {assignmentId} for class {_config["classId"]}");
+                        throw new Exception($"No submission found for student {_config["studentAccount"]} in {assignmentId} for class {_config["classId"]}");
                     }
 
                     // Student submits their submission
