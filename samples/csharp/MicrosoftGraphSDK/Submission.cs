@@ -361,8 +361,7 @@ namespace MicrosoftGraphSDK
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
         /// <returns>A response object containing the recently modified submissions</returns>
-        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsAsync(string assignmentId,
-            GraphServiceClient client,
+        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsAsync(GraphServiceClient client,
             string classId)
         {
             try
@@ -375,7 +374,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetRecentlyModifiedSubmissionsAsync call failed: {ex.Message}", ex, classId);
+                throw new GraphException($"GetRecentlyModifiedSubmissionsAsync call failed: {ex.Message}");
             }
         }
 
@@ -384,13 +383,11 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
-        /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="expand">OData query parameter to help customize the response</param>
         /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
         public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithExpandAsync(
             GraphServiceClient client,
             string classId,
-            string assignmentId,
             string expand)
         {
             try
@@ -405,7 +402,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetSubmissionsWithExpandAsync call: {ex.Message}", ex, classId, assignmentId, expand);
+                throw new GraphException($"GetSubmissionsWithExpandAsync call: {ex.Message}");
             }
         }
 
@@ -414,13 +411,11 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
-        /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="orderby">OData query parameter to help customize the response</param>
         /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
         public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithOrderByAsync(
             GraphServiceClient client,
             string classId,
-            string assignmentId,
             string orderby)
         {
             try
@@ -435,7 +430,7 @@ namespace MicrosoftGraphSDK
             }
             catch (ODataError ex)
             {
-                throw new GraphException($"GetSubmissionsWithExpandAsync call: {ex.Message}", ex, classId, assignmentId, orderby);
+                throw new GraphException($"GetRecentlyModifiedSubmissionsWithOrderByAsync call: {ex.Message}");
             }
         }
 
@@ -444,13 +439,11 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
-        /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="count">OData query parameter to help customize the response</param>
         /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
         public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithCountAsync(
             GraphServiceClient client,
             string classId,
-            string assignmentId,
             Boolean count)
         {
             try
@@ -465,7 +458,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetSubmissionsWithExpandAsync call: {ex.Message}", ex, classId, assignmentId, count);
+                throw new GraphException($"GetRecentlyModifiedSubmissionsWithCountAsync call: {ex.Message}");
             }
         }
 
@@ -474,13 +467,11 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
-        /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="top">OData query parameter to help customize the response</param>
         /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
         public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithTopAsync(
             GraphServiceClient client,
             string classId,
-            string assignmentId,
             int top)
         {
             try
@@ -495,7 +486,7 @@ namespace MicrosoftGraphSDK
             }
             catch (ODataError ex)
             {
-                throw new GraphException($"GetSubmissionsWithExpandAsync call: {ex.Message}", ex, classId, assignmentId, top);
+                throw new GraphException($"GetRecentlyModifiedSubmissionsWithTopAsync call: {ex.Message}");
             }
         }
 
@@ -504,13 +495,11 @@ namespace MicrosoftGraphSDK
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
-        /// <param name="assignmentId">Assignment id in the class</param>
         /// <param name="filter">OData query parameter to help customize the response</param>
         /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
         public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithFilterAsync(
             GraphServiceClient client,
             string classId,
-            string assignmentId,
             string filter)
         {
             try
@@ -525,7 +514,7 @@ namespace MicrosoftGraphSDK
             }
             catch (Exception ex)
             {
-                throw new GraphException($"GetSubmissionsWithExpandAsync call: {ex.Message}", ex, classId, assignmentId, filter);
+                throw new GraphException($"GetRecentlyModifiedSubmissionsWithFilterAsync call: {ex.Message}");
             }
         }
     }
