@@ -17,5 +17,5 @@ IConfiguration config = new ConfigurationBuilder()
 
 
 SubmissionWorkflow workflow = new SubmissionWorkflow(config);
-await workflow.GetRecentlyModifiedSubmissionsGetResponseAsync();
+await workflow.GetRecentlyModifiedSubmissions();
 
