@@ -379,7 +379,7 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// List all the submissions associated with an assignment using expand
+        /// List all the submissions associated with expand odata query parameter
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
@@ -407,7 +407,7 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// List all the submissions associated with an assignment using orderby
+        /// List all the submissions associated with orderby odata query parameter
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
@@ -435,7 +435,7 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// List all the submissions associated with an assignment using count
+        /// List all the submissions associated with count odata query parameter
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
@@ -463,7 +463,7 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// List all the submissions associated with an assignment using top
+        /// List all the submissions associated with top odata query parameter
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
@@ -491,7 +491,7 @@ namespace MicrosoftGraphSDK
         }
 
         /// <summary>
-        /// List all the submissions associated with an assignment using filter
+        /// List all the submissions associated with filter odata query parameter
         /// </summary>
         /// <param name="client">Microsoft Graph service client</param>
         /// <param name="classId">User class id</param>
