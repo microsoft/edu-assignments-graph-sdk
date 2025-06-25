@@ -412,7 +412,6 @@ namespace MicrosoftEduGraphSamples.Workflows
                     {
                         Console.WriteLine($"Submission ID: {individualSubmissions.Id}, Last Modified DateTime: {individualSubmissions.LastModifiedDateTime}");
                     }
-
                 }
                 else
                 {
@@ -427,7 +426,6 @@ namespace MicrosoftEduGraphSamples.Workflows
                     {
                         Console.WriteLine($"Submission ID: {individualSubmissions.Id}, Last Modified DateTime: {individualSubmissions.LastModifiedDateTime}");
                     }
-
                 }
                 else
                 {
@@ -442,7 +440,6 @@ namespace MicrosoftEduGraphSamples.Workflows
                     {
                         Console.WriteLine($"Submission ID: {individualSubmissions.Id}, Last Modified DateTime: {individualSubmissions.LastModifiedDateTime}");
                     }
-
                 }
                 else
                 {
@@ -459,7 +456,6 @@ namespace MicrosoftEduGraphSamples.Workflows
                     {
                         Console.WriteLine($"Submission ID: {individualSubmissions.Id}, Last Modified DateTime: {individualSubmissions.LastModifiedDateTime}");
                     }
-
                 }
                 else
                 {
