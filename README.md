@@ -23,7 +23,8 @@ These samples also demostrate assignments service functionality exposed through 
         "classId": "YOUR_CLASS_ID",
         "teacherAccount": "YOUR_TEACHER_ACCOUNT",
         "studentAccount": "YOUR_STUDENT_ACCOUNT",
-        "password": "YOUR_PASSWORD"
+        "teacherPassword": "TEACHER_PASSWORD",
+        "studentPassword": "STUDENT_PASSWORD",
     }
     ```
 
@@ -48,7 +49,7 @@ These samples also demostrate assignments service functionality exposed through 
 
 It is a set of C# class libraries, those classes contain the actual calls to the Microsoft Graph SDK and each class contains only methods related to an specific entity; for instance User, GraphClient, Assignment, Submission and so on.
 
-All the methods added in those classes can be used into your application.
+All the methods added in those classes can be used into your Dlication.
 
 This project works with these nuget packages:
 
@@ -118,7 +119,7 @@ Use the `Program.cs` file to test any of the current workflows.
 |3| Get assignment submissions using batch request   | Since as a teacher you can't expand submissions, you will have to request every assignment for submissions on it. This SDK sample is to illustrate on how you can do this in a single batch request.|[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/SubmissionWorkflow.cs#L103)|Delegated|
 |4| Assignment evolvable enums   | Evolvable enums is a mechanism that Microsoft Graph API uses to add new members to existing enumerations without causing a breaking change for applications.|[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/AssignmentWorkflow.cs#L68)|Delegated|
 |5| Classwork Module   | The sample shows how the teacher creates a module and attach resources and assignments. |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/ModuleWorkflow.cs#L26)|Delegated and Application|
-|6| GetRecentlyModifiedSubmission   | This sample demonstrates how to retrieve submissions that were modified within the past seven days in the class. |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/SubmissionWorkflow.cs#L26)|Delegated and Application|
+|6| GetRecentlyModifiedSubmission   | This sample demonstrates how to retrieve submissions that were modified within the past seven days in the class. |[View](https://github.com/microsoft/edu-assignments-graph-sdk/blob/main/samples/csharp/MicrosoftEduGraphSamples/Workflows/SubmissionWorkflow.cs#L325)|Delegated and Application|
 
 
 
