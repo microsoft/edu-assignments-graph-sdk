@@ -320,17 +320,18 @@ namespace MicrosoftEduGraphSamples.Workflows
         /// This sample demonstrates how to retrieve submissions that were modified within the past seven days in the class.
         /// Reference :: https://learn.microsoft.com/en-us/graph/api/educationclass-getrecentlymodifiedsubmissions?view=graph-rest-1.0&tabs=http
         /// </summary>
+        /// <param name="appOnly">True value authenticates the graph client with application permissions only, otherwise it will be created with delegated permissions.</param> 
         /// <param name="numberOfAssignments">number of assignments to be created for sample purpose</param> 
-        public async Task GetRecentlyModifiedSubmissions(int numberOfAssignments = 10)
+        public async Task GetRecentlyModifiedSubmissions(bool appOnly = false, int numberOfAssignments = 10)
         {
             try
             {
                 string submissionId = string.Empty;
                 List<string> assignmentIds = new List<string>();
 
-                // Get a Graph client using delegated permissions
-                var graphClientTeacherRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
-                var graphClientStudentRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["studentPassword"]);
+                // Get a Graph client based on the appOnly parameter
+                var graphClientTeacherRole = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
+                var graphClientStudentRole = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["studentPassword"]);
 
                 for (int i = 0; i < numberOfAssignments; i++)
                 {
@@ -345,7 +346,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                     draftAssignment = await GlobalMethods.PublishAssignmentsAsync(graphClientTeacherRole, draftAssignment.Id);
                     Console.WriteLine($"Assignment {i + 1} published successfully: ID = {draftAssignment.Id}, Status = {draftAssignment.Status}");
                     
-                    // Get the student submission using expand outcomes,resources,submittedResources
+                    // Get the student submission
                     var submissions = await Submission.GetSubmissionsAsync(graphClientStudentRole, _config["classId"], draftAssignment.Id);
                     if (submissions.Value.Count > 0)
                     {
@@ -373,25 +374,11 @@ namespace MicrosoftEduGraphSamples.Workflows
                     // Student submits their submission
                     var submission = await Submission.SubmitAsync(graphClientStudentRole, _config["classId"], draftAssignment.Id, submissionId);
                 Console.WriteLine($"Submission {submission.Id} in state {submission.Status}");
-
                 }
 
-                 // Get recentlyModifiedsubmission using expand outcomes,resources,submittedResources
-                var submissionsWithExpand = await Submission.GetRecentlyModifiedSubmissionsWithExpandAsync(graphClientTeacherRole, _config["classId"], "outcomes,resources,submittedResources");
-                if (submissionsWithExpand.Value.Count > 0)
-                {
-                    foreach (var individualSubmissions in submissionsWithExpand.Value)
-                    {
-                        Console.WriteLine($"Submission ID: {individualSubmissions.Id}, outcomes: {individualSubmissions.Outcomes}, resources: {individualSubmissions.Resources}, submittedResources: {individualSubmissions.SubmittedResources} ");
-                    }
-                }
-                else
-                {
-                    throw new Exception($"No submissions found when ordering by descending lastModifiedDateTime in class {_config["classId"]}.");
-                }
-
-                //Get recentlyModifiedsubmission using orderby ascending
+               // Get recentlyModifiedsubmission using orderby ascending
                 var submissionsOrderbyAscending = await Submission.GetRecentlyModifiedSubmissionsWithOrderByAsync(graphClientTeacherRole, _config["classId"], "lastModifiedDateTime asc");
+                Console.WriteLine("\nGetting RecentlyModifiedSubmissions with orderBy ascending Odata parameter");
                 if (submissionsOrderbyAscending.Value.Count > 0)
                 {
                     foreach (var individualSubmissions in submissionsOrderbyAscending.Value)
@@ -406,6 +393,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                 // Get recentlyModifiedsubmission using orderby descending
                 var submissionsOrderbyDescending = await Submission.GetRecentlyModifiedSubmissionsWithOrderByAsync(graphClientTeacherRole, _config["classId"], "lastModifiedDateTime");
+                Console.WriteLine("\nGetting RecentlyModifiedSubmissions with orderBy descending Odata parameter");
                 if (submissionsOrderbyDescending.Value.Count > 0)
                 {
                     foreach (var individualSubmissions in submissionsOrderbyDescending.Value)
@@ -420,6 +408,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                 // Get recentlyModifiedsubmission using Top
                 var submissionsTop = await Submission.GetRecentlyModifiedSubmissionsWithTopAsync(graphClientTeacherRole, _config["classId"], 2);
+                Console.WriteLine("\nGetting RecentlyModifiedSubmissions with Top Odata parameter");
                 if (submissionsTop.Value.Count == 2)
                 {
                     foreach (var individualSubmissions in submissionsTop.Value)
@@ -434,6 +423,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                 // Get recentlyModifiedsubmission using count
                 var submissionsCount = await Submission.GetRecentlyModifiedSubmissionsWithCountAsync(graphClientTeacherRole, _config["classId"], true);
+                Console.WriteLine("\nGetting RecentlyModifiedSubmissions with Count Odata parameter");
                 if (submissionsCount.Value.Count > 0)
                 {
                     foreach (var individualSubmissions in submissionsCount.Value)
@@ -446,10 +436,11 @@ namespace MicrosoftEduGraphSamples.Workflows
                     throw new Exception($"No submissions found for given count value in class {_config["classId"]}.");
                 }
 
-                DateTime FiveDaysAgo = DateTime.Now.AddDays(-5);
+                DateTime FiveDaysAgo = DateTime.UtcNow.AddDays(-5);
 
                 // Get recentlyModifiedsubmission using Filter
                 var submissionsFilter = await Submission.GetRecentlyModifiedSubmissionsWithFilterAsync(graphClientTeacherRole, _config["classId"], $"lastModifiedDateTime gt {FiveDaysAgo.ToString("o")}");
+                Console.WriteLine("\nGetting RecentlyModifiedSubmissions with Filter Odata parameter");
                 if (submissionsFilter.Value.Count > 0)
                 {
                     foreach (var individualSubmissions in submissionsFilter.Value)
@@ -462,8 +453,8 @@ namespace MicrosoftEduGraphSamples.Workflows
                     throw new Exception($"No submissions found for given filter value in class {_config["classId"]}.");
                 }
 
-               
-                //Delete Created Assigments
+               //Delete Created Assigments
+                Console.WriteLine("\nDeleting created assignments");
                 foreach (var assignmentsId in assignmentIds)
                 {
                     await Assignment.DeleteAsync(graphClientTeacherRole, _config["classId"], assignmentsId);

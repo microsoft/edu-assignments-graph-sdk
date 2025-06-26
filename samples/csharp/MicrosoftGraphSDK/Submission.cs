@@ -370,7 +370,6 @@ namespace MicrosoftGraphSDK
                     .Classes[classId]
                     .GetRecentlyModifiedSubmissions
                     .GetAsGetRecentlyModifiedSubmissionsGetResponseAsync();
-
             }
             catch (Exception ex)
             {
