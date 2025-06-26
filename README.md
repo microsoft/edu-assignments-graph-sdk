@@ -49,7 +49,7 @@ These samples also demostrate assignments service functionality exposed through 
 
 It is a set of C# class libraries, those classes contain the actual calls to the Microsoft Graph SDK and each class contains only methods related to an specific entity; for instance User, GraphClient, Assignment, Submission and so on.
 
-All the methods added in those classes can be used into your Dlication.
+All the methods added in those classes can be used into your application.
 
 This project works with these nuget packages:
 

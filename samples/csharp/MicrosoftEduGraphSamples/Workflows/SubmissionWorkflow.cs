@@ -330,20 +330,22 @@ namespace MicrosoftEduGraphSamples.Workflows
                 List<string> assignmentIds = new List<string>();
 
                 // Get a Graph client based on the appOnly parameter
-                var graphClientTeacherRole = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
-                var graphClientStudentRole = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["studentPassword"]);
+                var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
+                
+                // Student operation use delegated client
+                var graphClientStudentRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["studentPassword"]);
 
                 for (int i = 0; i < numberOfAssignments; i++)
                 {
                     // Create assignment
-                    var draftAssignment = await Assignment.CreateSampleAssignmentAsync(graphClientTeacherRole, _config["classId"]);
+                    var draftAssignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
 
                     // Store Assignment ID
                     assignmentIds.Add(draftAssignment.Id);
                     Console.WriteLine($"Assignment {i + 1} created successfully: ID = {draftAssignment.Id}, Status = {draftAssignment.Status}");
 
                     // Publishing each Assignment
-                    draftAssignment = await GlobalMethods.PublishAssignmentsAsync(graphClientTeacherRole, draftAssignment.Id);
+                    draftAssignment = await GlobalMethods.PublishAssignmentsAsync(graphClient, draftAssignment.Id);
                     Console.WriteLine($"Assignment {i + 1} published successfully: ID = {draftAssignment.Id}, Status = {draftAssignment.Status}");
                     
                     // Get the student submission
@@ -377,7 +379,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 }
 
                // Get recentlyModifiedsubmission using orderby ascending
-                var submissionsOrderbyAscending = await Submission.GetRecentlyModifiedSubmissionsWithOrderByAsync(graphClientTeacherRole, _config["classId"], "lastModifiedDateTime asc");
+                var submissionsOrderbyAscending = await Submission.GetRecentlyModifiedSubmissionsWithOrderByAsync(graphClient, _config["classId"], "lastModifiedDateTime asc");
                 Console.WriteLine("\nGetting RecentlyModifiedSubmissions with orderBy ascending Odata parameter");
                 if (submissionsOrderbyAscending.Value.Count > 0)
                 {
@@ -392,7 +394,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 }
 
                 // Get recentlyModifiedsubmission using orderby descending
-                var submissionsOrderbyDescending = await Submission.GetRecentlyModifiedSubmissionsWithOrderByAsync(graphClientTeacherRole, _config["classId"], "lastModifiedDateTime");
+                var submissionsOrderbyDescending = await Submission.GetRecentlyModifiedSubmissionsWithOrderByAsync(graphClient, _config["classId"], "lastModifiedDateTime");
                 Console.WriteLine("\nGetting RecentlyModifiedSubmissions with orderBy descending Odata parameter");
                 if (submissionsOrderbyDescending.Value.Count > 0)
                 {
@@ -407,7 +409,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 }
 
                 // Get recentlyModifiedsubmission using Top
-                var submissionsTop = await Submission.GetRecentlyModifiedSubmissionsWithTopAsync(graphClientTeacherRole, _config["classId"], 2);
+                var submissionsTop = await Submission.GetRecentlyModifiedSubmissionsWithTopAsync(graphClient, _config["classId"], 2);
                 Console.WriteLine("\nGetting RecentlyModifiedSubmissions with Top Odata parameter");
                 if (submissionsTop.Value.Count == 2)
                 {
@@ -422,7 +424,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 }
 
                 // Get recentlyModifiedsubmission using count
-                var submissionsCount = await Submission.GetRecentlyModifiedSubmissionsWithCountAsync(graphClientTeacherRole, _config["classId"], true);
+                var submissionsCount = await Submission.GetRecentlyModifiedSubmissionsWithCountAsync(graphClient, _config["classId"], true);
                 Console.WriteLine("\nGetting RecentlyModifiedSubmissions with Count Odata parameter");
                 if (submissionsCount.Value.Count > 0)
                 {
@@ -439,7 +441,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 DateTime FiveDaysAgo = DateTime.UtcNow.AddDays(-5);
 
                 // Get recentlyModifiedsubmission using Filter
-                var submissionsFilter = await Submission.GetRecentlyModifiedSubmissionsWithFilterAsync(graphClientTeacherRole, _config["classId"], $"lastModifiedDateTime gt {FiveDaysAgo.ToString("o")}");
+                var submissionsFilter = await Submission.GetRecentlyModifiedSubmissionsWithFilterAsync(graphClient, _config["classId"], $"lastModifiedDateTime gt {FiveDaysAgo.ToString("o")}");
                 Console.WriteLine("\nGetting RecentlyModifiedSubmissions with Filter Odata parameter");
                 if (submissionsFilter.Value.Count > 0)
                 {
@@ -457,7 +459,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine("\nDeleting created assignments");
                 foreach (var assignmentsId in assignmentIds)
                 {
-                    await Assignment.DeleteAsync(graphClientTeacherRole, _config["classId"], assignmentsId);
+                    await Assignment.DeleteAsync(graphClient, _config["classId"], assignmentsId);
                     Console.WriteLine($"Assignment {assignmentsId} deleted successfully");
                 }
             }
