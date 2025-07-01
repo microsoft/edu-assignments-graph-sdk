@@ -438,10 +438,10 @@ namespace MicrosoftEduGraphSamples.Workflows
                     throw new Exception($"No submissions found for given count value in class {_config["classId"]}.");
                 }
 
-                DateTime FiveDaysAgo = DateTime.UtcNow.AddDays(-5);
+                DateTime fiveDaysAgo = DateTime.UtcNow.AddDays(-5);
 
                 // Get recentlyModifiedsubmission using Filter
-                var submissionsFilter = await Submission.GetRecentlyModifiedSubmissionsWithFilterAsync(graphClient, _config["classId"], $"lastModifiedDateTime gt {FiveDaysAgo.ToString("o")}");
+                var submissionsFilter = await Submission.GetRecentlyModifiedSubmissionsWithFilterAsync(graphClient, _config["classId"], $"lastModifiedDateTime gt {fiveDaysAgo.ToString("o")}");
                 Console.WriteLine("\nGetting RecentlyModifiedSubmissions with Filter Odata parameter");
                 if (submissionsFilter.Value.Count > 0)
                 {
