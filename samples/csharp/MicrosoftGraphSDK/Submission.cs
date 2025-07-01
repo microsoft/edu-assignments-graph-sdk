@@ -3,6 +3,11 @@
 
 using Microsoft.Graph.Beta;
 using Microsoft.Graph.Beta.Models;
+using Microsoft.Graph.Beta.Models.Security;
+using Microsoft.Graph.Beta.Education.Classes.Item.GetRecentlyModifiedSubmissions;
+using Microsoft.Kiota.Abstractions;
+using Microsoft.Graph.Beta.Models.ODataErrors;
+
 
 namespace MicrosoftGraphSDK
 {
@@ -86,9 +91,9 @@ namespace MicrosoftGraphSDK
                     .Assignments[assignmentId]
                     .Submissions
                     .GetAsync((requestConfiguration) =>
-                        {
-                            requestConfiguration.QueryParameters.Expand = new string[] { expand };
-                        });
+                    {
+                        requestConfiguration.QueryParameters.Expand = new string[] { expand };
+                    });
             }
             catch (Exception ex)
             {
@@ -154,7 +159,7 @@ namespace MicrosoftGraphSDK
                     .GetAsync(requestConfig => {
                         requestConfig.Headers.Add(
                             headerName, headerValue);
-                        });
+                    });
             }
             catch (Exception ex)
             {
@@ -253,7 +258,7 @@ namespace MicrosoftGraphSDK
                     .Outcomes
                     .PostAsync(educationOutcome);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new GraphException($"CreateFeedbackResourceOutcomeAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
             }
@@ -315,7 +320,7 @@ namespace MicrosoftGraphSDK
                     .Outcomes
                     .GetAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new GraphException($"GetSubmissionOutcomesAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
             }
@@ -344,9 +349,171 @@ namespace MicrosoftGraphSDK
                     .SetUpResourcesFolder
                     .PostAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new GraphException($"SetUpAssignmentFeedbackResourcesFolderAsync call: {ex.Message}", ex, classId, assignmentId, submissionId);
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the recently modified submissions for a given class.
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <returns>A response object containing the recently modified submissions</returns>
+        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsAsync(GraphServiceClient client,
+            string classId)
+        {
+            try
+            {
+                return await client.Education
+                    .Classes[classId]
+                    .GetRecentlyModifiedSubmissions
+                    .GetAsGetRecentlyModifiedSubmissionsGetResponseAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetRecentlyModifiedSubmissionsAsync call failed: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// List all the submissions associated with expand odata query parameter
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="expand">OData query parameter to help customize the response</param>
+        /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
+        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithExpandAsync(
+            GraphServiceClient client,
+            string classId,
+            string expand)
+        {
+            try
+            {
+                return await client.Education
+                .Classes[classId]
+                    .GetRecentlyModifiedSubmissions
+                    .GetAsGetRecentlyModifiedSubmissionsGetResponseAsync((requestConfiguration) =>
+                    {
+                        requestConfiguration.QueryParameters.Expand = new string[] { expand };
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetSubmissionsWithExpandAsync call: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// List all the submissions associated with orderby odata query parameter
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="orderby">OData query parameter to help customize the response</param>
+        /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
+        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithOrderByAsync(
+            GraphServiceClient client,
+            string classId,
+            string orderby)
+        {
+            try
+            {
+                return await client.Education
+                .Classes[classId]
+                    .GetRecentlyModifiedSubmissions
+                    .GetAsGetRecentlyModifiedSubmissionsGetResponseAsync((requestConfiguration) =>
+                    {
+                        requestConfiguration.QueryParameters.Orderby = new string[] { orderby };
+                    });
+            }
+            catch (ODataError ex)
+            {
+                throw new GraphException($"GetRecentlyModifiedSubmissionsWithOrderByAsync call: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// List all the submissions associated with count odata query parameter
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="count">OData query parameter to help customize the response</param>
+        /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
+        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithCountAsync(
+            GraphServiceClient client,
+            string classId,
+            Boolean count)
+        {
+            try
+            {
+                return await client.Education
+                .Classes[classId]
+                    .GetRecentlyModifiedSubmissions
+                    .GetAsGetRecentlyModifiedSubmissionsGetResponseAsync((requestConfiguration) =>
+                    {
+                        requestConfiguration.QueryParameters.Count = count;
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetRecentlyModifiedSubmissionsWithCountAsync call: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// List all the submissions associated with top odata query parameter
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="top">OData query parameter to help customize the response</param>
+        /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
+        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithTopAsync(
+            GraphServiceClient client,
+            string classId,
+            int top)
+        {
+            try
+            {
+                return await client.Education
+                .Classes[classId]
+                    .GetRecentlyModifiedSubmissions
+                    .GetAsGetRecentlyModifiedSubmissionsGetResponseAsync((requestConfiguration) =>
+                    {
+                        requestConfiguration.QueryParameters.Top = top;
+                    });
+            }
+            catch (ODataError ex)
+            {
+                throw new GraphException($"GetRecentlyModifiedSubmissionsWithTopAsync call: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// List all the submissions associated with filter odata query parameter
+        /// </summary>
+        /// <param name="client">Microsoft Graph service client</param>
+        /// <param name="classId">User class id</param>
+        /// <param name="filter">OData query parameter to help customize the response</param>
+        /// <returns>GetRecentlyModifiedSubmissionsGetResponse</returns>
+        public static async Task<GetRecentlyModifiedSubmissionsGetResponse> GetRecentlyModifiedSubmissionsWithFilterAsync(
+            GraphServiceClient client,
+            string classId,
+            string filter)
+        {
+            try
+            {
+                return await client.Education
+                .Classes[classId]
+                    .GetRecentlyModifiedSubmissions
+                    .GetAsGetRecentlyModifiedSubmissionsGetResponseAsync((requestConfiguration) =>
+                    {
+                        requestConfiguration.QueryParameters.Filter = filter;
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new GraphException($"GetRecentlyModifiedSubmissionsWithFilterAsync call: {ex.Message}");
             }
         }
     }

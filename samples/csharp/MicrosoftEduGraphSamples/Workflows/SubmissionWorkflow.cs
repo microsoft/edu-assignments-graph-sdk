@@ -4,6 +4,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
 using Microsoft.Graph.Beta.Models;
+using Microsoft.Identity.Client;
+using Microsoft.Kiota.Abstractions;
 using MicrosoftEduGraphSamples.Utilities;
 using MicrosoftGraphSDK;
 
@@ -48,8 +50,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Teacher publishes the assignment to make it appears in the student's list
                 assignment = await GlobalMethods.PublishAssignmentsAsync(graphClientTeacherRole, assignment.Id);
 
-
-                // Get the student submission using Expand
+                // Get the student submission using Expand outcomes
                 var submissions = await Submission.GetSubmissionsWithExpandAsync(graphClientStudentRole, _config["classId"], assignmentId, "outcomes");
                 if (submissions.Value.Count > 0)
                 {
@@ -58,11 +59,11 @@ namespace MicrosoftEduGraphSamples.Workflows
                 }
                 else
                 {
-                    throw new Exception($"No submission found for {_config["studentAccount"]} in {assignmentId} for class {_config["classId"]}");
+                    throw new Exception($"No submission found for student {_config["studentAccount"]} in {assignmentId} for class {_config["classId"]}");
                 }
 
                 // Get the student submission using Select
-                var submissionsSelect = await Submission.GetSubmissionsWithSelectAsync(graphClientStudentRole, _config["classId"], assignmentId, new string[] {"status","id"});
+                var submissionsSelect = await Submission.GetSubmissionsWithSelectAsync(graphClientStudentRole, _config["classId"], assignmentId, new string[] { "status", "id" });
                 if (submissionsSelect.Value.Count > 0)
                 {
                     submissionIdSelect = submissionsSelect.Value[0].Id;
@@ -70,7 +71,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 }
                 else
                 {
-                    throw new Exception($"No submission found for {_config["studentAccount"]} in {assignmentId} for class {_config["classId"]}");
+                    throw new Exception($"No submission found for student {_config["studentAccount"]} in {assignmentId} for class {_config["classId"]}");
                 }
 
                 // Student submits their submission
@@ -85,7 +86,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                     Thread.Sleep(2000); // Wait two seconds between calls
                     retries++;
-                }                
+                }
 
                 // Get submission outcomes
                 var submissionOutcomes = await Submission.GetSubmissionOutcomesAsync(
@@ -136,7 +137,8 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                 Console.WriteLine($"Submission {submissionId} reached {submission.Status} state");
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Console.WriteLine($"ReassignWorkflow: {ex.ToString()}");
             }
         }
@@ -311,7 +313,162 @@ namespace MicrosoftEduGraphSamples.Workflows
 
             //Deleting the created assignment
             await Assignment.DeleteAsync(graphClient, _config["classId"], assignmentId);
-            Console.WriteLine("Assignment deleted successfully "+ assignmentId);
+            Console.WriteLine("Assignment deleted successfully " + assignmentId);
         }
+
+        /// <summary>
+        /// This sample demonstrates how to retrieve submissions that were modified within the past seven days in the class.
+        /// Reference :: https://learn.microsoft.com/en-us/graph/api/educationclass-getrecentlymodifiedsubmissions?view=graph-rest-1.0&tabs=http
+        /// </summary>
+        /// <param name="appOnly">True value authenticates the graph client with application permissions only, otherwise it will be created with delegated permissions.</param> 
+        /// <param name="numberOfAssignments">number of assignments to be created for sample purpose</param> 
+        public async Task GetRecentlyModifiedSubmissions(bool appOnly = false, int numberOfAssignments = 10)
+        {
+            try
+            {
+                string submissionId = string.Empty;
+                List<string> assignmentIds = new List<string>();
+
+                // Get a Graph client based on the appOnly parameter
+                var graphClient = appOnly ? GraphClient.GetApplicationClient(_config["tenantId"], _config["appId"], _config["secret"]) : GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["teacherAccount"], _config["teacherPassword"]);
+                
+                // Student operation use delegated client
+                var graphClientStudentRole = GraphClient.GetDelegateClient(_config["tenantId"], _config["appId"], _config["studentAccount"], _config["studentPassword"]);
+
+                for (int i = 0; i < numberOfAssignments; i++)
+                {
+                    // Create assignment
+                    var draftAssignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
+
+                    // Store Assignment ID
+                    assignmentIds.Add(draftAssignment.Id);
+                    Console.WriteLine($"Assignment {i + 1} created successfully: ID = {draftAssignment.Id}, Status = {draftAssignment.Status}");
+
+                    // Publishing each Assignment
+                    draftAssignment = await GlobalMethods.PublishAssignmentsAsync(graphClient, draftAssignment.Id);
+                    Console.WriteLine($"Assignment {i + 1} published successfully: ID = {draftAssignment.Id}, Status = {draftAssignment.Status}");
+                    
+                    // Get the student submission
+                    var submissions = await Submission.GetSubmissionsAsync(graphClientStudentRole, _config["classId"], draftAssignment.Id);
+                    if (submissions.Value.Count > 0)
+                    {
+                        submissionId = submissions.Value[0].Id;
+                        Console.WriteLine($"Submission {submissionId} found for {_config["studentAccount"]}");
+
+                    }
+                    else
+                    {
+                        throw new Exception($"No submission found for student {_config["studentAccount"]} in {draftAssignment.Id} for class {_config["classId"]}");
+                    }
+
+                    // Get the student submission with expand outcomes
+                    var submissionsOutcome = await Submission.GetSubmissionsWithExpandAsync(graphClientStudentRole, _config["classId"], draftAssignment.Id, "outcomes");
+                    if (submissionsOutcome.Value.Count > 0)
+                    {
+                        submissionId = submissionsOutcome.Value[0].Id;
+                        Console.WriteLine($"Submission {submissionId} found for {_config["studentAccount"]}");
+                    }
+                    else
+                    {
+                        throw new Exception($"No submission found for student {_config["studentAccount"]} in {draftAssignment.Id} for class {_config["classId"]}");
+                    }
+
+                    // Student submits their submission
+                    var submission = await Submission.SubmitAsync(graphClientStudentRole, _config["classId"], draftAssignment.Id, submissionId);
+                Console.WriteLine($"Submission {submission.Id} in state {submission.Status}");
+                }
+
+               // Get recentlyModifiedsubmission using orderby ascending
+                var submissionsOrderbyAscending = await Submission.GetRecentlyModifiedSubmissionsWithOrderByAsync(graphClient, _config["classId"], "lastModifiedDateTime asc");
+                Console.WriteLine("\nGetting RecentlyModifiedSubmissions with orderBy ascending Odata parameter");
+                if (submissionsOrderbyAscending.Value.Count > 0)
+                {
+                    foreach (var individualSubmissions in submissionsOrderbyAscending.Value)
+                    {
+                        Console.WriteLine($"Submission ID: {individualSubmissions.Id}, Last Modified: {individualSubmissions.LastModifiedDateTime}");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"No submissions found when ordering by descending lastModifiedDateTime for assignment in class {_config["classId"]}.");
+                }
+
+                // Get recentlyModifiedsubmission using orderby descending
+                var submissionsOrderbyDescending = await Submission.GetRecentlyModifiedSubmissionsWithOrderByAsync(graphClient, _config["classId"], "lastModifiedDateTime");
+                Console.WriteLine("\nGetting RecentlyModifiedSubmissions with orderBy descending Odata parameter");
+                if (submissionsOrderbyDescending.Value.Count > 0)
+                {
+                    foreach (var individualSubmissions in submissionsOrderbyDescending.Value)
+                    {
+                        Console.WriteLine($"Submission ID: {individualSubmissions.Id}, Last Modified DateTime: {individualSubmissions.LastModifiedDateTime}");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"No submissions found when ordering by descending lastModifiedDateTime for in class {_config["classId"]}.");
+                }
+
+                // Get recentlyModifiedsubmission using Top
+                var submissionsTop = await Submission.GetRecentlyModifiedSubmissionsWithTopAsync(graphClient, _config["classId"], 2);
+                Console.WriteLine("\nGetting RecentlyModifiedSubmissions with Top Odata parameter");
+                if (submissionsTop.Value.Count == 2)
+                {
+                    foreach (var individualSubmissions in submissionsTop.Value)
+                    {
+                        Console.WriteLine($"Submission ID: {individualSubmissions.Id}, Last Modified DateTime: {individualSubmissions.LastModifiedDateTime}");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"No submissions found for given top value for in class {_config["classId"]}.");
+                }
+
+                // Get recentlyModifiedsubmission using count
+                var submissionsCount = await Submission.GetRecentlyModifiedSubmissionsWithCountAsync(graphClient, _config["classId"], true);
+                Console.WriteLine("\nGetting RecentlyModifiedSubmissions with Count Odata parameter");
+                if (submissionsCount.Value.Count > 0)
+                {
+                    foreach (var individualSubmissions in submissionsCount.Value)
+                    {
+                        Console.WriteLine($"Submission ID: {individualSubmissions.Id}, Last Modified DateTime: {individualSubmissions.LastModifiedDateTime}");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"No submissions found for given count value in class {_config["classId"]}.");
+                }
+
+                DateTime fiveDaysAgo = DateTime.UtcNow.AddDays(-5);
+
+                // Get recentlyModifiedsubmission using Filter
+                var submissionsFilter = await Submission.GetRecentlyModifiedSubmissionsWithFilterAsync(graphClient, _config["classId"], $"lastModifiedDateTime gt {fiveDaysAgo.ToString("o")}");
+                Console.WriteLine("\nGetting RecentlyModifiedSubmissions with Filter Odata parameter");
+                if (submissionsFilter.Value.Count > 0)
+                {
+                    foreach (var individualSubmissions in submissionsFilter.Value)
+                    {
+                        Console.WriteLine($"Submission ID: {individualSubmissions.Id}, Last Modified DateTime: {individualSubmissions.LastModifiedDateTime}");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"No submissions found for given filter value in class {_config["classId"]}.");
+                }
+
+               //Delete Created Assigments
+                Console.WriteLine("\nDeleting created assignments");
+                foreach (var assignmentsId in assignmentIds)
+                {
+                    await Assignment.DeleteAsync(graphClient, _config["classId"], assignmentsId);
+                    Console.WriteLine($"Assignment {assignmentsId} deleted successfully");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"GetRecentlyModifiedSubmissionsGetResponseAsync: {ex.ToString()}");
+            }
+
+        }
+
     }
 }

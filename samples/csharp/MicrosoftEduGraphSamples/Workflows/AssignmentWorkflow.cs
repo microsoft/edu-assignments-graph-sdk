@@ -102,7 +102,7 @@ namespace MicrosoftEduGraphSamples.Workflows
 
                 // Publishing an Assignment
                 assignmentAssigned = await GlobalMethods.PublishAssignmentsAsync(graphClient, assignmentAssigned.Id);
-               
+
                 // Verifying that you have an Inactive, Assigned and Draft assignments
                 if (assignmentInactive.Status == EducationAssignmentStatus.Inactive)
                 {
@@ -149,11 +149,11 @@ namespace MicrosoftEduGraphSamples.Workflows
                     DisplayName = "Reading and review test updated",
                 };
                 assignment = await Assignment.PatchAsync(graphClient, _config["classId"], assignmentId, requestBody);
-                
+
                 //Verifying whether the DisplayName parameter is updated for the draft assignment.
                 assignment = await Assignment.GetAssignmentAsync(graphClient, _config["classId"], assignmentId);
 
-                if(assignment.DisplayName.Contains("updated"))
+                if (assignment.DisplayName.Contains("updated"))
                 {
                     Console.WriteLine($"DisplayName updated successfully {assignment.Id} DisplayName {assignment.DisplayName}");
                 }
@@ -166,7 +166,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"CreateAndPatchAssignmentAsync: {ex.ToString()}");
             }
         }
- 
+
         /// <summary>
         /// A code sample to create Assignment resources under the assignment resource folder
         /// </summary>
@@ -183,7 +183,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                 // Create assignment
                 var assignment = await Assignment.CreateSampleAssignmentAsync(graphClient, _config["classId"]);
                 assignmentId = assignment.Id;
-                Console.WriteLine($"Assignment created successfully with Id: {assignment.Id} in state: {assignment.Status}");
+                Console.WriteLine($"Assignment created successfully with Id: {assignment.Id} with status: {assignment.Status}");
 
                 // Set Up Assignment Resources Folder
                 await Assignment.SetupResourcesFolderAsync(graphClient, _config["classId"], assignmentId);
@@ -196,7 +196,7 @@ namespace MicrosoftEduGraphSamples.Workflows
                     Resource = new EducationWordResource
                     {
                         OdataType = "microsoft.graph.educationWordResource",
-                        DisplayName = "New Word Document.docx",                        
+                        DisplayName = "New Word Document.docx",
                     },
                 };
 
@@ -214,5 +214,6 @@ namespace MicrosoftEduGraphSamples.Workflows
                 Console.WriteLine($"AssignmentResourceAsync: {ex.ToString()}");
             }
         }
+
     }    
 }
